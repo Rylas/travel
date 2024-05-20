@@ -1,0 +1,37 @@
+package org.example.travel.service;
+
+import org.example.travel.repository.LocationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.example.travel.entity.Location;
+import java.util.List;
+
+@Service
+public class LocationService {
+    @Autowired
+    private LocationRepository locationRepository;
+    public List<Location> getAllLocations() {
+        return locationRepository.findAll();
+    }
+
+    // Get location by id
+    public Location getLocationById(Long id) {
+        return locationRepository.findById(id).orElse(null);
+    }
+
+    public List<Location> getLocationByHot(boolean isHot) {
+        return locationRepository.findByIsHot(isHot);
+    }
+
+    public List<Location> getLocationOrderByNumberCustomerDesc() {
+        return locationRepository.getLocationOrderByNumberCustomerDesc();
+    }
+
+    public Location saveLocation(Location location) {
+        return locationRepository.save(location);
+    }
+
+    public void deleteLocation(Long id) {
+        locationRepository.deleteById(id);
+    }
+}

@@ -1,0 +1,235 @@
+
+
+.banner h3 {
+    font-family: "Nothing You Could Do", sans-serif;
+    font-size: 150px;
+    text-transform: capitalize;
+    font-weight: 400;
+    line-height: .5;
+    color: #fff;
+    margin-bottom: 0;
+
+}
+
+.banner {
+    padding: 20px;
+    border: 1px solid #363E52;
+    background-image: url(../img/backgroundcontact.jpg);
+    background-size: cover;
+}
+
+.banner .text {
+    padding: 15%;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    font-size: 40px;
+}
+
+.content1 {
+    display: flex;
+    background-image: url(../img/backgroundmap1.png);
+    background-size: cover;
+    background-position: 50% 50%;
+    position: relative;
+    /* z-index: 0; */
+}
+
+.content1 .map {
+    margin: 100px auto;
+    /* width: 100%; */
+
+}
+
+.content1 .map iframe {
+    width: 70vw;
+    border-radius: 10px;
+
+    box-shadow: 1px 1px 12px 0px rgb(0 0 0 / 40%);
+}
+
+.content2 {
+    background-image: linear-gradient(135deg, rgb(0 0 0 / 16%), rgb(0 0 0 / 0%)), url(../img/backgroundcontactus.jpeg);
+    /* z-index: -1; */
+    position: relative;
+    background-size: cover;
+    background-position: 50% 83%;
+    color: rgb(255, 255, 255);
+    padding-bottom: 60px;
+}
+
+.content2 .column {
+    align-items: center;
+}
+
+.content2 .container {
+    width: 75%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.content2 .container .column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.content2 .data2 {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 28px 0;
+}
+
+.content2 .data2 .ti-home::before {
+    content: "\e69b";
+}
+
+.content2 .data2 .ti-tablet::before {
+    content: "\e609";
+}
+
+.content2 .data2 .ti-email::before {
+    content: "\e75a";
+}
+
+.content2 .data2 .contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.content2 .data2 .contact-info div {
+    margin: 0 17px 0 0;
+}
+
+.content2 .data2 .contact-info i {
+    font-size: 30px;
+}
+
+.content2 .data1 {
+    text-align: center;
+    margin: 100px 0 50px 0;
+}
+
+.content2 .data2 .contact-info {
+    margin: 18px 0 0 0;
+}
+
+.content2 .data3 {
+    margin: 0 0 0 0;
+    /* color: #fff;  */
+}
+
+.content2 .data3 input {
+    width: 90%;
+    background-color: transparent;
+    height: 33px;
+    margin: 10px 0;
+    border: 1px solid #ffffff;
+    box-sizing: border-box;
+    padding: 5px;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+.content2 .data3 input:focus {
+    background-color: #ffffff24;
+    transform: scaleX(1.01);
+}
+
+.content2 .data3 textarea:focus {
+    /* box-sizing: border-box; */
+    background-color: #ffffff24;
+    transform: scaleX(1.01);
+}
+
+.content2 .data3 input::placeholder {
+    color: rgba(221, 217, 217, 0.762);
+}
+
+.content2 .data3 textarea {
+    width: 90%;
+    height: 150px;
+    background-color: transparent;
+    margin: 10px 0;
+    border: 1px solid #ffffff;
+    box-sizing: border-box;
+    padding: 5px;
+    color: white;
+    border-radius: 5px;
+}
+
+.content2 .data3 textarea::placeholder {
+    color: rgba(221, 217, 217, 0.762);
+}
+
+.content2 .data4 {
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+
+
+.content2 .data4 a {
+
+    text-decoration: none;
+    color: #fff;
+    line-height: 50px;
+    padding: 10px 20px;
+    background-image: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
+    border-radius: 10px;
+    background-size: 300% 100%;
+    transition: all 400ms ease-in-out;
+}
+
+.content2 .data4 a:hover {
+    background-position: 99% 0;
+}
+
+.content2 {
+    position: relative;
+}
+
+.content2 h1 {
+    color: white;
+    font-size: 40px;
+}
+
+.content2 .tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-50%, -50%) !important;
+    opacity: 1;
+}
+
+.content2 .tag img {
+    width: 220px;
+}
+
+
+
+/* Tablet width 820*/
+@media screen and (max-width: 1150px) {
+    .content1 {
+        background-repeat: no-repeat;
+        background-size: 130%;
+    }
+    .banner h3 {
+        font-size: 80px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .content1 .map {
+        margin: 0;
+        width: 100%;
+        height: 30%;
+    }
+    .content1 .map iframe {
+        width: 100%;
+    }
+}

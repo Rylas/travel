@@ -1,0 +1,467 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --main-color: rgb(24, 126, 199);
+}
+
+#tourDetails{
+    position: relative;
+}
+#container-left{
+    background-color: rgb(234, 229, 229);
+}
+.contain-video {
+    
+}
+.contain-video iframe{
+    width: 100%;
+    height: 560px;
+}
+.contain-video,.contain-img{
+    width: 100%;
+    padding: 20px;
+}
+
+.contain-img img{
+    width: 100%;
+
+}
+
+#tourDetails {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+#container-right{
+   
+    position: -webkit-sticky;
+    position: sticky;
+    top:100px;
+    max-height: 700px;
+}
+#container-right  h2#name-place{
+    text-transform: uppercase;
+    font-size: 50px;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+.nav-tabs{
+    margin-left: 20px;
+}
+.nav-item{
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.nav-item.active{
+    color: var(--main-color);
+    border-style: solid;
+    border-top: 100% 1px #ccc;
+    border-left: 100% 1px #ccc;
+    border-right: 100% 1px #ccc;
+    border-bottom: 0;
+    border-radius: 15px;
+}
+
+.rating{
+    padding: 10px;
+    font-size: 18px;
+}
+.rating-star{
+}
+#rating-star-fisrt{
+    display: flex;
+    justify-content: space-between;
+}
+
+#rating-star-fisrt i{
+    color: rgb(228, 172, 17);
+}
+#rating-star-snd{
+
+}
+#rating-star-snd span{
+    margin-right: 15px;
+}
+
+.info{
+    font-size: 18px;
+    padding: 10px;
+}
+
+.info-item span:first-child{
+    font-weight: 600;
+    display: inline-block;
+    min-width: 120px;
+}
+
+.info-item span:last-child{
+    color: var(--main-color);
+}
+.info-item select{
+    color: var(--main-color);
+}
+
+.pay{
+    padding: 0 10px 20px 10px;
+    display: flex;
+    font-size: 18px;
+    font-weight: 500;
+    justify-content: space-between;
+}
+
+
+.pay .cost .cost-price, #payment{
+    font-size: 40px;
+    color: rgb(196, 77, 59);
+}
+
+.pay .book-btn{
+    align-self: center;
+    padding: 10px;
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+    cursor: pointer;
+    align-content: center;
+}
+.pay p{
+    margin: unset;
+
+}
+.pay .book-btn:hover p{
+    color: var(--main-color);
+    animation: btnanimate 1s linear;
+    /* opacity: 0.7; */
+}
+
+@keyframes btnanimate {
+    0%{
+        transform: rotateZ(0) scale3d(0.5,0.75,0.5);
+    }
+
+    30%{
+        transform: rotateZ(10deg) scale3d(1.15,1,1);
+
+    }
+    45%{
+        transform: rotateZ(-10deg) scale3d(1,1,1.5);
+
+    }
+
+    60%{
+        transform: rotateZ(10deg) scale3d(1.15,1,1.5);
+
+    }
+
+    80%{
+        transform: rotateZ(-10deg) scale3d(1,1,1.5);
+
+    }
+
+    100%{
+        transform: rotateZ(0deg) scale3d(1,1,1);
+
+    }
+}
+
+.tab-pane{
+    display: none;
+}
+
+.social-contact{
+    padding: 10px;
+    font-size: 40px;
+}
+.social-contact span
+{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.tab-content{
+    margin-top: 20px;
+    max-height: 630px;
+    overflow-y: scroll;
+}
+.textinfo{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding: 10px;
+    border: 1px dashed var(--main-color);
+}
+.textinfo{
+    color: var(--main-color) !important;
+}
+#tour-include,#tour-not-include,#tour-condition-cancel{
+    font-size: 18px;
+}
+#tour-include
+,#tour-not-include
+,#tour-condition-cancel{
+    animation: botIn 0.75s linear;
+}
+
+@keyframes botIn{
+    from{
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.pane{
+    display: none;
+}
+.pane.active{
+    display: block;
+}
+#tour-condition-cancel i.fa-check,
+#tour-include i.fa-check{
+    color: var(--main-color);
+}
+
+#tour-not-include i{
+    color: red;
+}
+
+#tour-schedule {
+    padding: 15px;
+    font-size: 18px;
+}
+
+#tour-schedule img{
+    width: 100%;
+}
+.cmt-rating{
+    display: flex;
+    transform: rotateY(180deg);
+    justify-content: flex-end;
+}
+.cmt-rating input{
+    display: none;
+}
+.cmt-rating label {
+    margin-left: 5px;
+    font-size: 30px;
+    display: block;
+    /* background-color: #ccc; */
+    position: relative;
+
+}
+.cmt-rating label::before{
+    content: '\f005';
+    font-family: fontAwesome;
+    color: #ccc;
+}
+.cmt-rating label::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '\f005';
+    font-family: fontAwesome;
+    opacity: 0;
+    color: var(--main-color);
+}
+.cmt-rating label:hover::after,
+.cmt-rating label:hover ~ label::after,
+.cmt-rating input:checked ~ label::after{
+    opacity: 1;
+}
+#textarea1{
+    width: 500px;
+}
+.btn-gr{
+    display: flex;
+    width: 500px;
+    justify-content: end;
+}
+.cmt-detail{
+    height: 140px;
+    box-shadow: 5px 6px 6px 2px #e9ecef;
+    border-radius: 4px;
+}
+
+.cmt-detail{
+    padding: 14px;
+    font-weight: 500;
+}
+.cmt-detail-userdate,.cmt-user-rating{
+    display: flex;
+    justify-content: space-between;
+}
+.cmt-user{
+    display: flex;
+    width: fit-content;
+}
+.cmt-user img{
+    height: 60px;
+    width: 60px;
+}
+.cmt-user h5{
+    color: var(--main-color);
+}
+.user-rating i{
+    color: var(--main-color);
+}
+.user-action span:hover{
+    cursor: pointer;
+    color: var(--main-color);
+}
+
+.slider-item{
+    box-shadow: 2px 5px 3px rgb(185, 181, 181);
+    height: 500px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.slider-item img {
+    height: 100%;
+}
+/* .tour-sliders #item1 {
+    background-image: url(https://res.cloudinary.com/wonder-place/image/upload/v1629099390/image/w0goopi0a6dbhqi9aac3.jpg);
+}
+.tour-sliders #item2 {
+    background-image: url(https://res.cloudinary.com/wonder-place/image/upload/v1629099823/image/sbzk9ab3edhl6jo4tybe.jpg);
+}
+.tour-sliders #item3 {
+    background-image: url(https://res.cloudinary.com/wonder-place/image/upload/v1628990210/image/vqnhbdkuegik6nvak7mv.jpg);
+}
+.tour-sliders #item4 {
+    background-image: url(https://res.cloudinary.com/wonder-place/image/upload/v1628942113/image/bbwusm2koecqzfzck74c.jpg);
+}
+.tour-sliders #item5 {
+    background-image: url(https://res.cloudinary.com/wonder-place/image/upload/v1629100234/image/xqomv3qdcxgnyoajw87y.jpg);
+}
+.tour-sliders #item6 {
+    background-image: url(https://banahills.sunworld.vn/wp-content/uploads/2018/08/lam-mua-lam-gio-tai-viet-nam-chua-du-cau-vang-tiep-tuc-chinh-phuc-the-gioi-1206-768x432.jpg);
+} */
+.tour-sliders {
+   margin-top: 30px;
+
+}
+.slider-item:hover .slide-item-content{
+    transition: transform 0.75s ease-in;
+    transform: translateY(0);
+}
+.slider-item:hover .slide-item-content .slide-item-decript{
+    transition: opacity 1s linear;
+    opacity: 1;
+}
+.slider-item:hover .slide-item-content h3::after{
+    width: 100%;
+}
+.slide-item-content{
+    transform: translateY(calc(100% - 72px));
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,1));
+    color: white;
+    font-size: 18px;
+
+    
+}
+.slider-item .slide-price{
+    position: absolute;
+    background-color: var(--main-color);
+    width: 70px;
+    height: 50px;
+    top: 0;
+    right: 10px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 50px;
+    font-weight: bold;
+    color: white;
+}
+.slider-item .slide-price::after{
+    content: '';
+    position: absolute;
+    top:100%;
+    left: 0;
+    border-style: solid;
+    border-top-width: 0;
+    border-left-width: 35px;
+    border-right-width: 35px;
+    border-bottom-width: 20px;
+    border-color:  transparent var(--main-color);
+    
+}
+.slide-item-content .slide-item-decript{
+    opacity: 0;
+}
+.slide-item-content .slide-item-decript i{
+    color: var(--main-color);
+}
+.slide-item-content h3{
+    height: 60px;
+    overflow: hidden;
+
+    font-size: 36px;
+    position: relative;
+    margin-bottom: 10px;
+}
+.slide-item-content h3::after{
+    content: "";
+    width: 0;
+    height: 6px;
+    background-color: var(--main-color);
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    transition: width linear 0.75s;
+    border-radius: 3px;
+}
+.slide-item-decript p span:last-child{
+    margin-left: 10px;
+    color: wheat;
+    font-weight: 600;
+}
+.slick-next{
+    position: absolute;
+    top: 50%;
+    display: block;
+    right: 10px;
+    width: 60px;
+    height: 60px;
+    color: black;
+    z-index: 2;
+}
+.slick-prev {
+    position: absolute;
+    top: 50%;
+    display: block;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    color: black;
+    z-index: 2;
+}
+.slick-prev::before,.slick-next::before{
+    border-radius: 50%;
+    font-size: 60px;
+}
+.slick-track{
+    margin: -10px;
+}
+.slick-initialized .slick-slide{
+    margin: 0 10px;
+}
+
+#login  p,#login  button{
+    margin: unset;
+}
