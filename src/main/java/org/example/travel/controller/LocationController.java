@@ -1,0 +1,104 @@
+package org.example.travel.controller;
+
+import org.example.travel.entity.Location;
+import org.example.travel.service.FileStorageService;
+import org.example.travel.service.LocationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Objects;
+
+@Controller
+public class LocationController {
+    @Autowired
+    private LocationService locationService;
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @GetMapping("/details/location/{id}")
+    public String details(@PathVariable("id") int id, Model model) {
+        model.addAttribute("location", locationService.getLocationById((long) id));
+        return "location/detail-location";
+    }
+
+    @GetMapping("/admin/location")
+    public String listLocation(Model model) {
+        model.addAttribute("locations", locationService.getAllLocations());
+        return "location/list-location";
+    }
+
+    @GetMapping("/admin/location/add")
+    public String managerLocation(Model model) {
+        return "location/manager-location";
+    }
+
+    @PostMapping("/admin/location/add")
+    public String addLocation(Location location, @RequestParam("image-file") MultipartFile image,
+                              @RequestParam("banner-file") MultipartFile banner, Model model) {
+        if (!image.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(image, imageName, "images/location/");
+            // Set the image path to the enterprise object
+            location.setImage(imagePath);
+        }
+
+        if (!banner.isEmpty()) {
+// Generate a random name for the banner
+            String bannerName = "banner-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
+            // Store the banner in the file storage
+            String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/location/");
+            // Set the banner path to the enterprise object
+            location.setBanner(bannerPath);
+        }
+        locationService.saveLocation(location);
+        model.addAttribute("msg", "Add location successfully");
+        return "redirect:/admin/location";
+    }
+
+    @GetMapping("/admin/location/edit/{id}")
+    public String editLocation(@PathVariable("id") int id, Model model) {
+        model.addAttribute("location", locationService.getLocationById((long) id));
+        return "location/edit-location";
+    }
+
+    @PostMapping("/admin/location/edit")
+    public String editLocation(Location location, @RequestParam("image-file") MultipartFile image,
+                               @RequestParam("banner-file") MultipartFile banner, Model model) {
+        if (!image.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(image, imageName, "images/location/");
+            // Set the image path to the enterprise object
+            location.setImage(imagePath);
+        }
+
+        if (!banner.isEmpty()) {
+// Generate a random name for the banner
+            String bannerName = "banner-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
+            // Store the banner in the file storage
+            String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/location/");
+            // Set the banner path to the enterprise object
+            location.setBanner(bannerPath);
+        }
+        locationService.saveLocation(location);
+        model.addAttribute("msg", "Edit location successfully");
+        return "redirect:/admin/location";
+    }
+
+    @GetMapping("/admin/location/delete")
+    public String deleteLocation(@RequestParam("id") int id, Model model) {
+        locationService.deleteLocation((long) id);
+        model.addAttribute("msg", "Delete location successfully");
+        return "redirect:/admin/location";
+    }
+
+}
