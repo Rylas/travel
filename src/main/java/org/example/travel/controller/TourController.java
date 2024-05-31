@@ -57,7 +57,7 @@ public class TourController {
             return "redirect:/login";
         }
         String role = user.getRole();
-        if (role == "admin"){
+        if (!Objects.equals(role, "admin")){
 
             ra.addFlashAttribute("errorMsg", "You don't have permission to access this feature!");
             return "redirect:/";

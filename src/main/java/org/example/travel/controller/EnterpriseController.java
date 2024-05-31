@@ -36,7 +36,7 @@ public class EnterpriseController {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
         }
-        return "enterprise/index";
+        return "add";
     }
 
     @PostMapping("/enterprise/add")
@@ -84,7 +84,7 @@ public class EnterpriseController {
 
     @GetMapping("/admin/enterprise/add")
     public String addEnterprise(Model model) {
-        return "enterprise/index";
+        return "add";
     }
 
     @GetMapping("/admin/enterprise/active/{id}")
