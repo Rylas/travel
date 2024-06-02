@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -43,7 +45,23 @@ public class AdminController {
         return "user/list-user-admin";
     }
 
-//    @GetMapping("/admin/user/edit")
-//    public String editUserAdmin(Model model, )
+    @GetMapping("/admin/user/edit")
+    public String editUserAdmin(Model model, @RequestParam("id") Long id) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "user/edit-user-admin";
+    }
+
+    @GetMapping("/admin/user/delete")
+    public String deleteUserAdmin(@RequestParam("id") Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin/user";
+    }
+
+    @PostMapping("/admin/user/edit")
+    public String editUserAdmin(User user) {
+        userService.saveUser(user);
+        return "redirect:/admin/user";
+    }
 
 }

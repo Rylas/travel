@@ -47,4 +47,8 @@ public class UserService {
     public void updateEnterprise(Long userId, Long enterpriseId) {
         userRepository.updateEnterprise(userId, enterpriseId);
     }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }
