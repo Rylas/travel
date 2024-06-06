@@ -39,6 +39,7 @@ public class TourController {
 
     @GetMapping("/details/tour/{id}")
     public String details(@PathVariable("id") int id, Model model) {
+        tourService.incView((long) id);
         model.addAttribute("tour", tourService.getTourById((long) id));
         model.addAttribute("reviews", tourService.getTourById((long) id).getReviews());
         return "tour/detail-tour";
@@ -78,6 +79,11 @@ public class TourController {
                           @RequestParam("image-file") MultipartFile image,
                           @RequestParam("banner-file") MultipartFile banner,
                           @RequestParam("locations") List<Long> locationIds,
+                          @RequestParam("transport") String transport,
+                            @RequestParam("schedule") String schedule,
+                          @RequestParam("status") boolean status,
+                          @RequestParam("isHot") boolean isHot,
+                          @RequestParam("enterpriseId") Long enterpriseId,
                           Model model, HttpSession session, RedirectAttributes ra) throws ParseException {
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
@@ -88,6 +94,11 @@ public class TourController {
         tour.setName(name);
         tour.setDescription(description);
         tour.setPrice(price);
+        tour.setTransport(transport);
+        tour.setSchedule(schedule);
+        tour.setHot(isHot);
+        tour.setEnterprise(enterpriseService.getEnterpriseById(enterpriseId));
+        tour.setStatus(status);
 
         if (!image.isEmpty()) {
             String imageName = "image-tour-" + fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
@@ -130,6 +141,14 @@ public class TourController {
 
     @GetMapping("/admin/editTour/{id}")
     public String editTour(@PathVariable("id") int id, Model model) {
+        // Get format date YYYY-MM-DD
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = dateFormat.format(tourService.getTourById((long) id).getStartDate());
+        String endDate = dateFormat.format(tourService.getTourById((long) id).
+                getEndDate());
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+
         model.addAttribute("enterprises", enterpriseService.getAllEnterprises());
         model.addAttribute("tour", tourService.getTourById((long) id));
         model.addAttribute("locations", locationService.getAllLocations());
