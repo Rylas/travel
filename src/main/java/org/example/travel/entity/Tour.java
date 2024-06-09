@@ -42,6 +42,8 @@ public class Tour {
 
     private int numberCustomer = 0;
 
+    private int numberView = 0;
+
     private Date updatedAt;
 
     private boolean isHot = false;
@@ -66,4 +68,15 @@ public class Tour {
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Booking> cashs = new HashSet<>();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }

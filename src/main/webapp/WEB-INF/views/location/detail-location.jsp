@@ -59,12 +59,10 @@
             <div class="col-md-6">
                 <h4>Details</h4>
                 <ul class="list-unstyled details-list">
-                    <li><strong>Address:</strong> ${location.address}</li>
-                    <li><strong>Phone:</strong> ${location.phone}</li>
-                    <li><strong>Status:</strong> ${location.status ? "Active" : "Inactive"}</li>
                     <li><strong>Number of Customers:</strong> ${location.numberCustomer}</li>
                     <li><strong>Created At:</strong> ${location.createdAt}</li>
                     <li><strong>Updated At:</strong> ${location.updatedAt}</li>
+                    <li><strong>Views:</strong> ${location.numberView} </li>
                 </ul>
             </div>
         </div>

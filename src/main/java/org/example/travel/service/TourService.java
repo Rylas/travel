@@ -39,4 +39,19 @@ public class TourService {
         return tourRepository.findByNameContaining(keyword);
     }
 
+    public void incView(Long id) {
+        Tour tour = tourRepository.findById(id).orElse(null);
+        if (tour != null) {
+            tour.setNumberView(tour.getNumberView() + 1);
+            tourRepository.save(tour);
+        }
+    }
+
+    public void incCustomer(Long id) {
+        Tour tour = tourRepository.findById(id).orElse(null);
+        if (tour != null) {
+            tour.setNumberCustomer(tour.getNumberCustomer() + 1);
+            tourRepository.save(tour);
+        }
+    }
 }

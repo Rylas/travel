@@ -77,7 +77,8 @@
                     <li><strong>End Date:</strong> ${tour.endDate}</li>
                     <li><strong>Transport:</strong> ${tour.transport}</li>
                     <li><strong>Number of Customers:</strong> ${tour.numberCustomer}</li>
-                    <li><strong>Status:</strong> ${tour.status ? "Active" : "Inactive"}</li>
+                    <li><strong>Created At:</strong> ${tour.createdAt}</li>
+                    <li><strong>Number of Viewers: </strong> ${tour.numberView} </li>
                 </ul>
             </div>
             <div class="col-md-6">

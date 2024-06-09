@@ -34,4 +34,16 @@ public class LocationService {
     public void deleteLocation(Long id) {
         locationRepository.deleteById(id);
     }
+
+    public List<Location> getLocations(int offset, int limit) {
+        return locationRepository.getLocations(offset, limit);
+    }
+
+    public void incView(Long id) {
+        Location location = locationRepository.findById(id).orElse(null);
+        if (location != null) {
+            location.setNumberView(location.getNumberView() + 1);
+            locationRepository.save(location);
+        }
+    }
 }

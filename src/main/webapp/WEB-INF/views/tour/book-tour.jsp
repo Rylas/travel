@@ -37,6 +37,9 @@
         function calculateTotal() {
             var pricePerPerson = parseFloat(document.getElementById("price").value);
             var numberOfPeople = parseInt(document.getElementById("numberOfPeople").value);
+            if (isNaN(numberOfPeople)) {
+                numberOfPeople = 0;
+            }
             var totalAmount = parseInt(pricePerPerson * numberOfPeople);
             var formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount);
             document.getElementById("totalAmount").innerText = "Total Amount: " + formattedPrice + " VND"

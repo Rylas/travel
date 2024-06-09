@@ -205,43 +205,45 @@
             </div>
 
             <div class="popular-content">
-                <c:forEach var="location" items="${locations}">
-                    <div class="popular-item">
-                        <img src="/uploads/location/${location.image}" alt="">
-                        <br>
-                        <h3>${location.name}</h3>
-                        <div class="detail">
-                            <div class="detail-title">
-                                <span>${location.name}</span>
-                            </div>
-                            <div class="detail-description">
-                                <span>${location.description}</span>
-                                <ul>
-                                    <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="book-now">
-                                <a href="/details/location/${location.getLocationId()}">
-                                    <button class="book">
-                                        More Detail
-                                    </button>
-                                </a>
+                <c:forEach var="location" items="${locations}" varStatus="status">
+                    <c:if test="${status.index < 6}">
+                        <div class="popular-item">
+                            <img src="/uploads/location/${location.image}" alt="">
+                            <br>
+                            <h3>${location.name}</h3>
+                            <div class="detail">
+                                <div class="detail-title">
+                                    <span>${location.name}</span>
+                                </div>
+                                <div class="detail-description">
+                                    <span>${location.description}</span>
+                                    <ul>
+                                        <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="book-now">
+                                    <a href="/details/location/${location.getLocationId()}">
+                                        <button class="book">
+                                            More Detail
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
                 </c:forEach>
 
-                <div class="search-btn">
-                    <button class="btn">
-                        More Place
-                    </button>
-
-                </div>
+                <c:if test="${locations.size() > 6}">
+                    <div class="search-btn">
+                        <button class="btn" id="moreBtn">More Place</button>
+                    </div>
+                </c:if>
             </div>
+
 
 
 
@@ -257,7 +259,8 @@
                     </span>
             </div>
             <div class="popular-content">
-                <c:forEach var="tour" items="${tours}">
+                <c:forEach var="tour" items="${tours}" varStatus="status">
+                    <c:if test="${status.index < 6}">
                     <div class="popular-item">
                         <img src="/uploads/tour/${tour.image}" alt="">
                         <br>
@@ -285,14 +288,16 @@
                             </div>
                         </div>
                     </div>
+                    </c:if>
                 </c:forEach>
 
-                <div class="search-btn">
-                    <button class="btn">
-                        More Place
-                    </button>
-
-                </div>
+                <c:if test="${tours.size() > 6}">
+                    <div class="search-btn">
+                        <button class="btn">
+                            More Location
+                        </button>
+                    </div>
+                </c:if>
             </div>
         </div>
         <div id="video">
@@ -410,6 +415,64 @@
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+    let offset = 0;
+    const limit = 6;
+
+    $(document).ready(function() {
+        $('#moreBtn').on('click', function() {
+            offset += limit;
+            $.ajax({
+                url: '/locations/more',
+                method: 'GET',
+                data: {
+                    offset: offset,
+                    limit: limit
+                },
+                success: function(data) {
+                    if (data.length > 0) {
+                        data.forEach(function(location) {
+                            const locationHtml = `
+                                <div class="popular-item">
+                                    <img src="/uploads/location/${location.image}" alt="">
+                                    <br>
+                                    <h3>${location.name}</h3>
+                                    <div class="detail">
+                                        <div class="detail-title">
+                                            <span>${location.name}</span>
+                                        </div>
+                                        <div class="detail-description">
+                                            <span>${location.description}</span>
+                                            <ul>
+                                                <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
+                                                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                                <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
+                                                <li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="book-now">
+                                            <a href="/details/location/${location.locationId}">
+                                                <button class="book">
+                                                    More Detail
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            $('.popular-content').append(locationHtml);
+                        });
+                    } else {
+                        $('#moreBtn').hide();
+                    }
+                },
+                error: function() {
+                    alert('Failed to load more locations');
+                }
+            });
+        });
+    });
+</script>
 <script>
     let slideIndex = 0;
     showSlides();

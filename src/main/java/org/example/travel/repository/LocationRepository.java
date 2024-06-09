@@ -20,4 +20,8 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     Location save(Location location);
     void deleteById(Long id);
+
+    // get Locations by offset and limit
+    @Query("SELECT l FROM Location l")
+    List<Location> getLocations(int offset, int limit);
 }

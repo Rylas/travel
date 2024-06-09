@@ -33,16 +33,15 @@
             <input type="file" class="form-control-file" id="banner-file" name="banner-file" required>
         </div>
         <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" class="form-control" id="address" name="address" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="tel" class="form-control" id="phone" name="phone" required>
-        </div>
-        <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" name="status">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Add Location</button>
     </form>
