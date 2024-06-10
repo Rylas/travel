@@ -24,11 +24,13 @@
         </div>
         <div class="form-group">
             <label for="image-file">Image</label>
+            <input type="text" name="image" value="${enterprise.image}" hidden="true">
             <input type="file" class="form-control-file" id="image-file" name="image-file">
             <img src="${enterprise.image}" alt="${enterprise.name}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
             <label for="banner-file">Banner</label>
+            <input type="text" name="banner" value="${enterprise.banner}" hidden="true">
             <input type="file" class="form-control-file" id="banner-file" name="banner-file">
             <img src="${enterprise.banner}" alt="${enterprise.name}" class="img-thumbnail mt-2" width="150">
         </div>

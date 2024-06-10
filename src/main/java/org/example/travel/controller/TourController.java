@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -120,7 +122,7 @@ public class TourController {
     public String editTour(Tour tour, @RequestParam("image-file") MultipartFile image,
                            @RequestParam("banner-file") MultipartFile banner, @RequestParam("locations") List<Long> locationIds, Model model, HttpSession session, RedirectAttributes ra
                            ,@RequestParam("start") String start, @RequestParam("end") String end
-    ) {
+    ) throws ParseException {
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
@@ -133,7 +135,6 @@ public class TourController {
             // Set the image path to the enterprise object
             tour.setImage(imagePath);
         }
-
         if (!banner.isEmpty()) {
             String bannerName = "banner-tour-" + fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
             String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/tour/");
@@ -146,9 +147,10 @@ public class TourController {
                 locations.add(location);
             }
         }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         tour.setLocations(locations);
-        Date startDate = new Date(start);
-        Date endDate = new Date(end);
+        Date startDate = dateFormat.parse(start);
+        Date endDate = dateFormat.parse(end);
         tour.setStartDate(startDate);
         tour.setEndDate(endDate);
         tourService.saveTour(tour);

@@ -7,6 +7,9 @@
     <title>Tour Details</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
         .tour-banner {
             width: 100%;
             height: 400px;
@@ -24,9 +27,17 @@
         }
         .tour-details h2 {
             margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: bold;
         }
-        .tour-schedule, .tour-reviews {
-            margin-top: 30px;
+        .tour-details p {
+            font-size: 1.1rem;
+        }
+        .details-list {
+            font-size: 1rem;
+        }
+        .details-list li {
+            margin-bottom: 10px;
         }
         .btn-book {
             background-color: #007bff;
@@ -39,6 +50,13 @@
         .btn-book:hover {
             background-color: #0056b3;
             color: white;
+        }
+        .card-body h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .card-body p {
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -53,7 +71,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h4>Details</h4>
-                <ul class="list-unstyled">
+                <ul class="list-unstyled details-list">
                     <li><strong>Price:</strong> ${tour.price}</li>
                     <li><strong>Start Date:</strong> ${tour.startDate}</li>
                     <li><strong>End Date:</strong> ${tour.endDate}</li>
@@ -66,7 +84,9 @@
                 <h4>Locations</h4>
                 <ul class="list-group">
                     <c:forEach var="location" items="${tour.locations}">
-                        <li class="list-group-item">${location.name}</li>
+                        <li class="list-group-item">
+                            <a href="/details/location/${location.locationId}">${location.name}</a>
+                        </li>
                     </c:forEach>
                 </ul>
             </div>
@@ -80,7 +100,7 @@
             <c:forEach var="review" items="${tour.reviews}">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Review by ${review.user.lastName + " " + review.user.firstName}</h5>
+                        <h5 class="card-title">Review by ${review.user.lastName} ${review.user.firstName}</h5>
                         <p class="card-text">${review.comment}</p>
                         <p class="card-text"><small class="text-muted">${review.createdAt}</small></p>
                     </div>

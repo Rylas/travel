@@ -24,13 +24,15 @@
         </div>
         <div class="form-group">
             <label for="image-file">Image</label>
+            <input type="text" name="image" value="${tour.image}" hidden="true">
             <input type="file" class="form-control-file" id="image-file" name="image-file">
-            <img src="${tour.image}" alt="${tour.name}" class="img-thumbnail mt-2" width="150">
+            <img src="/uploads/tour/${tour.image}" alt="${tour.name}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
             <label for="banner-file">Banner</label>
+            <input type="text" name="banner" value="${tour.banner}" hidden="true">
             <input type="file" class="form-control-file" id="banner-file" name="banner-file">
-            <img src="${tour.banner}" alt="${tour.name}" class="img-thumbnail mt-2" width="150">
+            <img src="/uploads/tour/${tour.banner}" alt="${tour.name}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
             <label for="price">Price</label>
@@ -67,11 +69,19 @@
                     <option value="${location.locationId}" ${tour.locations.contains(location) ? 'selected' : ''}>${location.name}</option>
                 </c:forEach>
             </select>
+        </div>
         <div class="form-group">
             <label for="status">Status</label>
             <select class="form-control" id="status" name="status" required>
                 <option value="true" ${tour.status ? 'selected' : ''}>Active</option>
                 <option value="false" ${!tour.status ? 'selected' : ''}>Inactive</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="isHot">Is Hot</label>
+            <select class="form-control" id="isHot" name="hot" required>
+                <option value="true" ${tour.hot ? 'selected' : ''}>Yes</option>
+                <option value="false" ${!tour.hot ? 'selected' : ''}>No</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Update Tour</button>

@@ -62,7 +62,7 @@ public class FileController {
 
     @GetMapping("/uploads/enterprise/{fileName:.+}")
     public ResponseEntity<Resource> downloadFileEnterprise(@PathVariable String fileName) throws MalformedURLException {
-        Path filePath = fileStorageService.loadFileAsResource("images/enterprise" + fileName);
+        Path filePath = fileStorageService.loadFileAsResource("images/enterprise/" + fileName);
         Resource resource = new UrlResource(filePath.toUri());
 
         return ResponseEntity.ok()

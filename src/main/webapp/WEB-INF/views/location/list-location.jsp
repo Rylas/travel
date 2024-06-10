@@ -47,8 +47,8 @@
                 <td>${status.index + 1}</td>
                 <td>${location.name}</td>
                 <td>${location.description}</td>
-                <td><img src="${location.image}" alt="${location.name}"></td>
-                <td><img src="${location.banner}" alt="${location.name}"></td>
+                <td><img src="/uploads/location/${location.image}" alt="${location.name}"></td>
+                <td><img src="/uploads/location/${location.banner}" alt="${location.name}"></td>
                 <td>${location.address}</td>
                 <td>${location.phone}</td>
                 <td><c:choose>

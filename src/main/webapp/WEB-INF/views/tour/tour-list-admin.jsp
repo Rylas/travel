@@ -55,8 +55,8 @@
                 <td>${status.index + 1}</td>
                 <td>${tour.name}</td>
                 <td>${tour.description}</td>
-                <td><img src="${tour.image}" alt="${tour.name}"></td>
-                <td><img src="${tour.banner}" alt="${tour.name}"></td>
+                <td><img src="/uploads/tour/${tour.image}" alt="${tour.name}"></td>
+                <td><img src="/uploads/tour/${tour.banner}" alt="${tour.name}"></td>
                 <td class="price">${tour.price}</td>
                 <td><fmt:formatDate value="${tour.startDate}" pattern="dd-MM-yyyy"/></td>
                 <td><fmt:formatDate value="${tour.endDate}" pattern="dd-MM-yyyy"/></td>

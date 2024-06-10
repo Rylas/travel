@@ -193,7 +193,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/admin/users/add">
+                      <a href="/admin/user/add">
                         <span class="sub-item">Add a new User</span>
                       </a>
                     </li>

@@ -38,7 +38,8 @@
             var pricePerPerson = parseFloat(document.getElementById("price").value);
             var numberOfPeople = parseInt(document.getElementById("numberOfPeople").value);
             var totalAmount = parseInt(pricePerPerson * numberOfPeople);
-            document.getElementById("totalAmount").innerText = "Total Amount: " + totalAmount + " VND"
+            var formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount);
+            document.getElementById("totalAmount").innerText = "Total Amount: " + formattedPrice + " VND"
             document.getElementById("totalAmount").value = totalAmount;
         }
     </script>
@@ -81,7 +82,7 @@
             </select>
         </div>
         <div class="form-group">
-            <h4 id="totalAmount">Total Amount: $0.00</h4>
+            <h4 id="totalAmount">Total Amount: 0 VND</h4>
             <input name="totalAmount" type="hidden" value="0" id="totalAmount">
         </div>
 

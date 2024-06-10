@@ -24,13 +24,15 @@
         </div>
         <div class="form-group">
             <label for="image-file">Image</label>
+            <input type="text" name="image" value="${location.image}" hidden="true">
             <input type="file" class="form-control-file" id="image-file" name="image-file">
-            <img src="${location.image}" alt="${location.name}" class="img-thumbnail mt-2" width="150">
+            <img src="/uploads/location/${location.image}" alt="${location.name}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
             <label for="banner-file">Banner</label>
+            <input type="text" name="banner" value="${location.banner}" hidden="true">
             <input type="file" class="form-control-file" id="banner-file" name="banner-file">
-            <img src="${location.banner}" alt="${location.name}" class="img-thumbnail mt-2" width="150">
+            <img src="/uploads/location/${location.banner}" alt="${location.name}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
             <label for="address">Address</label>
@@ -49,7 +51,7 @@
         </div>
         <div class="form-group">
             <label for="isHot">Is Hot</label>
-            <select class="form-control" id="isHot" name="isHot" required>
+            <select class="form-control" id="isHot" name="hot" required>
                 <option value="true" ${location.hot ? 'selected' : ''}>Yes</option>
                 <option value="false" ${!location.hot ? 'selected' : ''}>No</option>
             </select>

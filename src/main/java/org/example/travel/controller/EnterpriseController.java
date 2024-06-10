@@ -84,7 +84,7 @@ public class EnterpriseController {
 
     @GetMapping("/admin/enterprise/add")
     public String addEnterprise(Model model) {
-        return "add";
+        return "enterprise/add";
     }
 
     @GetMapping("/admin/enterprise/active/{id}")

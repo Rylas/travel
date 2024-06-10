@@ -7,6 +7,9 @@
     <title>Location Details</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
         .location-banner {
             width: 100%;
             height: 400px;
@@ -24,6 +27,24 @@
         }
         .location-details h2 {
             margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .location-details p {
+            font-size: 1.1rem;
+        }
+        .details-list {
+            font-size: 1rem;
+        }
+        .details-list li {
+            margin-bottom: 10px;
+        }
+        .table thead th {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -37,7 +58,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h4>Details</h4>
-                <ul class="list-unstyled">
+                <ul class="list-unstyled details-list">
                     <li><strong>Address:</strong> ${location.address}</li>
                     <li><strong>Phone:</strong> ${location.phone}</li>
                     <li><strong>Status:</strong> ${location.status ? "Active" : "Inactive"}</li>
@@ -61,23 +82,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <%
-                    int index = 1;
-                %>
-                <c:forEach var="tour" items="${location.tours}">
+                <c:forEach var="tour" items="${location.tours}" varStatus="status">
                     <tr>
-                        <td><%= index %></td>
-                        <td>
-                            <a href="/tour/${tour.id}">${tour.name}</a>
-                        </td>
+                        <td>${status.index + 1}</td>
+                        <td><a href="/details/tour/${tour.tourId}">${tour.name}</a></td>
                         <td>${tour.description}</td>
                         <td>${tour.startDate}</td>
                         <td>${tour.endDate}</td>
                         <td class="price">${tour.price}</td>
                     </tr>
-                    <%
-                        index++;
-                    %>
                 </c:forEach>
                 </tbody>
             </table>
