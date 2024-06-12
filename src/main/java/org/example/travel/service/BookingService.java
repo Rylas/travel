@@ -5,6 +5,7 @@ import org.example.travel.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,6 +49,14 @@ public class BookingService {
         Booking booking = bookingRepository.findById(bookingId).orElse(null);
         if (booking != null) {
             booking.setStatus(false);
+            bookingRepository.save(booking);
+        }
+    }
+
+    public void setCancelDate(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElse(null);
+        if (booking != null) {
+            booking.setCancelDate(new Date());
             bookingRepository.save(booking);
         }
     }
