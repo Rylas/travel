@@ -40,9 +40,13 @@
         function calculateTotal() {
             var pricePerPerson = parseFloat(document.getElementById("price").value);
             var numberOfPeople = parseInt(document.getElementById("numberOfPeople").value);
+            if (isNaN(numberOfPeople)) {
+                numberOfPeople = 0;
+            }
             var totalAmount = parseInt(pricePerPerson * numberOfPeople);
-            document.getElementById("totalAmountDisplay").innerText = "Total Amount: " + totalAmount + " VND"
-            document.getElementById("totalAmount").value = totalAmount;
+            var formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalAmount);
+            document.getElementById("totalAmountDisplay").innerText = "Total Amount: " + formattedPrice + " VND"
+            document.getElementById("totalAmountDisplay").value = totalAmount;
         }
     </script>
 </head>
@@ -67,6 +71,7 @@
         <div class="form-group">
             <label for="numberOfPeople">Number of People</label>
             <input type="number" class="form-control" id="numberOfPeople" name="numberOfPeople" value="${booking.numberOfPeople}" oninput="calculateTotal()" required>
+
         </div>
         <div class="form-group">
             <label for="message">Message</label>

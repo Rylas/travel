@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -21,8 +22,15 @@ public class LocationController {
     @Autowired
     private FileStorageService fileStorageService;
 
+
+    @GetMapping("/location/more")
+    public List<Location> getMoreLocations(@RequestParam int offset, @RequestParam int limit) {
+        return locationService.getLocations(offset, limit);
+    }
+
     @GetMapping("/details/location/{id}")
     public String details(@PathVariable("id") int id, Model model) {
+        locationService.incView((long) id);
         model.addAttribute("location", locationService.getLocationById((long) id));
         return "location/detail-location";
     }

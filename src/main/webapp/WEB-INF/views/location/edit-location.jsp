@@ -35,14 +35,6 @@
             <img src="/uploads/location/${location.banner}" alt="${location.name}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
-            <label for="address">Address</label>
-            <input type="text" class="form-control" id="address" name="address" value="${location.address}" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone" name="phone" value="${location.phone}" required>
-        </div>
-        <div class="form-group">
             <label for="status">Status</label>
             <select class="form-control" id="status" name="status" required>
                 <option value="true" ${location.status ? 'selected' : ''}>Active</option>

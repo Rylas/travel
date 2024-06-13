@@ -34,4 +34,15 @@ public class Discount implements Serializable {
     @ManyToOne
     @JoinColumn(name = "tourId", insertable = false, updatable = false)
     private Tour tour;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

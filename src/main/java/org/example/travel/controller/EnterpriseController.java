@@ -63,8 +63,8 @@ public class EnterpriseController {
         enterprise.setCreatedAt(java.time.LocalDateTime.now());
         Enterprise enterprise1 = enterpriseService.saveEnterprise(enterprise);
         User user = (User) session.getAttribute("user");
-        userService.updateEnterprise(user.getUserId(), enterprise1.getEnterpriseId());
-        return "redirect:/enterprise";
+//        userService.updateEnterprise(user.getUserId(), enterprise1.getEnterpriseId());
+        return "redirect:/admin/enterprise";
     }
 
     @GetMapping("/admin/enterprise")

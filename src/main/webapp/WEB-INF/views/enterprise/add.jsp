@@ -42,6 +42,13 @@
             <label for="website">Website</label>
             <input type="url" class="form-control" id="website" name="website" required>
         </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select class="form-control" id="status" name="status">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Add Enterprise</button>
     </form>
 </div>

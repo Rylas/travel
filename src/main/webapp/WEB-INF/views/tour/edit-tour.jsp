@@ -40,11 +40,11 @@
         </div>
         <div class="form-group">
             <label for="start">Start Date</label>
-            <input type="date" class="form-control" id="start" name="start" value="${tour.startDate}" required>
+            <input type="date" class="form-control" id="start" name="start" value="${startDate}" required>
         </div>
         <div class="form-group">
             <label for="end">End Date</label>
-            <input type="date" class="form-control" id="end" name="end" value="${tour.endDate}" required>
+            <input type="date" class="form-control" id="end" name="end" value="${endDate}" required>
         </div>
         <div class="form-group">
             <label for="transport">Transport</label>

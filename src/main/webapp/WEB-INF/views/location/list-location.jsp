@@ -35,8 +35,6 @@
             <th>Description</th>
             <th>Image</th>
             <th>Banner</th>
-            <th>Address</th>
-            <th>Phone</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -49,8 +47,6 @@
                 <td>${location.description}</td>
                 <td><img src="/uploads/location/${location.image}" alt="${location.name}"></td>
                 <td><img src="/uploads/location/${location.banner}" alt="${location.name}"></td>
-                <td>${location.address}</td>
-                <td>${location.phone}</td>
                 <td><c:choose>
                     <c:when test="${location.status}">Active</c:when>
                     <c:otherwise>Inactive</c:otherwise>

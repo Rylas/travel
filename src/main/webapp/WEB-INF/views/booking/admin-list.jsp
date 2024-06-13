@@ -38,6 +38,7 @@
             <th>Message</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Approve Status</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -57,6 +58,12 @@
                     <c:when test="${booking.status}">Approved</c:when>
                     <c:otherwise>Pending</c:otherwise>
                 </c:choose></td>
+                <td>
+                    <c:choose>
+                        <c:when test="${booking.cancelDate == null}">Pending</c:when>
+                        <c:otherwise>Cancel</c:otherwise>
+                    </c:choose>
+                </td>
                 <td>
                     <a href="/admin/booking/detail/${booking.id}" class="btn btn-warning btn-sm">Detail</a>
                     <c:if test="${!booking.status}">

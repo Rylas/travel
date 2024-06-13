@@ -116,5 +116,16 @@ public class User {
                 ", token='" + token + '\'' +
                 '}';
     }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }
 
