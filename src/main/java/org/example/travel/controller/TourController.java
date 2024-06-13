@@ -70,29 +70,37 @@ public class TourController {
     }
 
     @PostMapping("/admin/tour/add")
-    public String addTour(Tour tour, @RequestParam("image-file") MultipartFile image,
-                          @RequestParam("banner-file") MultipartFile banner, @RequestParam("locations") List<Long> locationIds, Model model, HttpSession session, RedirectAttributes ra) {
+    public String addTour(@RequestParam("name") String name,
+                          @RequestParam("description") String description,
+                          @RequestParam("price") String price,
+                          @RequestParam("startDate") String start,
+                          @RequestParam("endDate") String end,
+                          @RequestParam("image-file") MultipartFile image,
+                          @RequestParam("banner-file") MultipartFile banner,
+                          @RequestParam("locations") List<Long> locationIds,
+                          Model model, HttpSession session, RedirectAttributes ra) throws ParseException {
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
         }
+
+        Tour tour = new Tour();
+        tour.setName(name);
+        tour.setDescription(description);
+        tour.setPrice(price);
+
         if (!image.isEmpty()) {
-            // Generate a random name for the image
             String imageName = "image-tour-" + fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
-            // Store the image in the file storage
             String imagePath = fileStorageService.storeFile(image, imageName, "images/tour/");
-            // Set the image path to the enterprise object
             tour.setImage(imagePath);
         }
 
         if (!banner.isEmpty()) {
-// Generate a random name for the banner
             String bannerName = "banner-tour-" + fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
-            // Store the banner in the file storage
             String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/tour/");
-            // Set the banner path to the enterprise object
             tour.setBanner(bannerPath);
         }
+
         Set<Location> locations = new HashSet<>();
         for (Long locationId : locationIds) {
             Location location = locationService.getLocationById(locationId);
@@ -101,10 +109,20 @@ public class TourController {
             }
         }
         tour.setLocations(locations);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = dateFormat.parse(start);
+        Date endDate = dateFormat.parse(end);
+        tour.setStartDate(startDate);
+        tour.setEndDate(endDate);
+
+        tour.setStatus(true);
         tourService.saveTour(tour);
+
         model.addAttribute("msg", "Add tour successfully");
         return "redirect:/admin/tour";
     }
+
 
 
 

@@ -152,7 +152,7 @@
                     </li>
                     <li>
                       <a href="/admin/location/add">
-                        <span class="sub-item">Add new Enterprise</span>
+                        <span class="sub-item">Add a new Location</span>
                       </a>
                     </li>
                   </ul>
