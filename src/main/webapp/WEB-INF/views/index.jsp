@@ -17,6 +17,39 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/base.css">
     <script src="https://kit.fontawesome.com/713e2d4828.js" crossorigin="anonymous"></script>
+    <style>
+        .search-form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-form h3 {
+            margin-bottom: 20px;
+        }
+        .search-form input, .search-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
+        .search-form .search-btn {
+            text-align: center;
+        }
+        .search-form .btn {
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .search-form .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -47,16 +80,15 @@
                     </li>
                     <li><a href="/contact" style="background-color: #f1f1f1de; color: #00c961;">Contact </a>
                     </li>
-                    <li class="search-icon">
-                        <div class="input">
+<%--                    <li class="search-icon">--%>
+<%--                        <div class="input">--%>
+<%--                            <input type="text" placeholder="Type some text" id="search-id" autocomplete="off">--%>
+<%--                        </div>--%>
+<%--                        <a href="#" id="search-toggle" style="color: #fff;">--%>
+<%--                            <i class="search ti-search"> </i>--%>
+<%--                        </a>--%>
 
-                            <input type="text" placeholder="Type some text" id="search-id" autocomplete="off">
-                        </div>
-                        <a href="#" id="sear" style="color: #fff;">
-                            <i class="search ti-search"> </i>
-                        </a>
-
-                    </li>
+<%--                    </li>--%>
                 </ul>
             </div>
             <div class="logo">
@@ -113,10 +145,9 @@
             </div>
             <div class="search-icon">
                 <div class="input">
-
                     <input type="text" placeholder="Type some text" id="search-id" autocomplete="off">
                 </div>
-                <a href="#" id="sear" style="color: #fff;">
+                <a href="#" id="search-toggle" style="color: #fff;">
                     <i class="search ti-search"> </i>
                 </a>
                 <%
@@ -132,22 +163,6 @@
         </div>
     </div>
     <div id="slider">
-<%--        <div class="mySlides fade">--%>
-
-<%--            <img src="/img/slider-home1.jpg" style="width:100%;height: calc(100/3 * 2%);">--%>
-<%--            <div class="text">Ha Long Bay</div>--%>
-<%--        </div>--%>
-
-<%--        <div class="mySlides fade">--%>
-<%--            <img src="/img/slider-home-hagiang.jpg" style="width:100%;height: calc(100/3 * 2%);">--%>
-<%--            <div class="text">Ha Giang</div>--%>
-<%--        </div>--%>
-
-<%--        <div class="mySlides fade">--%>
-
-<%--            <img src="/img/sliderhome3.jpg" alt="" style="width:100%;">--%>
-<%--            <div class="text">Quy Nhon</div>--%>
-<%--        </div>--%>
 
         <%-- List all hot tour        --%>
         <c:forEach var="tour" items="${hotTours}">
@@ -170,22 +185,15 @@
     </div>
 
     <div id="content">
-        <div id="where-togo">
-            <h3>Where you want to go?</h3>
-            <input type="text" placeholder="Where to go? ">
-            <input type="" placeholder="Date">
-            <select name="" id="">
-                <option value="" aria-placeholder="Travel type">Travel Type</option>
-                <option value="">Some option</option>
-                <option value="">Another option</option>
-            </select>
-            <div class="search-btn">
-                <button class="btn">
-                    Search
-                </button>
-
-            </div>
-        </div>
+            <form action="/search" method="get" id="where-togo" style="min-width: 90%">
+                <h3>Where you want to go?</h3>
+                <input type="text" placeholder="Where to go? " name="keyword" style="padding-left: 10px;">
+                <div class="search-btn">
+                    <button class="btn" type="submit">
+                        Search
+                    </button>
+                </div>
+            </form>
         <div id="popular">
             <div class="popular-text">
                 <h3 class="title">Popular Destination</h3>
@@ -401,7 +409,7 @@
 </div>
 
 
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script>
     let slideIndex = 0;
     showSlides();
@@ -419,6 +427,14 @@
     }
 </script>
 <script>
+    $(document).ready(function() {
+        $('#search-toggle').click(function(event) {
+            event.preventDefault();
+            $('.search-icon .input').toggle();
+            $('#search-id').focus(); // Focus vào input khi hiển thị
+        });
+    });
+
     const video = document.querySelector(".video-content a");
     video.addEventListener("click", handleZoom);
     function handleZoom(event) {

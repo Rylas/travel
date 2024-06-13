@@ -17,4 +17,7 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     List<Tour> getTourOrderByNumberCustomerDesc();
 
     Tour save(Tour tour);
+
+    // findByNameContaining
+    List<Tour> findByNameContaining(String keyword);
 }

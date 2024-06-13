@@ -35,4 +35,8 @@ public class TourService {
         tourRepository.deleteById(id);
     }
 
+    public List<Tour> searchTours(String keyword) {
+        return tourRepository.findByNameContaining(keyword);
+    }
+
 }

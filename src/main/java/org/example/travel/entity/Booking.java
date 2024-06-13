@@ -43,4 +43,14 @@ public class Booking {
     @JoinColumn(name = "tourId")
     private Tour tour;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }
