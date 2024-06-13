@@ -188,4 +188,11 @@ public class TourController {
         return "redirect:/admin/tour";
     }
 
+    @GetMapping("/search")
+    public String searchTours(@RequestParam("keyword") String keyword, Model model) {
+        List<Tour> tours = tourService.searchTours(keyword);
+        model.addAttribute("tours", tours);
+        model.addAttribute("keyword", keyword);
+        return "user/search";
+    }
 }
