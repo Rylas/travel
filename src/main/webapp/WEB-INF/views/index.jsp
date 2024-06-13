@@ -55,6 +55,7 @@
                         <a href="#" id="sear" style="color: #fff;">
                             <i class="search ti-search"> </i>
                         </a>
+
                     </li>
                 </ul>
             </div>
@@ -118,6 +119,15 @@
                 <a href="#" id="sear" style="color: #fff;">
                     <i class="search ti-search"> </i>
                 </a>
+                <%
+                    if (user != null) {
+                %>
+                <a href="/cash" style="color: #fff;">
+                    <i class="search ti-shopping-cart"> </i>
+                </a>
+                <%
+                    }
+                %>
             </div>
         </div>
     </div>

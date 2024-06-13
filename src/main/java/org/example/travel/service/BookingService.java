@@ -24,6 +24,10 @@ public class BookingService {
         return bookingRepository.findByUserId(userId);
     }
 
+    public List<Booking> getBookingsByUserIDStatusTrue(Long userId) {
+        return bookingRepository.findByUserIdAndStatusTrue(userId);
+    }
+
     public Booking getBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId).orElse(null);
     }

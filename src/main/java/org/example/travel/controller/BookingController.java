@@ -42,9 +42,7 @@ public class BookingController {
         booking.setTour(tour);
         int price = Integer.parseInt(tour.getPrice());
         int totalAmount = booking.getNumberOfPeople() * price;
-        booking.setBookingDate(LocalDateTime.now());
-        booking.setCreatedAt(LocalDateTime.now());
-
+        booking.setStatus(true);
         booking.setTotalAmount(totalAmount);
         bookingService.addBooking(booking);
         model.addAttribute("message", "Booking successfully!");

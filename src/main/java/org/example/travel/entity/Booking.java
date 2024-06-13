@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private LocalDateTime bookingDate;
+    private Date bookingDate;
     private int numberOfPeople;
     private double totalAmount;
     private String message;
@@ -26,11 +27,11 @@ public class Booking {
     private String phone;
     private String email;
     private String paymentMethod;
-    private LocalDateTime paymentDate;
-    private LocalDateTime cancelDate;
-    private LocalDateTime refundDate;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date paymentDate;
+    private Date cancelDate;
+    private Date refundDate;
+    private Date createdAt;
+    private Date updatedAt;
     private String voucher;
 
 
@@ -42,6 +43,4 @@ public class Booking {
     @JoinColumn(name = "tourId")
     private Tour tour;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Payment> payments = new HashSet<>();
 }

@@ -49,7 +49,7 @@
                 <td>${booking.phone}</td>
                 <td>${booking.message}</td>
                 <td><fmt:formatDate value="${booking.createdAt}" pattern="dd-MM-yyyy HH:mm"/></td>
-                <td>${booking.totalAmount}</td>
+                <td class="price">${booking.totalAmount}</td>
                 <td>
                     <a href="/booking/edit?id=${booking.id}" class="btn btn-warning btn-sm">Edit</a>
                     <a href="/booking/cancel?id=${booking.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel</a>
@@ -70,7 +70,13 @@
         setTimeout(function() {
             $(".msg").fadeOut();
         }, 3000);
+        $(".price").each(function() {
+            var price = $(this).text();
+            var formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+            $(this).text(formattedPrice);
+        });
     });
+
 </script>
 </body>
 </html>
