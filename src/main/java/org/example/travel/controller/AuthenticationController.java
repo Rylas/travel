@@ -74,6 +74,13 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/admin/user/add")
+    public String addUserAdmin(User user) {
+        String password = encryptMD5(user.getPassword());
+        user.setPassword(password);
+        userService.saveUser(user);
+        return "redirect:/admin/user";
+    }
 
     // Phần Đăng ký
     @PostMapping("/register")
