@@ -2,8 +2,11 @@ package org.example.travel.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.example.travel.entity.Ban;
 import org.example.travel.entity.User;
 import org.example.travel.repository.UserRepository;
+import org.example.travel.service.BanService;
+import org.example.travel.service.MailService;
 import org.example.travel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,10 +29,13 @@ import java.util.UUID;
 @Controller
 public class AuthenticationController {
     @Autowired
-    private JavaMailSender javaMailSender;
+    private MailService mailService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BanService banService;
 
     // Hiển thị trang đăng nhập
     @GetMapping("/login")
@@ -61,10 +67,15 @@ public class AuthenticationController {
         user.setPassword(encryptMD5(user.getPassword()));
         User userCheck = userService.login(user.getEmail(), user.getPassword());
         if (userCheck != null) {
-            if (userCheck.getActive()) {
+            Ban ban = banService.getBanByUserId(userCheck.getUserID());
+            if (ban != null){
+                ra.addFlashAttribute("errorMsg", "Tài khoản của bạn đã bị khóa! Vui lòng liên lạc với chúng tôi qua email: example@gmail.com hoặc chat với admin để được giải quyết. Xin cảm ơn!");
+                return "redirect:/login";
+            }
+            if (userCheck.getIsActive()) {
                 httpSession.setAttribute("user", userCheck);
                 return "redirect:/";
-            } else {
+            }  {
                 ra.addFlashAttribute("errorMsg", "Tài khoản chưa được kích hoạt để sử dụng");
                 return "redirect:/login";
             }
@@ -109,8 +120,11 @@ public class AuthenticationController {
             ra.addFlashAttribute("msg", "Đăng ký không thành công, vui lòng thử lại!");
             return "redirect:/register";
         }
-
-        sendActivationEmail(user, token, request, "active");
+        String message = "Cảm ơn bạn đã đăng ký trở thành thành viên của chúng tôi.\n" +
+                "Vui lòng sử dụng đường dẫn say để kích hoạt tài khoản của bạn: http://" + request.getServerName() + ":" + request.getServerPort() +
+                request.getContextPath() + "/active/" + token;
+        String subject = "Kích hoạt tài khoản";
+        mailService.sendActivationEmail(user.getEmail(), subject, message, "Kích hoạt tài khoản","Kích hoạt tài khoản", "http://localhost:8080/active/" + token);
 
         ra.addFlashAttribute("successMsg", "Đăng ký thành công, chúng tôi đã gửi một mã kích hoạt tài khoản đến email của bạn. Vui lòng kích hoạt để có thể đăng nhập!");
         return "redirect:/login";
@@ -121,7 +135,7 @@ public class AuthenticationController {
     public String validateRegister(@PathVariable("token") String token, Model model, RedirectAttributes ra){
         User user = userService.findByToken(token);
         if (user != null) {
-            userService.activateAccount(user.getUserId());
+            userService.activateAccount(user.getUserID());
             ra.addFlashAttribute("successMsg", "Kích hoạt thành công tài khoản, vui lòng đăng nhập để sử dụng!");
             return "redirect:/login";
         } else {
@@ -138,7 +152,12 @@ public class AuthenticationController {
             String token = UUID.randomUUID().toString();
             userCheck.setToken(token);
             userService.saveUser(userCheck);
-            sendActivationEmail(userCheck, token, request, "forgot");
+            String message = "Có vẻ như bạn đã yêu cầu khôi phục mật khẩu.\n" +
+                    " Nếu không phải là bạn thì vui lòng bỏ qua email này.\n" +
+                    " Bạn hãy sử dụng đường dẫn để khôi phục mật khẩu của mình: http://" + request.getServerName() + ":" + request.getServerPort() +
+                    request.getContextPath() + "/forgot/" + token;
+            String subject = "Khôi phục mật khẩu";
+            mailService.sendActivationEmail(userCheck.getEmail(), subject, message, "Khôi phục mật khẩu","Khôi phục mật khẩu", "http://localhost:8080/forgot/" + token);
             ra.addFlashAttribute("successMsg", "Chúng tôi đã gửi một email để khôi phục mật khẩu của bạn!");
             return "redirect:/login";
         } else {
@@ -151,7 +170,7 @@ public class AuthenticationController {
     @GetMapping("/forgot/{token}")
     public String forgotPassword(@PathVariable("token") String token, Model model){
         User user = userService.findByToken(token);
-        if (user != null && user.getActive()) {
+        if (user != null && user.getIsActive()) {
             model.addAttribute("token", token);
             return "authentication/change-forgot-password";
         } else {
@@ -192,7 +211,7 @@ public class AuthenticationController {
             return "redirect:/change-password";
         }
         User currentUser = (User) httpSession.getAttribute("user");
-        User user = userService.getUserById(currentUser.getUserId());
+        User user = userService.getUserByUserID(currentUser.getUserID());
         if (user.getPassword().equals(encryptMD5(oldPassword))) {
             user.setPassword(encryptMD5(newPassword));
             userService.saveUser(user);
@@ -221,14 +240,5 @@ public class AuthenticationController {
     }
 
     // Hàm để gửi email kèm token để kích hoạt tài khoản hoặc quên mật khẩu
-    private void sendActivationEmail(User user, String token, HttpServletRequest request, String type) {
-        String confirmationUrl = "Đường dẫn để kích hoạt tài khoản: http://" + request.getServerName() + ":" + request.getServerPort() +
-                request.getContextPath() + "/" + type +"/" + token;
-        SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo(user.getEmail());
-        message.setSubject("Kích hoạt tài khoản");
-        message.setText(confirmationUrl);
-        javaMailSender.send(message);
-    }
 }

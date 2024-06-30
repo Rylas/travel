@@ -6,6 +6,7 @@ import org.example.travel.entity.Booking;
 import org.example.travel.entity.Tour;
 import org.example.travel.entity.User;
 import org.example.travel.service.BookingService;
+import org.example.travel.service.MailService;
 import org.example.travel.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,7 +29,7 @@ public class BookingController {
     private TourService tourService;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private MailService mailService;
 
 
     @GetMapping("/bookTour/{id}")
@@ -37,7 +38,7 @@ public class BookingController {
             model.addAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
         }
-        model.addAttribute("tour", tourService.getTourById((long) id));
+        model.addAttribute("tour", tourService.getTourByTourID((long) id));
         return "tour/book-tour";
     }
 
@@ -49,11 +50,11 @@ public class BookingController {
         booking.setUser(user);
         // Lưu tour được book
         tourService.incCustomer(Long.parseLong(tourId));
-        Tour tour = tourService.getTourById(Long.parseLong(tourId));
+        Tour tour = tourService.getTourByTourID(Long.parseLong(tourId));
         booking.setTour(tour);
-        int price = Integer.parseInt(tour.getPrice());
-        int totalAmount = booking.getNumberOfPeople() * price;
-        booking.setTotalAmount(totalAmount);
+        int price = tour.getPrice();
+        int totalAmount = booking.getTotalPeople() * price;
+        booking.setTotalPrice(totalAmount);
         bookingService.addBooking(booking);
         model.addAttribute("message", "Booking successfully!");
         return "redirect:/cash";
@@ -96,27 +97,21 @@ public class BookingController {
 
     @GetMapping("/admin/booking/delete")
     public String deleteBooking(@RequestParam("id") Long id){
-        sendActivationEmail(bookingService.getBookingById(id).getUser().getEmail(),
-                "Đơn đặt tour của bạn đã bị hủy! Thông tin tour: " + bookingService.getBookingById(id).getTour().getName());
+        String mailAddress = bookingService.getBookingById(id).getUser().getEmail();
+        String subject = "Thông báo hủy đơn đặt tour";
+        String message = "Đơn đặt tour của bạn đã bị hủy! Thông tin tour: " + bookingService.getBookingById(id).getTour().getNameTour();
+        mailService.sendActivationEmail(mailAddress, subject, message, "Thông Báo Hủy Tour","Xem chi tiết", "http://localhost:8080/booking/detail/" + id);
         bookingService.deleteBooking(id);
         return "redirect:/admin/booking";
     }
 
     @GetMapping("/admin/booking/approve")
     public String approveBooking(@RequestParam("id") Long id){
-        sendActivationEmail(bookingService.getBookingById(id).getUser().getEmail(),
-                "Bạn đã đặt tour thành công! Thông tin tour: " + bookingService.getBookingById(id).getTour().getName());
+        String mailAddress = bookingService.getBookingById(id).getUser().getEmail();
+        String subject = "Thông báo xác nhận đơn đặt tour";
+        String message = "Đơn đặt tour của bạn đã được xác nhận! Thông tin tour: " + bookingService.getBookingById(id).getTour().getNameTour();
+        mailService.sendActivationEmail(mailAddress, subject, message, "Thông Báo Xác Nhận","Xem chi tiết", "http://localhost:8080/booking/detail/" + id);
         bookingService.approveBooking(id);
         return "redirect:/admin/booking";
-    }
-
-    private void sendActivationEmail(String mail, String msg) {
-
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setTo(mail);
-        message.setSubject("Kích hoạt tài khoản");
-        message.setText(msg);
-        javaMailSender.send(message);
     }
 }

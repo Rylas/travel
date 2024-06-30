@@ -3,6 +3,8 @@ package org.example.travel.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.travel.entity.Tour;
 import org.example.travel.entity.User;
+import org.example.travel.service.MailService;
+import org.example.travel.service.RoleService;
 import org.example.travel.service.TourService;
 import org.example.travel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,13 @@ import java.util.Objects;
 @Controller
 public class AdminController {
     @Autowired
-    private TourService tourService;
+    private MailService mailService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
 
     @GetMapping("/admin")
@@ -32,7 +37,7 @@ public class AdminController {
             ra.addFlashAttribute("errMsg", "Please login to use this utils");
             return "redirect:/login";
         }
-        String role = user.getRole();
+        String role = user.getRole().getRoleName();
         if (!Objects.equals(role, "admin")) {
             return "redirect:/";
         }
@@ -47,7 +52,7 @@ public class AdminController {
 
     @GetMapping("/admin/user/edit")
     public String editUserAdmin(Model model, @RequestParam("id") Long id) {
-        User user = userService.getUserById(id);
+        User user = userService.getUserByUserID(id);
         model.addAttribute("user", user);
         return "user/edit-user-admin";
     }
@@ -65,9 +70,31 @@ public class AdminController {
     }
 
     @GetMapping("/admin/user/add")
-    public String addUserAdmin() {
+    public String addUserAdmin(Model model) {
+        model.addAttribute("listRoles", roleService.getAllRoles());
         return "user/new-user-admin";
     }
 
+    @GetMapping("/admin/user/ban")
+    public String banUserAdmin(@RequestParam("id") Long id, Model model) {
+        User user = userService.getUserByUserID(id);
+        model.addAttribute("userBan", user);
+        return "user/ban-user";
+    }
+    @PostMapping("/admin/user/ban")
+    public String banUser(@RequestParam("id") Long id, @RequestParam("reason") String reason) {
+        System.out.println(2);
+        userService.banUser(id, reason);
+        // URL sẽ là địa chỉ của trang web mà người dùng sẽ được chuyển hướng
+        mailService.sendActivationEmail(userService.getUserByUserID(id).getEmail(), "Tài khoản của bạn đã bị cấm", "Tài khoản của bạn đã bị cấm. Lý do: " + reason + ". Vui lòng liên hệ với admin hoặc qua email example@gmail.com để được cung cấp thông tin và giải quyết vấn đề.",
+                "Thông báo cấm tài khoản","Liên hệ với admin", "http://localhost:8080/contact");
+        return "redirect:/admin/user";
+    }
 
+    @GetMapping("/admin/user/unban")
+    public String unbanUser(@RequestParam("id") Long id) {
+        System.out.println(id);
+        userService.unbanUser(id);
+        return "redirect:/admin/user";
+    }
 }
