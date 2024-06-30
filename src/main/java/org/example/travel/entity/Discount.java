@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "discounts")
@@ -16,33 +16,31 @@ import java.util.Date;
 public class Discount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long discountId;
+    private Long discountID;
 
-    private String code;
-    private LocalDateTime createdAt;
-    private String description;
-    private LocalDateTime expiredAt;
-    private boolean status;
-    private String type;
-    private LocalDateTime updatedAt;
-    private String value;
+    private int discountPercentage;
+    private Date startDate;
+    private Date endDate;
+    private boolean status = true;
+    private Date createdAt;
+    private Date updatedAt;
+    private String descriptionDiscount;
 
     @ManyToOne
-    @JoinColumn(name = "enterpriseId", insertable = false, updatable = false)
+    @JoinColumn(name = "enterpriseID", insertable = false, updatable = false)
     private Enterprise enterprise;
 
-    @ManyToOne
-    @JoinColumn(name = "tourId", insertable = false, updatable = false)
-    private Tour tour;
+    @OneToMany(mappedBy = "discount")
+    private Set<Tour> tours = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = new Date(System.currentTimeMillis());
+        updatedAt = new Date(System.currentTimeMillis());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = new Date(System.currentTimeMillis());
     }
 }
