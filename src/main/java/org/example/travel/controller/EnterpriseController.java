@@ -6,6 +6,7 @@ import org.example.travel.entity.User;
 import org.example.travel.service.EnterpriseService;
 import org.example.travel.service.FileStorageService;
 import org.example.travel.service.UserService;
+import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,7 @@ public class EnterpriseController {
         return "add";
     }
 
-    @PostMapping("/enterprise/add")
+    @PostMapping("/admin/enterprise/add")
     public String addEnterprise(Enterprise enterprise, @RequestParam("image-file") MultipartFile image,
                                 @RequestParam("banner-file") MultipartFile banner, HttpSession session) {
         if (!image.isEmpty()) {
@@ -48,7 +49,7 @@ public class EnterpriseController {
             // Store the image in the file storage
             String imagePath = fileStorageService.storeFile(image, imageName, "images/enterprise/");
             // Set the image path to the enterprise object
-            enterprise.setImage(imagePath);
+            enterprise.setLogo(imagePath);
         }
 
         if (!banner.isEmpty()) {
@@ -60,7 +61,6 @@ public class EnterpriseController {
             enterprise.setBanner(bannerPath);
         }
         // Get current time
-        enterprise.setCreatedAt(java.time.LocalDateTime.now());
         Enterprise enterprise1 = enterpriseService.saveEnterprise(enterprise);
         User user = (User) session.getAttribute("user");
 //        userService.updateEnterprise(user.getUserId(), enterprise1.getEnterpriseId());
@@ -69,15 +69,7 @@ public class EnterpriseController {
 
     @GetMapping("/admin/enterprise")
     public String listEnterprise(HttpSession session, RedirectAttributes ra, Model model) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
-            return "redirect:/login";
-        }
-        if (!user.getRole().equals("admin")) {
-            ra.addFlashAttribute("errorMsg", "You don't have permission to access this feature!");
-            return "redirect:/";
-        }
+        CheckPermission.checkAdmin(session, ra);
         model.addAttribute("enterprises", enterpriseService.getAllEnterprises());
         return "enterprise/admin-enterprise";
     }
@@ -108,30 +100,33 @@ public class EnterpriseController {
             // Store the image in the file storage
             String imagePath = fileStorageService.storeFile(image, imageName, "images/enterprise/");
             // Set the image path to the enterprise object
-            enterprise.setImage(imagePath);
+            enterprise.setLogo(imagePath);
         }
 
         if (!banner.isEmpty()) {
-// Generate a random name for the banner
+            // Generate a random name for the banner
             String bannerName = fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
             // Store the banner in the file storage
             String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/enterprise/");
             // Set the banner path to the enterprise object
             enterprise.setBanner(bannerPath);
         }
-        enterprise.setUpdatedAt(java.time.LocalDateTime.now());
         enterpriseService.saveEnterprise(enterprise);
         return "redirect:/admin/enterprise";
-        }
+    }
 
         @GetMapping("/admin/enterprise/delete")
-        public String deleteEnterprise(@RequestParam("id") Long enterpriseId) {
-            Enterprise enterprise = enterpriseService.getEnterpriseById(enterpriseId);
-            File image = new File(enterprise.getImage());
-            File banner = new File(enterprise.getBanner());
-            image.delete();
-            banner.delete();
-            enterpriseService.deleteEnterprise(enterpriseId);
+        public String deleteEnterprise(@RequestParam("id") Long enterpriseID) {
+            Enterprise enterprise = enterpriseService.getEnterpriseById(enterpriseID);
+            try {
+                File image = new File(enterprise.getLogo());
+                File banner = new File(enterprise.getBanner());
+                image.delete();
+                banner.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            enterpriseService.deleteEnterprise(enterpriseID);
             return "redirect:/admin/enterprise";
         }
 }

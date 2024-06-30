@@ -15,8 +15,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     List<Location> findByIsHot(boolean isHot);
 
     // get Location Order By Number Customer Desc
-    @Query("SELECT l FROM Location l ORDER BY l.numberCustomer DESC")
-    List<Location> getLocationOrderByNumberCustomerDesc();
 
     Location save(Location location);
     void deleteById(Long id);
@@ -24,4 +22,8 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     // get Locations by offset and limit
     @Query("SELECT l FROM Location l")
     List<Location> getLocations(int offset, int limit);
+
+    // get Locations Order By Number Viewer Desc
+    @Query("SELECT l FROM Location l ORDER BY l.numberViewed DESC")
+    List<Location> getLocationsOrderByNumberViewerDesc();
 }

@@ -38,13 +38,13 @@
             <th>#</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Image</th>
+<%--            <th>Image</th>--%>
             <th>Banner</th>
             <th>Price</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th>Transport</th>
-            <th>Schedule</th>
+<%--            <th>Schedule</th>--%>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -53,22 +53,22 @@
         <c:forEach var="tour" items="${tours}" varStatus="status">
             <tr>
                 <td>${status.index + 1}</td>
-                <td>${tour.name}</td>
+                <td>${tour.nameTour}</td>
                 <td>${tour.description}</td>
-                <td><img src="/uploads/tour/${tour.image}" alt="${tour.name}"></td>
-                <td><img src="/uploads/tour/${tour.banner}" alt="${tour.name}"></td>
+                <td><img src="/uploads/tour/${tour.banner}" alt="${tour.banner}"></td>
+<%--                <td><img src="/uploads/tour/${tour.banner}" alt="${tour.name}"></td>--%>
                 <td class="price">${tour.price}</td>
                 <td><fmt:formatDate value="${tour.startDate}" pattern="dd-MM-yyyy"/></td>
                 <td><fmt:formatDate value="${tour.endDate}" pattern="dd-MM-yyyy"/></td>
                 <td>${tour.transport}</td>
-                <td>${tour.schedule}</td>
+<%--                <td>${tour.schedule}</td>--%>
                 <td><c:choose>
                     <c:when test="${tour.status}">Active</c:when>
                     <c:otherwise>Inactive</c:otherwise>
                 </c:choose></td>
                 <td>
-                    <a href="editTour/${tour.tourId}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="deleteTour?id=${tour.tourId}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this tour?');">Delete</a>
+                    <a href="editTour/${tour.tourID}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="deleteTour?id=${tour.tourID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this tour?');">Delete</a>
                 </td>
             </tr>
         </c:forEach>

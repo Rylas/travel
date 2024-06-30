@@ -126,9 +126,10 @@
 
                     <div id="userMenu" class="user-menu">
                         <a href="/information">Thông tin chi tiết</a>
-                        <c:if test="${sessionScope.user.role == 'admin'}">
+                        <c:if test="${sessionScope.user.role.roleName == 'admin'}">
                             <a href="/admin">Trang quản trị</a>
                         </c:if>
+                        <a href="/mytour">Tour của tôi</a>
                         <a href="/logout">Đăng xuất</a>
                     </div>
                 </div>
@@ -166,10 +167,10 @@
 
         <%-- List all hot tour        --%>
         <c:forEach var="tour" items="${hotTours}">
-            <div class="mySlides fade">
-                <img src="/uploads/tour/${tour.image}" style="width:100%;height: calc(100/3 * 2%);">
-                <div class="text">${tour.name}</div>
-            </div>
+            <a href="/details/tour/${tour.tourID}" class="mySlides fade">
+                <img src="/uploads/tour/${tour.banner}" style="width:100%;height: calc(100/3 * 2%);">
+                <div class="text">${tour.nameTour}</div>
+            </a>
         </c:forEach>
         <!-- Next and previous buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -208,12 +209,12 @@
                 <c:forEach var="location" items="${locations}" varStatus="status">
                     <c:if test="${status.index < 6}">
                         <div class="popular-item">
-                            <img src="/uploads/location/${location.image}" alt="">
+                            <img src="/uploads/location/${location.banner}" alt="">
                             <br>
-                            <h3>${location.name}</h3>
+                            <h3>${location.nameLocation}</h3>
                             <div class="detail">
                                 <div class="detail-title">
-                                    <span>${location.name}</span>
+                                    <span>${location.nameLocation}</span>
                                 </div>
                                 <div class="detail-description">
                                     <span>${location.description}</span>
@@ -226,7 +227,7 @@
                                     </ul>
                                 </div>
                                 <div class="book-now">
-                                    <a href="/details/location/${location.getLocationId()}">
+                                    <a href="/details/location/${location.locationID}">
                                         <button class="book">
                                             More Detail
                                         </button>
@@ -262,12 +263,12 @@
                 <c:forEach var="tour" items="${tours}" varStatus="status">
                     <c:if test="${status.index < 6}">
                     <div class="popular-item">
-                        <img src="/uploads/tour/${tour.image}" alt="">
+                        <img src="/uploads/tour/${tour.banner}" alt="">
                         <br>
-                        <h3>${tour.name}</h3>
+                        <h3>${tour.nameTour}</h3>
                         <div class="detail">
                             <div class="detail-title">
-                                <span>${tour.name}</span>
+                                <span>${tour.nameTour}</span>
                             </div>
                             <div class="detail-description">
                                 <span>${tour.description}</span>
@@ -280,7 +281,7 @@
                                 </ul>
                             </div>
                             <div class="book-now">
-                                <a href="/details/tour/${tour.getTourId()}">
+                                <a href="/details/tour/${tour.tourID}">
                                     <button class="book">
                                         Book Now
                                     </button>
@@ -348,7 +349,7 @@
             <ul class="contact-popular-item">
 <%--                Just get 8 item from location --%>
                 <c:forEach begin="0" end="8" var="location" items="${locations}">
-                    <li><a href="/details/location/${location.locationId}">${location.name}</a></li>
+                    <li><a href="/details/location/${location.locationID}">${location.nameLocation}</a></li>
                 </c:forEach>
 
             </ul>
@@ -356,7 +357,7 @@
         <div class="contact-insta">
             <div class="contact-insta-item">
                 <c:forEach begin="0" end="6" var="location" items="${locations}" varStatus="status">
-                    <img src="/uploads/location/${location.banner}" alt="${location.name}">
+                    <img src="/uploads/location/${location.banner}" alt="${location.nameLocation}">
                 </c:forEach>
 
             </div>
@@ -434,12 +435,12 @@
                         data.forEach(function(location) {
                             const locationHtml = `
                                 <div class="popular-item">
-                                    <img src="/uploads/location/${location.image}" alt="">
+                                    <img src="/uploads/location/${location.banner}" alt="">
                                     <br>
-                                    <h3>${location.name}</h3>
+                                    <h3>${location.nameLocation}</h3>
                                     <div class="detail">
                                         <div class="detail-title">
-                                            <span>${location.name}</span>
+                                            <span>${location.nameLocation}</span>
                                         </div>
                                         <div class="detail-description">
                                             <span>${location.description}</span>
@@ -452,7 +453,7 @@
                                             </ul>
                                         </div>
                                         <div class="book-now">
-                                            <a href="/details/location/${location.locationId}">
+                                            <a href="/details/location/${location.locationID}">
                                                 <button class="book">
                                                     More Detail
                                                 </button>

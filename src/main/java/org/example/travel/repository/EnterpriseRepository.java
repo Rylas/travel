@@ -10,7 +10,7 @@ import java.util.List;
 public interface EnterpriseRepository  extends JpaRepository<Enterprise, Long> {
 
     List<Enterprise> findAll();
-    Enterprise findByName(String name);
+    Enterprise findByNameEnterprise(String name);
 
     // Save the enterprise
     Enterprise save(Enterprise enterprise);

@@ -1,5 +1,6 @@
 package org.example.travel.service;
 
+import org.example.travel.entity.Ban;
 import org.example.travel.entity.User;
 import org.example.travel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BanService banService;
 
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -20,7 +23,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUserById(Long id) {
+    public User getUserByUserID(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
@@ -41,7 +44,7 @@ public class UserService {
     }
 
     public void updateAvatar(User user) {
-        userRepository.updateAvatar(user.getUserId(), user.getAvatar());
+        userRepository.updateAvatar(user.getUserID(), user.getAvatar());
     }
 
     public void updateEnterprise(Long userId, Long enterpriseId) {
@@ -50,5 +53,18 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public void banUser(Long id, String reasonBan) {
+        Ban ban = new Ban();
+        User user = new User();
+        user.setUserID(id);
+        ban.setUser(user);
+        ban.setReason(reasonBan);
+        banService.banUser(ban);
+    }
+
+    public void unbanUser(Long userID) {
+        banService.unbanUser(userID);
     }
 }

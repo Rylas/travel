@@ -19,4 +19,8 @@ public class ReviewService {
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
     }
+
+    public void addReview(Review review) {
+        reviewRepository.save(review);
+    }
 }

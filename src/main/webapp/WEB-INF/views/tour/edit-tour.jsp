@@ -13,26 +13,38 @@
 <div class="container">
     <h1 class="mb-4">Edit Tour</h1>
     <form action="/admin/editTour" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="tourId" value="${tour.tourId}">
+        <input type="hidden" name="tourID" value="${tour.tourID}">
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="${tour.name}" required>
+            <label for="nameTour">Tour Name</label>
+            <input type="text" class="form-control" id="nameTour" name="nameTour" value="${tour.nameTour}" required>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3" required>${tour.description}</textarea>
         </div>
         <div class="form-group">
-            <label for="image-file">Image</label>
-            <input type="text" name="image" value="${tour.image}" hidden="true">
-            <input type="file" class="form-control-file" id="image-file" name="image-file">
-            <img src="/uploads/tour/${tour.image}" alt="${tour.name}" class="img-thumbnail mt-2" width="150">
-        </div>
-        <div class="form-group">
             <label for="banner-file">Banner</label>
             <input type="text" name="banner" value="${tour.banner}" hidden="true">
             <input type="file" class="form-control-file" id="banner-file" name="banner-file">
-            <img src="/uploads/tour/${tour.banner}" alt="${tour.name}" class="img-thumbnail mt-2" width="150">
+            <img src="/uploads/tour/${tour.banner}" alt="${tour.nameTour}" class="img-thumbnail mt-2" width="150">
+        </div>
+        <div class="form-group">
+            <label for="image-file1">First Image</label>
+            <input type="text" name="firstImage" value="${tour.firstImage}" hidden="true">
+            <input type="file" class="form-control-file" id="image-file1" name="image-file1">
+            <img src="/uploads/tour/${tour.firstImage}" alt="${tour.nameTour}" class="img-thumbnail mt-2" width="150">
+        </div>
+        <div class="form-group">
+            <label for="image-file2">Second Image</label>
+            <input type="text" name="secondImage" value="${tour.secondImage}" hidden="true">
+            <input type="file" class="form-control-file" id="image-file2" name="image-file2">
+            <img src="/uploads/tour/${tour.secondImage}" alt="${tour.nameTour}" class="img-thumbnail mt-2" width="150">
+        </div>
+        <div class="form-group">
+            <label for="image-file3">Third Image</label>
+            <input type="text" name="thirdImage" value="${tour.thirdImage}" hidden="true">
+            <input type="file" class="form-control-file" id="image-file3" name="image-file3">
+            <img src="/uploads/tour/${tour.thirdImage}" alt="${tour.nameTour}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
             <label for="price">Price</label>
@@ -51,14 +63,22 @@
             <input type="text" class="form-control" id="transport" name="transport" value="${tour.transport}" required>
         </div>
         <div class="form-group">
-            <label for="schedule">Schedule</label>
-            <textarea class="form-control" id="schedule" name="schedule" rows="3" required>${tour.schedule}</textarea>
+            <label for="minPeople">Min People</label>
+            <input type="number" class="form-control" id="minPeople" name="minPeople" value="${tour.minPeople}" required>
         </div>
+        <div class="form-group">
+            <label for="maxPeople">Max People</label>
+            <input type="number" class="form-control" id="maxPeople" name="maxPeople" value="${tour.maxPeople}" required>
+        </div>
+<%--        <div class="form-group">--%>
+<%--            <label for="schedule">Schedule</label>--%>
+<%--            <textarea class="form-control" id="schedule" name="schedule" rows="3" required>${tour.schedule}</textarea>--%>
+<%--        </div>--%>
         <div class="form-group">
             <label for="enterprise">Enterprise</label>
             <select class="form-control" id="enterprise" name="enterprise" required>
                 <c:forEach var="enterprise" items="${enterprises}">
-                    <option value="${enterprise.enterpriseId}" ${enterprise.enterpriseId == tour.enterprise.enterpriseId ? 'selected' : ''}>${enterprise.name}</option>
+                    <option value="${enterprise.enterpriseID}" ${enterprise.enterpriseID == tour.enterprise.enterpriseID ? 'selected' : ''}>${enterprise.nameEnterprise}</option>
                 </c:forEach>
             </select>
         </div>
@@ -66,7 +86,15 @@
             <label for="locations">Locations</label>
             <select multiple class="form-control" id="locations" name="locations" required>
                 <c:forEach var="location" items="${locations}">
-                    <option value="${location.locationId}" ${tour.locations.contains(location) ? 'selected' : ''}>${location.name}</option>
+                    <option value="${location.locationID}" ${tour.locations.contains(location) ? 'selected' : ''}>${location.nameLocation}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="discount">Discount</label>
+            <select class="form-control" id="discount" name="discount" required>
+                <c:forEach var="discount" items="${discounts}">
+                    <option value="${discount.discountID}" ${discount.discountID == tour.discount.discountID ? 'selected' : ''}>${discount.discountPercentage}%</option>
                 </c:forEach>
             </select>
         </div>

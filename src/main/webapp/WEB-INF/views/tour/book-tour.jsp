@@ -51,7 +51,7 @@
 <div class="container">
     <h2 class="text-center">Book Tour</h2>
     <form action="/bookTour" method="post">
-        <input type="hidden" name="tourId" value="${tour.tourId}">
+        <input type="hidden" name="tourID" value="${tour.tourID}">
         <input type="hidden" id="price" value="${tour.price}">
         <div class="form-group">
             <label for="name">Full Name</label>

@@ -9,17 +9,17 @@
 <body>
 <div class="container mt-5">
     <h2 class="text-center">Add New Enterprise</h2>
-    <form action="/enterprise/add" method="post" enctype="multipart/form-data">
+    <form action="/admin/enterprise/add" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <label for="nameEnterprise">Name</label>
+            <input type="text" class="form-control" id="nameEnterprise" name="nameEnterprise" required>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
         </div>
         <div class="form-group">
-            <label for="image-file">Image</label>
+            <label for="image-file">Logo</label>
             <input type="file" class="form-control-file" id="image-file" name="image-file" required>
         </div>
         <div class="form-group">

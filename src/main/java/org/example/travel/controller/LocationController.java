@@ -47,15 +47,35 @@ public class LocationController {
     }
 
     @PostMapping("/admin/location/add")
-    public String addLocation(Location location, @RequestParam("image-file") MultipartFile image,
+    public String addLocation(Location location, @RequestParam("image-file1") MultipartFile firstImage,
+                                @RequestParam("image-file2") MultipartFile secondImage,
+                                @RequestParam("image-file3") MultipartFile thirdImage,
                               @RequestParam("banner-file") MultipartFile banner, Model model) {
-        if (!image.isEmpty()) {
+        if (!firstImage.isEmpty()) {
             // Generate a random name for the image
-            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(firstImage.getOriginalFilename()));
             // Store the image in the file storage
-            String imagePath = fileStorageService.storeFile(image, imageName, "images/location/");
+            String imagePath = fileStorageService.storeFile(firstImage, imageName, "images/location/");
             // Set the image path to the enterprise object
-            location.setImage(imagePath);
+            location.setFirstImage(imagePath);
+        }
+
+        if (!secondImage.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(secondImage.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(secondImage, imageName, "images/location/");
+            // Set the image path to the enterprise object
+            location.setSecondImage(imagePath);
+        }
+
+        if (!thirdImage.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(thirdImage.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(thirdImage, imageName, "images/location/");
+            // Set the image path to the enterprise object
+            location.setThirdImage(imagePath);
         }
 
         if (!banner.isEmpty()) {
@@ -78,15 +98,35 @@ public class LocationController {
     }
 
     @PostMapping("/admin/location/edit")
-    public String editLocation(Location location, @RequestParam("image-file") MultipartFile image,
+    public String editLocation(Location location, @RequestParam("image-file1") MultipartFile firstImage,
+                                 @RequestParam("image-file2") MultipartFile secondImage,
+                                    @RequestParam("image-file3") MultipartFile thirdImage,
                                @RequestParam("banner-file") MultipartFile banner, Model model) {
-        if (!image.isEmpty()) {
+        if (!firstImage.isEmpty()) {
             // Generate a random name for the image
-            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(firstImage.getOriginalFilename()));
             // Store the image in the file storage
-            String imagePath = fileStorageService.storeFile(image, imageName, "images/location/");
+            String imagePath = fileStorageService.storeFile(firstImage, imageName, "images/location/");
             // Set the image path to the enterprise object
-            location.setImage(imagePath);
+            location.setFirstImage(imagePath);
+        }
+
+        if (!secondImage.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(secondImage.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(secondImage, imageName, "images/location/");
+            // Set the image path to the enterprise object
+            location.setSecondImage(imagePath);
+        }
+
+        if (!thirdImage.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(thirdImage.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(thirdImage, imageName, "images/location/");
+            // Set the image path to the enterprise object
+            location.setThirdImage(imagePath);
         }
 
         if (!banner.isEmpty()) {
