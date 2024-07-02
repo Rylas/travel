@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -43,7 +44,7 @@
         }
 
         input[type="password"] {
-            width: calc(100% - 22px);
+            width: 100%;
             padding: 10px;
             box-sizing: border-box;
             border: 1px solid #ccc;
@@ -79,6 +80,8 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <form action="/change-forgot-password" method="post">
     <h2>Thay đổi mật khẩu</h2>
     <input type="hidden" name="token" value="${token}">
@@ -93,5 +96,6 @@
     <span class="error-msg">${errMsg}</span>
     <button type="submit">Gửi</button>
 </form>
+<%@ include file="../material/footer.jsp"%>
 </body>
 </html>

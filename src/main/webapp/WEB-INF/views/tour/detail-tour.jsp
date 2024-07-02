@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tour Details</title>
+    <title>Chi tiết về tour - ${tour.nameTour}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -82,14 +82,23 @@
         .star-rating label:hover ~ label {
             color: #f5b301;
         }
+        #imageModal{
+            z-index: 999999;
+        }
+        .list-location {
+            color: #007bff;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <div class="container mt-5">
     <div class="tour-details">
         <img src="/uploads/tour/${tour.banner}" alt="Tour Banner" class="tour-banner img-fluid rounded">
         <h2>${tour.nameTour}</h2>
-        <p class="text-muted">By ${tour.enterprise.nameEnterprise}</p>
+        <p class="text-muted">Được tổ chức bởi: ${tour.enterprise.nameEnterprise}</p>
         <p>${tour.description}</p>
         <div class="row">
             <div class="col-md-4">
@@ -105,25 +114,58 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <h4>Mô tả về Tour</h4>
-                <ul class="list-unstyled details-list">
-                     <li><strong>Giá người lớn:</strong> <fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</li>
-                    <li><strong>Giá trẻ em từ 6 - 10 tuổi:</strong> <fmt:formatNumber value="${tour.priceChild6_10}" type="number" groupingUsed="true" />đ</li>
-                    <li><strong>Giá trẻ em từ 2 - 5 tuổi:</strong> <fmt:formatNumber value="${tour.priceChild2_5}" type="number" groupingUsed="true" />đ</li>
-                    <li><strong>Giá trẻ em < 2 tuổi:</strong> <fmt:formatNumber value="${tour.priceChild2}" type="number" groupingUsed="true" />đ</li>
-                    <li><strong>Start Date:</strong> ${tour.departureDate}</li>
-                    <li><strong>End Date:</strong> ${tour.expectedDate}</li>
-                    <li><strong>Transport:</strong> ${tour.transport}</li>
-                    <li><strong>Number of Customers:</strong> ${tour.numberBooked}</li>
-                    <li><strong>Created At:</strong> ${tour.createdAt}</li>
-                    <li><strong>Number of Viewers: </strong> ${tour.numberViewed} </li>
-                </ul>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Giá người lớn</th>
+                            <td><fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</td>
+                        </tr>
+                        <tr>
+                            <th>Giá trẻ em từ 6 - 10 tuổi</th>
+                            <td><fmt:formatNumber value="${tour.priceChild6_10}" type="number" groupingUsed="true" />đ</td>
+                        </tr>
+                        <tr>
+                            <th>Giá trẻ em từ 2 - 5 tuổi</th>
+                            <td><fmt:formatNumber value="${tour.priceChild2_5}" type="number" groupingUsed="true" />đ</td>
+                        </tr>
+                        <tr>
+                            <th>Giá trẻ em < 2 tuổi</th>
+                            <td><fmt:formatNumber value="${tour.priceChild2}" type="number" groupingUsed="true" />đ</td>
+                        </tr>
+                        <tr>
+                            <th>Ngày khởi hành</th>
+                            <td>${tour.departureDate}</td>
+                        </tr>
+                        <tr>
+                            <th>Ngày khởi hành dự kiến</th>
+                            <td>${tour.expectedDate}</td>
+                        </tr>
+                        <tr>
+                            <th>Phương tiện di chuyển</th>
+                            <td>${tour.transport}</td>
+                        </tr>
+                        <tr>
+                            <th>Số lượng khách hàng đã đặt Tour</th>
+                            <td>${tour.numberBooked}</td>
+                        </tr>
+                        <tr>
+                            <th>Ngày tạo Tour</th>
+                            <td>${tour.createdAt}</td>
+                        </tr>
+                        <tr>
+                            <th>Lượt xem</th>
+                            <td>${tour.numberViewed}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
             <div class="col-md-6">
                 <h4>Các địa điểm trong Tour</h4>
                 <ul class="list-group">
                     <c:forEach var="location" items="${tour.locations}">
                         <li class="list-group-item">
-                            <a href="/details/location/${location.locationID}">${location.nameLocation}</a>
+                            <a class="list-location" href="/details/location/${location.locationID}">${location.nameLocation}</a>
                         </li>
                     </c:forEach>
                 </ul>
@@ -134,18 +176,18 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Time Start</th>
-                    <th>Time End</th>
+                    <th>Ngày</th>
+<%--                    <th>Title</th>--%>
+                    <th>Mô tả</th>
+                    <th>Thời gian bắt đầu dự kiến</th>
+                    <th>Thời gian kết thúc dự kiến</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="schedule" items="${schedules}">
+                <c:forEach var="schedule" items="${schedules}" varStatus="status">
                     <tr>
-                        <td>${schedule.date}</td>
-                        <td>${schedule.title}</td>
+                        <td>Ngày ${status.index + 1}</td>
+<%--                        <td>${schedule.title}</td>--%>
                         <td>${schedule.description}</td>
                         <td>${schedule.timeStart}</td>
                         <td>${schedule.timeEnd}</td>
@@ -229,6 +271,7 @@
         </div>
     </div>
 </div>
+<%@ include file="../material/footer.jsp"%>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

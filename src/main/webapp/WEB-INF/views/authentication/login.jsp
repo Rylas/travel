@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Book Tour Việt Nam</title>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -124,5 +125,6 @@
         <a href="/forgot-password">Quên mật khẩu</a>
     </div>
 </form>
+<%@include file="../material/footer.jsp"%>
 </body>
 </html>

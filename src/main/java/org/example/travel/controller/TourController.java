@@ -54,7 +54,8 @@ public class TourController {
         model.addAttribute("reviews", tour.getReviews());
         Set<Schedule> schedules = tour.getSchedules();
         model.addAttribute("schedules", schedules);
-        return "tour/detail-tour";
+//        return "tour/detail-tour";
+        return "element/detail";
     }
 
     @GetMapping("/admin/tour/add")
@@ -176,13 +177,6 @@ public class TourController {
     @GetMapping("/admin/editTour/{id}")
     public String editTour(@PathVariable("id") int id, Model model) {
         // Get format date YYYY-MM-DD
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String startDate = dateFormat.format(tourService.getTourByTourID((long) id).getDepartureDate());
-        String endDate = dateFormat.format(tourService.getTourByTourID((long) id).
-                getDepartureDate());
-        model.addAttribute("startDate", startDate);
-        model.addAttribute("endDate", endDate);
-
         model.addAttribute("enterprises", enterpriseService.getAllEnterprises());
         model.addAttribute("tour", tourService.getTourByTourID((long) id));
         model.addAttribute("locations", locationService.getAllLocations());
@@ -195,7 +189,6 @@ public class TourController {
                             @RequestParam("image-file2") MultipartFile secondImage,
                             @RequestParam("image-file3") MultipartFile thirdImage,
                            @RequestParam("banner-file") MultipartFile banner, @RequestParam("locations") List<Long> locationIds, Model model, HttpSession session, RedirectAttributes ra
-                           ,@RequestParam("start") String start, @RequestParam("end") String end
     ) throws ParseException {
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
@@ -238,10 +231,6 @@ public class TourController {
             }
         }
         tour.setLocations(locations);
-        Date startDate = Date.valueOf(start);
-        Date endDate = Date.valueOf(end);
-        tour.setDepartureDate(startDate);
-        tour.setExpectedDate(endDate);
         tourService.saveTour(tour);
         model.addAttribute("msg", "Edit tour successfully");
         return "redirect:/admin/tour";

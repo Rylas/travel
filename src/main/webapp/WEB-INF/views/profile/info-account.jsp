@@ -137,6 +137,8 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <div class="container">
     <div class="user-info">
         <img id="avatar" src="/uploads/<c:out value="${user.avatar}" />" alt="Hình đại diện"/>
@@ -173,6 +175,7 @@
         </div>
     </div>
 </div>
+<%@ include file="../material/footer.jsp"%>
 
 <script>
     document.getElementById('avatar').addEventListener('click', function() {

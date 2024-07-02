@@ -79,6 +79,8 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <form action="/change-password" method="post">
     <h2>Thay đổi mật khẩu</h2>
     <div>
@@ -96,5 +98,7 @@
     <span class="error-msg">${errMsg}</span>
     <button type="submit">Gửi</button>
 </form>
+<%@ include file="../material/footer.jsp"%>
+
 </body>
 </html>

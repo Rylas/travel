@@ -31,7 +31,6 @@
         }
 
         div {
-            margin-bottom: 20px;
             text-align: left;
         }
 
@@ -43,13 +42,14 @@
         }
 
         input[type="email"] {
-            width: calc(100% - 22px);
+            width: 100%;
             padding: 10px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
             transition: border-color 0.3s ease;
+            margin-bottom: 20px;
         }
 
         input[type="email"]:focus {
@@ -94,6 +94,7 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
 <form action="/forgot-password" method="post">
     <h2>Quên mật khẩu</h2>
     <div>
@@ -104,6 +105,7 @@
     <button type="submit">Gửi</button>
     <p><a href="/login">Đăng nhập</a></p>
 </form>
+<%@ include file="../material/footer.jsp"%>
 
 </body>
 </html>

@@ -16,11 +16,6 @@ a {
 
 
 
-#header {
-    height: 80px;
-    position: relative;
-}
-
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -56,7 +51,7 @@ a {
         sans-serif;
 }
 
-#loadpage {
+#loadPage {
     position: fixed;
     top: 0;
     left: 0;
@@ -67,36 +62,8 @@ a {
     z-index: 999999;
 }
 
-#header>#content_header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 100000;
-    background-color: #ffffff;
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    box-shadow: 0px 1px 3px 0px rgb(168 191 199);
-}
 
-#content_header>.logo {
-    display: inline-block;
-    margin-left: -3px;
 
-}
-
-.logo img {
-    height: 80px;
-    object-fit: cover;
-    object-position: 100% 45%;
-}
-
-#content_header>.nav {
-    display: inline-block;
-    margin-right: 10%;
-    position: relative;
-}
 
 @media screen and (min-width: 1800px) {
     #content_header>.nav {
@@ -112,7 +79,7 @@ a {
 }
 
 
-@media screen and (max-width:1366) {
+@media screen and (max-width:1366px) {
     #content_header>.nav {
         margin-right: 6%;
     }
@@ -145,25 +112,7 @@ a {
     }
 }
 
-#content_header .nav .sub_nav {
-    display: none;
-    width: 180px;
-    position: absolute;
-    background-color: white;
-    left: 1px;
-    top: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    transition: all 400ms ease;
-}
 
-#content_header .nav li:nth-child(4):hover .sub_nav {
-    display: block;
-    -webkit-transition: all 400ms ease;
-    -moz-transition: all 400ms ease;
-    -ms-transition: all 400ms ease;
-    -o-transition: all 400ms ease;
-    transition: all 400ms ease;
-}
 
 /* .nav::before {
     position: absolute;
@@ -179,40 +128,12 @@ a {
     content: '';
 } */
 
-#nav-icon {
-    display: none;
-}
 
 #nav-bar {
     display: none;
 }
 
-#content_header .nav li {
-    padding: 24px;
-    display: inline-block;
-    font-family: "Rubik", sans-serif;
-    position: relative;
-    text-transform: capitalize;
 
-}
-
-#content_header .nav li:hover>a {
-    -webkit-transition: all 400ms ease;
-    -moz-transition: all 400ms ease;
-    -ms-transition: all 400ms ease;
-    -o-transition: all 400ms ease;
-    transition: all 400ms ease;
-    color: #1EC6B6;
-}
-
-
-
-#content_header .nav li a,
-.contact a,
-.search-icon a {
-    color: #040E27;
-    text-decoration: none;
-}
 
 #content_header>.contact {
     display: block;
@@ -239,33 +160,6 @@ a {
     padding: 10px;
 }
 
-#header #content_header .search-icon a {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    /* bottom: 0px; */
-    padding: 13px 12px 9px 13px;
-    background: rgb(255, 74, 82);
-    font-size: 20px;
-    margin: auto;
-    display: flex;
-    place-items: center;
-    border-radius: 50%;
-    transition: all 250ms ease;
-}
-
-#header #content_header .search-icon input {
-    position: absolute;
-    opacity: 0;
-    right: 10px;
-    top: 20px;
-    padding: 12px 0px 12px 48px;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    width: 200px;
-    outline: none;
-    transition: all 400ms ease;
-}
 
 #header #content_header .search-icon:hover {
     color: #fff;
@@ -276,11 +170,6 @@ a {
     color: #f5d9d9;
 }
 
-#nav-icon a {
-    color: black;
-    font-size: 24px;
-    display: none;
-}
 
 
 
@@ -364,7 +253,7 @@ a {
     padding-left: 0;
 }
 
-.contact-insta-item {
+.contact-instagram-item {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -453,7 +342,7 @@ a {
 #login .headline h2 {
     font-size: 42px;
     background: linear-gradient(to right, #ffffff, rgb(0 0 0));
-    text-shadow: -3px -2px 0px #00c961;
+    text-shadow: -3px -2px 0 #00c961;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -736,7 +625,7 @@ form {
     }
 
     /* Footer */
-    .contact-insta-item {
+    .contact-instagram-item {
         display: none !important;
     }
 
@@ -774,39 +663,7 @@ form {
 }
 
 @media screen and (max-width: 800px) {
-    #content_header>.nav {
-        display: none;
-    }
 
-    #nav-icon {
-        display: block;
-        padding: 0 30px;
-        transition: all 0.5s ease;
-    }
-
-    #nav-icon a {
-        display: block;
-    }
-
-    #nav-bar a:hover {
-        background-color: #f1f1f1a8;
-        color: #00c961;
-    }
-
-    #nav-bar {
-        display: block;
-        position: absolute;
-        top: 85px;
-        box-shadow: 0px 2px 4px 1px rgb(0 0 0 / 14%);
-        height: 1000vh;
-        background-color: #fffffffa;
-        transform: translateX(-120%);
-        transition: all 0.5s ease;
-    }
-
-    #nav-bar .sub_nav {
-        display: none;
-    }
 
     #nav-bar li:nth-child(4):hover .sub_nav {
         display: block;

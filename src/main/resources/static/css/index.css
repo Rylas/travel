@@ -528,7 +528,7 @@ select {
     grid-template-rows: 1fr 1fr 1fr 1fr;
 }
 
-.contact-insta-item {
+.contact-instagram-item {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;

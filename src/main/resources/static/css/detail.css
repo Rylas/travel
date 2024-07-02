@@ -37,11 +37,7 @@
 }
 
 #container-right{
-   
-    position: -webkit-sticky;
-    position: sticky;
     top:100px;
-    max-height: 700px;
 }
 #container-right  h2#name-place{
     text-transform: uppercase;
@@ -186,8 +182,8 @@
 
 .tab-content{
     margin-top: 20px;
-    max-height: 630px;
-    overflow-y: scroll;
+    /*max-height: 630px;*/
+    /*overflow-y: scroll;*/
 }
 .textinfo{
     display: flex;
