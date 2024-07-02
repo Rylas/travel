@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,11 +104,14 @@
         </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <h4>Details</h4>
+                <h4>Mô tả về Tour</h4>
                 <ul class="list-unstyled details-list">
-                    <li><strong>Price:</strong> ${tour.price}</li>
-                    <li><strong>Start Date:</strong> ${tour.startDate}</li>
-                    <li><strong>End Date:</strong> ${tour.endDate}</li>
+                     <li><strong>Giá người lớn:</strong> <fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</li>
+                    <li><strong>Giá trẻ em từ 6 - 10 tuổi:</strong> <fmt:formatNumber value="${tour.priceChild6_10}" type="number" groupingUsed="true" />đ</li>
+                    <li><strong>Giá trẻ em từ 2 - 5 tuổi:</strong> <fmt:formatNumber value="${tour.priceChild2_5}" type="number" groupingUsed="true" />đ</li>
+                    <li><strong>Giá trẻ em < 2 tuổi:</strong> <fmt:formatNumber value="${tour.priceChild2}" type="number" groupingUsed="true" />đ</li>
+                    <li><strong>Start Date:</strong> ${tour.departureDate}</li>
+                    <li><strong>End Date:</strong> ${tour.expectedDate}</li>
                     <li><strong>Transport:</strong> ${tour.transport}</li>
                     <li><strong>Number of Customers:</strong> ${tour.numberBooked}</li>
                     <li><strong>Created At:</strong> ${tour.createdAt}</li>
@@ -115,7 +119,7 @@
                 </ul>
             </div>
             <div class="col-md-6">
-                <h4>Locations</h4>
+                <h4>Các địa điểm trong Tour</h4>
                 <ul class="list-group">
                     <c:forEach var="location" items="${tour.locations}">
                         <li class="list-group-item">
@@ -126,13 +130,13 @@
             </div>
         </div>
         <div class="tour-schedule mt-4">
-            <h4>Schedule</h4>
+            <h4>Lịch trình</h4>
             <table class="table table-bordered">
                 <thead>
                 <tr>
+                    <th>Date</th>
                     <th>Title</th>
                     <th>Description</th>
-                    <th>Date</th>
                     <th>Time Start</th>
                     <th>Time End</th>
                 </tr>
@@ -140,9 +144,9 @@
                 <tbody>
                 <c:forEach var="schedule" items="${schedules}">
                     <tr>
+                        <td>${schedule.date}</td>
                         <td>${schedule.title}</td>
                         <td>${schedule.description}</td>
-                        <td>${schedule.date}</td>
                         <td>${schedule.timeStart}</td>
                         <td>${schedule.timeEnd}</td>
                     </tr>
@@ -151,7 +155,7 @@
             </table>
         </div>
         <div class="tour-reviews mt-4">
-            <h4>Reviews</h4>
+            <h4>Đánh giá</h4>
             <c:forEach var="review" items="${tour.reviews}">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -177,7 +181,7 @@
                     <form action="/review/add" method="post">
                         <input type="hidden" name="tourID" value="${tour.tourID}">
                         <div class="form-group">
-                            <label for="comment">Comment</label>
+                            <label for="comment">Đánh giá</label>
                             <textarea class="form-control" id="comment" name="content" rows="3" required></textarea>
                         </div>
                         <div class="star-rating">
@@ -192,19 +196,19 @@
                             <input type="radio" id="star1" name="star" value="1" />
                             <label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Submit Comment</button>
+                        <button type="submit" class="btn btn-primary mt-3">Gửi đánh giá</button>
                     </form>
                 </div>
             </c:if>
             <c:if test="${checkTour != true}">
                 <div class="mt-4">
-                    <h4>Add a Comment</h4>
-                    <p>You must book this tour to leave a review</p>
+                    <h4>Thêm đánh giá của riêng bạn</h4>
+                    <p>Bạn phải đặt Tour thì mới có thể thêm đánh giá. Hãy đặt tour ngay nào!</p>
                 </div>
             </c:if>
         </div>
         <div class="text-center mt-4">
-            <a href="/bookTour/${tour.tourID}" class="btn btn-book">Book Tour</a>
+            <a href="/bookTour/${tour.tourID}" class="btn btn-book">Đặt Tour</a>
         </div>
     </div>
 </div>
@@ -214,7 +218,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <h5 class="modal-title" id="imageModalLabel">Hình ảnh xem trước</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

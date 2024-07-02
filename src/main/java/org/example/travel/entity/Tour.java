@@ -23,9 +23,12 @@ public class Tour {
     private String firstImage;
     private String secondImage;
     private String thirdImage;
-    private Date startDate;
-    private Date endDate;
-    private int price;
+    private Date departureDate;
+    private Date expectedDate;
+    private int priceAdult;
+    private int priceChild6_10;
+    private int priceChild2_5;
+    private int priceChild2;
     private int maxPeople;
     private int minPeople;
     private boolean status = false;

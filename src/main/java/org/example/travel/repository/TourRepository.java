@@ -25,4 +25,6 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     void deleteByTourID(Long id);
 
     Tour findByTourID(Long id);
+
+    Tour findByTourIDAndStatusIsTrue(Long id);
 }

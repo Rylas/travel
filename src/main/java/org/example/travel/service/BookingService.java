@@ -64,4 +64,17 @@ public class BookingService {
     public boolean findBookingByTourIDAndUserID(Long tourID, Long userID) {
         return bookingRepository.existsByTourTourIDAndUserUserID(tourID, userID);
     }
+
+    public void updateBooking(Booking booking) {
+        bookingRepository.save(booking);
+    }
+
+    public void pendingBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).
+                orElse(null);
+        if (booking != null) {
+            booking.setStatus("Pending");
+            bookingRepository.save(booking);
+        }
+    }
 }

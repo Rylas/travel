@@ -39,7 +39,10 @@
         </div>
         <div class="form-group">
             <label for="typeSale">Type Sale</label>
-            <input type="text" class="form-control" id="typeSale" name="typeSale" required>
+            <select class="form-control" id="typeSale" name="typeSale" required>
+                <option value="true">Percent</option>
+                <option value="false">Value</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="value">Value</label>

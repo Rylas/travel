@@ -6,41 +6,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Booking Details</title>
+    <title>Chi tiết đơn hàng</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-    <h1 class="mb-4">Booking Details</h1>
+    <h1 class="mb-4">Chi tiết đơn hàng</h1>
     <div class="card">
         <div class="card-header">
-            Booking Information
+            Thông tin chi tiết đơn hàng
         </div>
         <div class="card-body">
-            <h5 class="card-title">${booking.user.firstName + " " + booking.user.lastName}</h5>
+            <h5 class="card-title">${booking.name}</h5>
             <p class="card-text">
-                <strong>Booking Date:</strong> <fmt:formatDate value="${booking.createdAt}" pattern="dd-MM-yyyy HH:mm"/><br>
-                <strong>Number of People:</strong> ${booking.totalPeople}<br>
-                <strong>Total Amount:</strong> ${booking.totalPrice}<br>
-                <strong>Note:</strong> ${booking.note}<br>
-                <strong>Phone:</strong> ${booking.phone}<br>
+                <strong>Ngày đặt:</strong> <fmt:formatDate value="${booking.createdAt}" pattern="dd-MM-yyyy"/><br>
+                <strong>Tổng số người:</strong> ${booking.totalPeople}<br>
+                <strong>Tổng giá tiền:</strong> <fmt:formatNumber value="${booking.totalPrice}" type="number" groupingUsed="true" />đ<br>
+                <strong>Ghi chú:</strong> ${booking.note}<br>
+                <strong>SDT:</strong> ${booking.phone}<br>
                 <strong>Email:</strong> ${booking.email}<br>
-                <strong>Status:</strong> <c:choose>
-                <c:when test="${booking.status == true}">Approved</c:when>
-                <c:otherwise>Pending</c:otherwise>
-            </c:choose><br>
-                <strong>Payment Method:</strong> ${booking.payment.paymentMethod}<br>
-                <strong>Payment Date:</strong> <fmt:formatDate value="${booking.createdAt}" pattern="dd-MM-yyyy HH:mm"/><br>
-                <strong>Cancel Date:</strong> <fmt:formatDate value="${booking.canceledAt}" pattern="dd-MM-yyyy HH:mm"/><br>
-                <strong>Refund Date:</strong> <fmt:formatDate value="${booking.refundDate}" pattern="dd-MM-yyyy HH:mm"/><br>
-                <strong>Voucher:</strong> ${booking.voucherCode}<br>
+                <strong>Trạng thái:</strong> ${booking.status}<br>
+                <strong>Phương thức thanh toán:</strong> ${booking.payment.paymentMethod}<br>
+                <strong>Ngày thanh toán:</strong> <fmt:formatDate value="${booking.createdAt}" pattern="dd-MM-yyyy"/><br>
+                <strong>Ngày hủy tour:</strong> <fmt:formatDate value="${booking.canceledAt}" pattern="dd-MM-yyyy"/><br>
+                <strong>Ngày hoàn trả:</strong> <fmt:formatDate value="${booking.refundDate}" pattern="dd-MM-yyyy"/><br>
+                <strong>Mã giảm giá:</strong> ${booking.voucherCode.voucherCode}<br>
             </p>
         </div>
     </div>
 
     <div class="card mt-4">
         <div class="card-header">
-            User Information
+            Thông tin của người đặt Tour
         </div>
         <div class="card-body">
             <h5 class="card-title">${booking.user.firstName} ${booking.user.lastName}</h5>
@@ -54,10 +51,16 @@
     </div>
 
     <div class="mt-4">
-        <c:if test="${!booking.status}">
-            <a href="/admin/booking/approve?id=${booking.bookingID}" class="btn btn-success">Approve</a>
+        <c:if test="${booking.status != 'Approve'}">
+            <a href="/admin/booking/approve?id=${booking.bookingID}" class="btn btn-success">Duyệt</a>
         </c:if>
-        <a href="/admin/booking/delete?id=${booking.bookingID}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this booking?');">Delete Booking</a>
+        <c:if test="${booking.status != 'Cancel'}">
+            <a href="/admin/booking/cancel?id=${booking.bookingID}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn đặt tour này?');">Hủy</a>
+        </c:if>
+        <c:if test="${booking.status != 'Pending'}">
+            <a href="/admin/booking/pending?id=${booking.bookingID}" class="btn btn-warning">Đưa về chờ xử lý</a>
+        </c:if>
+        <a href="/admin/booking/delete?id=${booking.bookingID}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn đặt tour này?');">Xóa</a>
         <a href="admin/booking" class="btn btn-secondary">Back to Bookings</a>
     </div>
 </div>

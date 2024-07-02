@@ -20,6 +20,10 @@ public class TourService {
         return tourRepository.findByTourID(id);
     }
 
+    public Tour getTourByTourIDAndStatusIsTrue(Long id) {
+        return tourRepository.findByTourIDAndStatusIsTrue(id);
+    }
+
     public List<Tour> getToursByHot(boolean isHot) {
         return tourRepository.findByIsHot(isHot);
     }

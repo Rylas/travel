@@ -3,11 +3,15 @@ package org.example.travel.controller;
 import org.example.travel.entity.Voucher;
 import org.example.travel.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class VoucherController {
@@ -48,4 +52,22 @@ public class VoucherController {
         voucherService.saveVoucher(voucher);
         return "redirect:/admin/voucher";
     }
+
+    @PostMapping("/checkVoucher")
+    public ResponseEntity<Map<String, Object>> checkVoucher(@RequestParam String code) {
+        Map<String, Object> response = new HashMap<>();
+        Voucher voucher = voucherService.getVoucherByVoucherCode(code);
+
+        if (voucher != null) {
+            response.put("valid", true);
+            response.put("discountAmount", voucher.getValue());
+            response.put("discountType", voucher.isTypeSale());
+            response.put("maxValue", voucher.getMaxDesValue());
+        } else {
+            response.put("valid", false);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 }

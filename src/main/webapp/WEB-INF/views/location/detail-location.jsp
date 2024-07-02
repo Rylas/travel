@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +102,7 @@
                         <td>${tour.description}</td>
                         <td>${tour.startDate}</td>
                         <td>${tour.endDate}</td>
-                        <td class="price">${tour.price}</td>
+                        <td class="price">Giá chỉ từ: <fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -132,11 +133,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function() {
-        $(".price").each(function() {
-            var price = $(this).text();
-            var formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
-            $(this).text(formattedPrice);
-        });
 
         $('.location-image').on('click', function() {
             var src = $(this).data('src');

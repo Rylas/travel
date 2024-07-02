@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -200,27 +202,90 @@
                   </ul>
                 </div>
               </li>
-<%--              <li class="nav-item">--%>
-<%--                <a data-bs-toggle="collapse" href="#charts">--%>
-<%--                  <i class="far fa-chart-bar"></i>--%>
-<%--                  <p>Charts</p>--%>
-<%--                  <span class="caret"></span>--%>
-<%--                </a>--%>
-<%--                <div class="collapse" id="charts">--%>
-<%--                  <ul class="nav nav-collapse">--%>
-<%--                    <li>--%>
-<%--                      <a href="charts/charts.html">--%>
-<%--                        <span class="sub-item">Chart Js</span>--%>
-<%--                      </a>--%>
-<%--                    </li>--%>
-<%--                    <li>--%>
-<%--                      <a href="charts/sparkline.html">--%>
-<%--                        <span class="sub-item">Sparkline</span>--%>
-<%--                      </a>--%>
-<%--                    </li>--%>
-<%--                  </ul>--%>
-<%--                </div>--%>
-<%--              </li>--%>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#charts">
+                  <i class="far fa-chart-bar"></i>
+                  <p>Charts</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="charts">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/admin/discount">
+                        <span class="sub-item">Xem danh sách Ưu đãi</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/admin/discount/add">
+                        <span class="sub-item">Thêm một Ưu đãi mơi</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#charts">
+                  <i class="far fa-chart-bar"></i>
+                  <p>Mã giảm giá</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="charts">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/admin/voucher">
+                        <span class="sub-item">Xem danh sách Mã giảm giá</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/admin/voucher/add">
+                        <span class="sub-item">Thêm Mã giảm giá mới</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#charts">
+                  <i class="far fa-chart-bar"></i>
+                  <p>Phương thức thanh toán</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="charts">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/admin/payment">
+                        <span class="sub-item">Các phương thức thanh toán</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/admin/payment/add">
+                        <span class="sub-item">Thêm Phương thức thanh toán mới</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#charts">
+                  <i class="far fa-chart-bar"></i>
+                  <p>Vai trò</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="charts">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/admin/role">
+                        <span class="sub-item">Danh sách các vai trò</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/admin/role/add">
+                        <span class="sub-item">Thêm Vai trò mới</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 <%--              <li class="nav-item">--%>
 <%--                <a href="widgets.html">--%>
 <%--                  <i class="fas fa-desktop"></i>--%>

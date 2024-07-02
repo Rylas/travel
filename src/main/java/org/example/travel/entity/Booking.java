@@ -15,20 +15,24 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookingID;
-
+    private String name;
     private String email;
     private String phone;
     private String address;
     private String note;
+    private Date departureDate;
+    private Date expectedDate;
     private Date createdAt;
     private Date updatedAt;
     private Date canceledAt;
     private Date refundDate;
-    private String status = "PENDING";
-    private String city;
-    private String district;
+    private String status = "Pending";
     private int totalPrice;
     private int totalPeople;
+    private int totalChildren6_10;
+    private int totalChildren2_5;
+    private int totalChildren2;
+    private int totalAdults;
 
 
 

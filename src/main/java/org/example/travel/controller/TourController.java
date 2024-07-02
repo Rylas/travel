@@ -42,16 +42,16 @@ public class TourController {
     private DiscountService discountService;
 
     @GetMapping("/details/tour/{id}")
-    public String details(@PathVariable("id") int id, Model model, HttpSession session) {
+    public String details(@PathVariable("id") long id, Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            boolean checkTour = bookingService.findBookingByTourIDAndUserID((long) id, user.getUserID());
+            boolean checkTour = bookingService.findBookingByTourIDAndUserID(id, user.getUserID());
             model.addAttribute("checkTour", checkTour);
         }
-        tourService.incView((long) id);
-        model.addAttribute("tour", tourService.getTourByTourID((long) id));
-        model.addAttribute("reviews", tourService.getTourByTourID((long) id).getReviews());
-        Tour tour = tourService.getTourByTourID((long) id);
+        tourService.incView(id);
+        Tour tour = tourService.getTourByTourIDAndStatusIsTrue(id);
+        model.addAttribute("tour", tour);
+        model.addAttribute("reviews", tour.getReviews());
         Set<Schedule> schedules = tour.getSchedules();
         model.addAttribute("schedules", schedules);
         return "tour/detail-tour";
@@ -86,7 +86,10 @@ public class TourController {
     @PostMapping("/admin/tour/add")
     public String addTour(@RequestParam("nameTour") String name,
                           @RequestParam("description") String description,
-                          @RequestParam("price") String price,
+                          @RequestParam("priceAdult") String priceAdult,
+                            @RequestParam("priceChild6_10") String priceChild6_10,
+                            @RequestParam("priceChild2_5") String priceChild2_5,
+                            @RequestParam("priceChild2") String priceChild2,
                           @RequestParam("startDate") String start,
                           @RequestParam("endDate") String end,
                           @RequestParam("image-file1") MultipartFile firstImage,
@@ -110,7 +113,10 @@ public class TourController {
         Tour tour = new Tour();
         tour.setNameTour(name);
         tour.setDescription(description);
-        tour.setPrice(Integer.parseInt(price));
+        tour.setPriceAdult(Integer.parseInt(priceAdult));
+        tour.setPriceChild6_10(Integer.parseInt(priceChild6_10));
+        tour.setPriceChild2_5(Integer.parseInt(priceChild2_5));
+        tour.setPriceChild2(Integer.parseInt(priceChild2));
         tour.setTransport(transport);
         tour.setHot(isHot);
         tour.setMaxPeople(maxPeople);
@@ -152,8 +158,8 @@ public class TourController {
 
         Date startDate = Date.valueOf(start);
         Date endDate = Date.valueOf(end);
-        tour.setStartDate(startDate);
-        tour.setEndDate(endDate);
+        tour.setDepartureDate(startDate);
+        tour.setExpectedDate(endDate);
 
         tour.setStatus(true);
         tourService.saveTour(tour);
@@ -171,9 +177,9 @@ public class TourController {
     public String editTour(@PathVariable("id") int id, Model model) {
         // Get format date YYYY-MM-DD
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String startDate = dateFormat.format(tourService.getTourByTourID((long) id).getStartDate());
+        String startDate = dateFormat.format(tourService.getTourByTourID((long) id).getDepartureDate());
         String endDate = dateFormat.format(tourService.getTourByTourID((long) id).
-                getEndDate());
+                getDepartureDate());
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
 
@@ -234,8 +240,8 @@ public class TourController {
         tour.setLocations(locations);
         Date startDate = Date.valueOf(start);
         Date endDate = Date.valueOf(end);
-        tour.setStartDate(startDate);
-        tour.setEndDate(endDate);
+        tour.setDepartureDate(startDate);
+        tour.setExpectedDate(endDate);
         tourService.saveTour(tour);
         model.addAttribute("msg", "Edit tour successfully");
         return "redirect:/admin/tour";

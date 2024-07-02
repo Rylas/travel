@@ -37,6 +37,6 @@ public class ReviewController {
         Tour tour = tourService.getTourByTourID(tourID);
         review.setTour(tour);
         reviewService.addReview(review);
-        return "redirect:/detail/tour/" + review.getTour().getTourID();
+        return "redirect:/details/tour/" + review.getTour().getTourID();
     }
 }
