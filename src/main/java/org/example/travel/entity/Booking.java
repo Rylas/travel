@@ -23,6 +23,7 @@ public class Booking {
     private Date createdAt;
     private Date updatedAt;
     private Date canceledAt;
+    private Date refundDate;
     private String status = "PENDING";
     private String city;
     private String district;

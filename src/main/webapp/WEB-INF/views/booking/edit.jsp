@@ -54,11 +54,11 @@
 <div class="container">
     <h2 class="text-center">Edit Booking</h2>
     <form action="/booking/edit" method="post">
-        <input type="hidden" name="id" value="${booking.id}">
+        <input type="hidden" name="id" value="${booking.bookingID}">
         <input type="hidden" id="price" value="${booking.tour.price}">
         <div class="form-group">
             <label for="name">Full Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="${booking.name}" required>
+            <input type="text" class="form-control" id="name" name="name" value="${booking.user.firstName + " " + booking.user.lastName}" required>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
@@ -70,27 +70,28 @@
         </div>
         <div class="form-group">
             <label for="numberOfPeople">Number of People</label>
-            <input type="number" class="form-control" id="numberOfPeople" name="numberOfPeople" value="${booking.numberOfPeople}" oninput="calculateTotal()" required>
+            <input type="number" class="form-control" id="numberOfPeople" name="numberOfPeople" value="${booking.totalPeople}" oninput="calculateTotal()" required>
 
         </div>
         <div class="form-group">
-            <label for="message">Message</label>
-            <textarea class="form-control" id="message" name="message" rows="3">${booking.message}</textarea>
+            <label for="note">Note</label>
+            <textarea class="form-control" id="note" name="note" rows="3">${booking.note}</textarea>
         </div>
         <div class="form-group">
             <label for="voucher">Voucher</label>
-            <input type="text" class="form-control" id="voucher" name="voucher" value="${booking.voucher}">
+            <input type="text" class="form-control" id="voucher" name="voucher" value="${booking.voucherCode}">
         </div>
         <div class="form-group">
             <label for="paymentMethod">Payment Method</label>
             <select class="form-control" id="paymentMethod" name="paymentMethod" required>
-                <option value="Cash" ${booking.paymentMethod == 'Cash' ? 'selected' : ''}>Cash</option>
-                <option value="Credit Card" ${booking.paymentMethod == 'Credit Card' ? 'selected' : ''}>Credit Card</option>
+                <c:forEach var="paymentMethod" items="${paymentMethods}">
+                    <option value="${paymentMethod}" <c:if test="${paymentMethod == booking.payment.paymentMethod}">selected</c:if>>${paymentMethod}</option>
+                </c:forEach>
             </select>
         </div>
         <div class="form-group">
-            <h4 id="totalAmountDisplay">Total Amount: ${booking.totalAmount} VND</h4>
-            <input name="totalAmount" type="hidden" value="${booking.totalAmount}" id="totalAmount">
+            <h4 id="totalAmountDisplay">Total Amount: ${booking.totalPrice} VND</h4>
+            <input name="totalAmount" hidden value="${booking.totalPrice}" id="totalAmount">
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-submit">Update Booking</button>

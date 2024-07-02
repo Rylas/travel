@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tripm
-  Date: 6/10/2024
-  Time: 8:39 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +61,7 @@
         </div>
         <div class="form-group">
             <label for="numberOfPeople">Number of People</label>
-            <input type="number" class="form-control" id="numberOfPeople" name="numberOfPeople" oninput="calculateTotal()" required>
+            <input type="number" class="form-control" min="1" value="1" id="numberOfPeople" name="numberOfPeople" oninput="calculateTotal()" required>
         </div>
         <div class="form-group">
             <label for="message">Message</label>
@@ -80,8 +74,9 @@
         <div class="form-group">
             <label for="paymentMethod">Payment Method</label>
             <select class="form-control" id="paymentMethod" name="paymentMethod" required>
-                <option value="Cash">Cash</option>
-                <option value="Credit Card">Credit Card</option>
+                <c:forEach var="payment" items="${payments}">
+                    <option value="${payment.paymentID}">${payment.paymentMethod}</option>
+                </c:forEach>
             </select>
         </div>
         <div class="form-group">

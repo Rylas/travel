@@ -7,6 +7,7 @@ import org.example.travel.entity.Tour;
 import org.example.travel.entity.User;
 import org.example.travel.service.BookingService;
 import org.example.travel.service.MailService;
+import org.example.travel.service.PaymentService;
 import org.example.travel.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -31,6 +32,9 @@ public class BookingController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private PaymentService paymentService;
+
 
     @GetMapping("/bookTour/{id}")
     public String bookTour(@PathVariable("id") int id, Model model, HttpSession session) {
@@ -39,18 +43,19 @@ public class BookingController {
             return "redirect:/login";
         }
         model.addAttribute("tour", tourService.getTourByTourID((long) id));
+        model.addAttribute("payments", paymentService.getAllPayments());
         return "tour/book-tour";
     }
 
     // Thực hiện việc booking
     @PostMapping("/bookTour")
-    public String handleBookTour(@RequestParam("tourId") String tourId, Booking booking, Model model, HttpSession session) {
+    public String handleBookTour(@RequestParam("tourID") String tourID, Booking booking, Model model, HttpSession session) {
         // Lưu người dùng book tour
         User user = (User) session.getAttribute("user");
         booking.setUser(user);
         // Lưu tour được book
-        tourService.incCustomer(Long.parseLong(tourId));
-        Tour tour = tourService.getTourByTourID(Long.parseLong(tourId));
+        tourService.incCustomer(Long.parseLong(tourID));
+        Tour tour = tourService.getTourByTourID(Long.parseLong(tourID));
         booking.setTour(tour);
         int price = tour.getPrice();
         int totalAmount = booking.getTotalPeople() * price;
@@ -63,6 +68,7 @@ public class BookingController {
     @GetMapping("/booking/edit")
     public String editBooking(@RequestParam("id") Long id, Model model){
         model.addAttribute("booking", bookingService.getBookingById(id));
+        model.addAttribute("paymentMethods", paymentService.getAllPayments());
         return "booking/edit";
     }
 

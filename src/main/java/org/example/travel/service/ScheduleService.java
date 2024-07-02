@@ -28,7 +28,7 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
-    public List<Schedule> getScheduleByTourId(Long tourId) {
+    public List<Schedule> getScheduleByTourID(Long tourId) {
         return scheduleRepository.findByTour_TourID(tourId);
     }
 }

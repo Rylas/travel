@@ -30,7 +30,7 @@ public class ScheduleController {
     @GetMapping("/admin/tour/schedule")
     public String schedule(Model model, @RequestParam("tourID") Long tourID) {
         model.addAttribute("tour", tourService.getTourByTourID(tourID));
-        model.addAttribute("schedules", scheduleService.getScheduleByTourId(tourID));
+        model.addAttribute("schedules", scheduleService.getScheduleByTourID(tourID));
         return "schedule/list";
     }
 

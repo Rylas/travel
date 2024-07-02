@@ -32,13 +32,13 @@
             <c:forEach var="tour" items="${tours}" varStatus="status">
                 <tr>
                     <td>${status.index + 1}</td>
-                    <td>${tour.name}</td>
+                    <td>${tour.nameTour}</td>
                     <td>${tour.description}</td>
                     <td>${tour.startDate}</td>
                     <td>${tour.endDate}</td>
                     <td>${tour.price}</td>
                     <td>
-                        <a href="/details/tour/${tour.tourId}" class="btn btn-info btn-sm">View</a>
+                        <a href="/details/tour/${tour.tourID}" class="btn btn-info btn-sm">View</a>
                     </td>
                 </tr>
             </c:forEach>
