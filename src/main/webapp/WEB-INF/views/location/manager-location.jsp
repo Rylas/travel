@@ -17,30 +17,41 @@
     <p class="msg">${msg}</p>
     <form action="/admin/location/add" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <label for="name">Name Location</label>
+            <input type="text" class="form-control" id="name" name="nameLocation" required>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
         </div>
         <div class="form-group">
-            <label for="image-file">Image</label>
-            <input type="file" class="form-control-file" id="image-file" name="image-file" required>
-        </div>
-        <div class="form-group">
             <label for="banner-file">Banner</label>
             <input type="file" class="form-control-file" id="banner-file" name="banner-file" required>
         </div>
         <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+            <label for="image-file1">Image 1</label>
+            <input type="file" class="form-control-file" id="image-file1" name="image-file1" required>
+        </div>
+        <div class="form-group">
+            <label for="image-file2">Image 2</label>
+            <input type="file" class="form-control-file" id="image-file2" name="image-file2" required>
+        </div>
+        <div class="form-group">
+            <label for="image-file3">Image 3</label>
+            <input type="file" class="form-control-file" id="image-file3" name="image-file3" required>
         </div>
         <div class="form-group">
             <label for="status">Status</label>
             <select class="form-control" id="status" name="status">
                 <option value="1">Active</option>
                 <option value="0">Inactive</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="isHot">Is Hot Location</label>
+            <select class="form-control" id="isHot" name="isHot">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Add Location</button>

@@ -66,8 +66,8 @@
         <div class="form-group">
             <label for="active">Active</label>
             <select class="form-control" id="active" name="active" required>
-                <option value="true" ${user.active ? 'selected' : ''}>Yes</option>
-                <option value="false" ${!user.active ? 'selected' : ''}>No</option>
+                <option value="true" ${user.isActive ? 'selected' : ''}>Yes</option>
+                <option value="false" ${!user.isActive ? 'selected' : ''}>No</option>
             </select>
         </div>
         <div class="text-center">

@@ -65,11 +65,11 @@
             background-color: #1c70b6;
         }
 
-        .loginBtn {
+        .loginButton {
             background-color: #e67e22;
         }
 
-        .loginBtn:hover {
+        .loginButton:hover {
             background-color: #d35400;
         }
 
@@ -134,7 +134,8 @@
     </div>
     <p class="errMsg">${msg}</p>
     <button type="submit">Đăng ký</button>
-    <button onclick="window.location.href='/login'" class="loginBtn">Đăng nhập</button>
+    <button onclick="window.location.href='/login'" class="loginButton">Đăng nhập</button>
 </form>
+<%@ include file="../material/footer.jsp"%>
 </body>
 </html>

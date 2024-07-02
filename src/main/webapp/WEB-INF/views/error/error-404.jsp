@@ -23,7 +23,11 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <h1>404</h1>
 <p>Xin lỗi, trang bạn đang tìm kiếm không tồn tại!</p>
+<%@ include file="../material/footer.jsp"%>
+
 </body>
 </html>

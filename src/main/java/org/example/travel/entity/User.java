@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,116 +16,66 @@ import java.util.Set;
 @Setter
 @Table(name = "users")
 public class User {
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private long userID;
 
-    @Getter
-    @Setter
-    @Column(nullable = false)
     private String firstName;
 
-    @Getter
-    @Setter
-    @Column(nullable = false)
     private String lastName;
 
-    @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Setter
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private Boolean isActive = false;
 
-    @Getter
-    @Setter
-    @Column(nullable = false)
     private String phone;
 
-    @Getter
-    @Setter
-    @Column
     private String avatar = "avatar-default.png";
 
-    // Set default role is user
-    @Getter
-    @Setter
-    @Column(nullable = false)
-    private String role = "user";
-
-    @Getter
-    @Setter
-    @Column(nullable = false)
-    private String typeAccount = "user";
-
+    private String address;
+    private String token;
     private Date createdAt;
     private Date updatedAt;
 
-    private String address;
-
-    @Setter
-    @Getter
-    @Column(nullable = true)
-    private String token;
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "enterpriseId")
+    @JoinColumn(name = "enterpriseID")
     private Enterprise enterprise;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Message> messages = new HashSet<>();
 
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<Booking> bookings = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Booking> cashs = new HashSet<>();
+    private Set<Review> reviews = new HashSet<>();
 
-
-    public User(){
-
+    @ManyToOne
+    @JoinColumn(name = "roleID")
+    private Role role;
+    public User() {
+        this.role = new Role(3L, "user");
     }
 
-    public User(String id, String email, String firstName, String lastName, String password) {
-        this.userId = Long.parseLong(id);
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    @OneToMany
+    @JoinColumn(name = "userID")
+    private Set<Booking> bookings = new HashSet<>();
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + userId +
-                ", name='" + firstName + " " + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-            ", isActive=" + isActive +
-                ", avatar='" + avatar + '\'' +
-                ", role='" + role + '\'' +
-                ", token='" + token + '\'' +
-                '}';
-    }
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Ban ban;
+
 
     @PrePersist
     protected void onCreate() {
-        createdAt = new Date();
-        updatedAt = new Date();
+        createdAt = new Date(System.currentTimeMillis());
+        updatedAt = new Date(System.currentTimeMillis());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = new Date();
+        updatedAt = new Date(System.currentTimeMillis());
     }
 }
 

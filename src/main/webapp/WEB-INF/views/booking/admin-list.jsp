@@ -35,10 +35,8 @@
             <th>Booking Date</th>
             <th>Number of People</th>
             <th>Total Amount</th>
-            <th>Message</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Approve Status</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -48,28 +46,22 @@
             <tr>
                 <td>${status.index + 1}</td>
                 <td>${booking.name}</td>
-                <td><fmt:formatDate value="${booking.bookingDate}" pattern="dd-MM-yyyy HH:mm"/></td>
-                <td>${booking.numberOfPeople}</td>
-                <td>${booking.totalAmount}</td>
-                <td>${booking.message}</td>
+                <td><fmt:formatDate value="${booking.createdAt}" pattern="dd-MM-yyyy"/></td>
+                <td>${booking.totalPeople}</td>
+                <td><fmt:formatNumber value="${booking.totalPrice}" type="number" groupingUsed="true" />đ</td>
                 <td>${booking.phone}</td>
                 <td>${booking.email}</td>
                 <td><c:choose>
-                    <c:when test="${booking.status}">Approved</c:when>
-                    <c:otherwise>Pending</c:otherwise>
+                    <c:when test="${booking.status == 'Pending'}">Pending</c:when>
+                    <c:otherwise>${booking.status}</c:otherwise>
                 </c:choose></td>
                 <td>
-                    <c:choose>
-                        <c:when test="${booking.cancelDate == null}">Pending</c:when>
-                        <c:otherwise>Cancel</c:otherwise>
-                    </c:choose>
-                </td>
-                <td>
-                    <a href="/admin/booking/detail/${booking.id}" class="btn btn-warning btn-sm">Detail</a>
-                    <c:if test="${!booking.status}">
-                        <a href="/admin/booking/approve?id=${booking.id}" class="btn btn-success btn-sm">Approve</a>
+                    <a href="/admin/booking/detail/${booking.bookingID}" class="btn btn-warning btn-sm">Detail</a>
+                    <c:if test="${booking.status == 'Pending'}">
+                        <a href="/admin/booking/approve?id=${booking.bookingID}" class="btn btn-success btn-sm">Approve</a>
+                        <a href="/admin/booking/cancel?id=${booking.bookingID}" class="btn btn-black btn-sm">Cancel</a>
                     </c:if>
-                    <a href="/admin/booking/delete?id=${booking.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a>
+                    <a href="/admin/booking/delete?id=${booking.bookingID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a>
                 </td>
             </tr>
         </c:forEach>

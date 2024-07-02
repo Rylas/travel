@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TourService {
@@ -15,8 +16,12 @@ public class TourService {
         return tourRepository.findAll();
     }
 
-    public Tour getTourById(Long id) {
-        return tourRepository.findById(id).orElse(null);
+    public Tour getTourByTourID(Long id) {
+        return tourRepository.findByTourID(id);
+    }
+
+    public Tour getTourByTourIDAndStatusIsTrue(Long id) {
+        return tourRepository.findByTourIDAndStatusIsTrue(id);
     }
 
     public List<Tour> getToursByHot(boolean isHot) {
@@ -27,30 +32,35 @@ public class TourService {
         return tourRepository.getTourOrderByNumberCustomerDesc();
     }
 
-    public Tour saveTour(Tour tour) {
-        return tourRepository.save(tour);
+    public void saveTour(Tour tour) {
+        tourRepository.save(tour);
     }
 
-    public void deleteTour(Long id) {
-        tourRepository.deleteById(id);
+    public void deleteTour(Long tourID) {
+        Optional<Tour> tour = tourRepository.findById(tourID);
+        if (tour.isPresent()) {
+            tourRepository.delete(tour.get());
+        } else {
+            throw new RuntimeException("Tour not found with ID: " + tourID);
+        }
     }
 
     public List<Tour> searchTours(String keyword) {
-        return tourRepository.findByNameContaining(keyword);
+        return tourRepository.findByNameTourContaining(keyword);
     }
 
     public void incView(Long id) {
-        Tour tour = tourRepository.findById(id).orElse(null);
+        Tour tour = tourRepository.findByTourID(id);
         if (tour != null) {
-            tour.setNumberView(tour.getNumberView() + 1);
+            tour.setNumberViewed(tour.getNumberViewed() + 1);
             tourRepository.save(tour);
         }
     }
 
     public void incCustomer(Long id) {
-        Tour tour = tourRepository.findById(id).orElse(null);
+        Tour tour = tourRepository.findByTourID(id);
         if (tour != null) {
-            tour.setNumberCustomer(tour.getNumberCustomer() + 1);
+            tour.setNumberBooked(tour.getNumberBooked() + 1);
             tourRepository.save(tour);
         }
     }

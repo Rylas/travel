@@ -34,19 +34,25 @@
         <tbody>
         <c:forEach var="user" items="${users}">
             <tr>
-                <td>${user.userId}</td>
+                <td>${user.userID}</td>
                 <td>${user.firstName}</td>
                 <td>${user.lastName}</td>
                 <td>${user.email}</td>
                 <td>${user.phone}</td>
-                <td>${user.role}</td>
+                <td>${user.role.roleName}</td>
                 <td><c:choose>
-                    <c:when test="${user.active}">Yes</c:when>
+                    <c:when test="${user.isActive}">Yes</c:when>
                     <c:otherwise>No</c:otherwise>
                 </c:choose></td>
                 <td>
-                    <a href="/admin/user/edit?id=${user.userId}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="/admin/user/delete?id=${user.userId}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                    <a href="/admin/user/edit?id=${user.userID}" class="btn btn-warning btn-sm">Edit</a>
+                    <c:if test="${user.ban.reason == null}">
+                        <a href="/admin/user/ban?id=${user.userID}" class="btn btn-danger btn-sm">Ban</a>
+                    </c:if>
+                    <c:if test="${user.ban.reason != null}">
+                        <a href="/admin/user/unban?id=${user.userID}" class="btn btn-success btn-sm">Unban</a>
+                    </c:if>
+                    <a href="/admin/user/delete?id=${user.userID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                 </td>
             </tr>
         </c:forEach>

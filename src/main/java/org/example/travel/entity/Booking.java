@@ -3,12 +3,9 @@ package org.example.travel.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,40 +14,56 @@ import java.util.Set;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long bookingID;
     private String name;
-    private Date bookingDate;
-    private int numberOfPeople;
-    private double totalAmount;
-    private String message;
-    private boolean status;
-    private String phone;
     private String email;
-    private String paymentMethod;
-    private Date paymentDate;
-    private Date cancelDate;
-    private Date refundDate;
+    private String phone;
+    private String address;
+    private String note;
+    private Date departureDate;
+    private Date expectedDate;
     private Date createdAt;
     private Date updatedAt;
-    private String voucher;
+    private Date canceledAt;
+    private Date refundDate;
+    private String status = "Pending";
+    private int totalPrice;
+    private int totalPeople;
+    private int totalChildren6_10;
+    private int totalChildren2_5;
+    private int totalChildren2;
+    private int totalAdults;
+
 
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    @JoinColumn(name = "paymentID")
+    private Payment payment;
 
     @ManyToOne
-    @JoinColumn(name = "tourId")
+    @JoinColumn(name = "tourID")
     private Tour tour;
+
+    @OneToOne
+    @JoinColumn(name = "voucherCode")
+    private Voucher voucherCode;
+
+    @OneToMany(mappedBy = "booking")
+    private List<BookingDetail> bookingDetails;
+
+    // User
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = new Date();
-        updatedAt = new Date();
+        createdAt = new Date(System.currentTimeMillis());
+        updatedAt = new Date(System.currentTimeMillis());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = new Date();
+        updatedAt = new Date(System.currentTimeMillis());
     }
 }

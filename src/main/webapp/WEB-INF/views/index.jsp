@@ -54,122 +54,17 @@
 
 <body>
 <div id="main">
-    <div id="loadpage"></div>
-    <div id="header">
-        <div id="content_header">
-            <div id="nav-icon">
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa fa-bars"></i>
-                </a>
-            </div>
-            <!-- Nav bar -->
-            <div id="nav-bar">
-                <ul>
-                    <li><a href="index.html">Home </a></li>
-                    <li><a href="about.html">About </a></li>
-                    <li><a href="destiantion.html">Destination </a></li>
-
-                    <li>
-                        <a>Blog
-                            <i class="arrow-down ti-angle-down"></i>
-                        </a>
-                        <ul class="sub_nav">
-                            <li><a href="/blog">Blog</a></li>
-                            <li><a href="/single_blog">Single-Blog</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/contact" style="background-color: #f1f1f1de; color: #00c961;">Contact </a>
-                    </li>
-<%--                    <li class="search-icon">--%>
-<%--                        <div class="input">--%>
-<%--                            <input type="text" placeholder="Type some text" id="search-id" autocomplete="off">--%>
-<%--                        </div>--%>
-<%--                        <a href="#" id="search-toggle" style="color: #fff;">--%>
-<%--                            <i class="search ti-search"> </i>--%>
-<%--                        </a>--%>
-
-<%--                    </li>--%>
-                </ul>
-            </div>
-            <div class="logo">
-                <img src="/img/TRAVELWY.png" alt="" width="300" height="300">
-            </div>
-            <div class="nav">
-                <ul>
-                    <li><a href="/">Home </a></li>
-                    <li><a href="/about">About </a></li>
-                    <li><a href="/destiantion">Destination </a></li>
-
-                    <li>
-                        <a href="">Blog
-                            <i class="arrow-down ti-angle-down"></i>
-                        </a>
-                        <ul class="sub_nav">
-                            <li><a href="/blog">Blog</a></li>
-                            <li><a href="/single_blog">Single-Blog</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/contact">Contact</a></li> </a></li>
-                </ul>
-            </div>
-            <%--    Kiểm tra xem người dùng có đăng nhập hay chưa để hiển thị nút đăng nhập hay là hiển thị thông tin người dùng        --%>
-            <div class="contact">
-                <%
-                    User user = (User) session.getAttribute("user");
-                    if (user != null) {
-                %>
-                <div class="user-info">
-                    <div style="display: flex; align-items: center;">
-                        <span style="margin-right: 10px;">${sessionScope.user.firstName} ${sessionScope.user.lastName}</span>
-                        <img src="/uploads/${sessionScope.user.avatar}" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%;" class="avatar" onclick="toggleUserMenu()">
-                    </div>
-
-                    <div id="userMenu" class="user-menu">
-                        <a href="/information">Thông tin chi tiết</a>
-                        <c:if test="${sessionScope.user.role == 'admin'}">
-                            <a href="/admin">Trang quản trị</a>
-                        </c:if>
-                        <a href="/logout">Đăng xuất</a>
-                    </div>
-                </div>
-                <%
-                    } else {
-                %>
-                    <a class="loginBtn" href="/login">Đăng nhập</a>
-                    <a class="loginBtn" href="/register">Đăng ký</a>
-                <%
-                    }
-                %>
-
-
-            </div>
-            <div class="search-icon">
-                <div class="input">
-                    <input type="text" placeholder="Type some text" id="search-id" autocomplete="off">
-                </div>
-                <a href="#" id="search-toggle" style="color: #fff;">
-                    <i class="search ti-search"> </i>
-                </a>
-                <%
-                    if (user != null) {
-                %>
-                <a href="/cash" style="color: #fff;">
-                    <i class="search ti-shopping-cart"> </i>
-                </a>
-                <%
-                    }
-                %>
-            </div>
-        </div>
-    </div>
+    <div id="loadPage"></div>
+<%--    Include navbar--%>
+<%@include file="material/navbar.jsp" %>
     <div id="slider">
 
         <%-- List all hot tour        --%>
         <c:forEach var="tour" items="${hotTours}">
-            <div class="mySlides fade">
-                <img src="/uploads/tour/${tour.image}" style="width:100%;height: calc(100/3 * 2%);">
-                <div class="text">${tour.name}</div>
-            </div>
+            <a href="/details/tour/${tour.tourID}" class="mySlides fade">
+                <img src="/uploads/tour/${tour.banner}" style="width:100%;height: calc(100/3 * 2%);">
+                <div class="text">${tour.nameTour}</div>
+            </a>
         </c:forEach>
         <!-- Next and previous buttons -->
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -208,12 +103,12 @@
                 <c:forEach var="location" items="${locations}" varStatus="status">
                     <c:if test="${status.index < 6}">
                         <div class="popular-item">
-                            <img src="/uploads/location/${location.image}" alt="">
+                            <img src="/uploads/location/${location.banner}" alt="">
                             <br>
-                            <h3>${location.name}</h3>
+                            <h3>${location.nameLocation}</h3>
                             <div class="detail">
                                 <div class="detail-title">
-                                    <span>${location.name}</span>
+                                    <span>${location.nameLocation}</span>
                                 </div>
                                 <div class="detail-description">
                                     <span>${location.description}</span>
@@ -226,7 +121,7 @@
                                     </ul>
                                 </div>
                                 <div class="book-now">
-                                    <a href="/details/location/${location.getLocationId()}">
+                                    <a href="/details/location/${location.locationID}">
                                         <button class="book">
                                             More Detail
                                         </button>
@@ -262,12 +157,12 @@
                 <c:forEach var="tour" items="${tours}" varStatus="status">
                     <c:if test="${status.index < 6}">
                     <div class="popular-item">
-                        <img src="/uploads/tour/${tour.image}" alt="">
+                        <img src="/uploads/tour/${tour.banner}" alt="">
                         <br>
-                        <h3>${tour.name}</h3>
+                        <h3>${tour.nameTour}</h3>
                         <div class="detail">
                             <div class="detail-title">
-                                <span>${tour.name}</span>
+                                <span>${tour.nameTour}</span>
                             </div>
                             <div class="detail-description">
                                 <span>${tour.description}</span>
@@ -280,7 +175,7 @@
                                 </ul>
                             </div>
                             <div class="book-now">
-                                <a href="/details/tour/${tour.getTourId()}">
+                                <a href="/details/tour/${tour.tourID}">
                                     <button class="book">
                                         Book Now
                                     </button>
@@ -327,91 +222,9 @@
         </div>
     </div>
 
-    <div id="footer">
-        <div class="contact-img">
-            <img src="/img/TRAVELWY.png" alt="" style="height: 300px; width: 300px;">
-        </div>
-        <div class="contact-item">
-            <span> Khu đô thị FPT Tran Dai Nghia street, Hoa Quy ward,<br> Ngu Hanh Son district, Da Nang</span>
-            <ul>
-                <li><a href="#">+84123456789</a></li> <br>
-                <li><a href="#">example@gmail.com</a></li><br> <br>
-                <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
-                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
-                <li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>
-            </ul>
-        </div>
-        <div class="contact-popular">
-            <h3>Popular Destination</h3>
-            <ul class="contact-popular-item">
-<%--                Just get 8 item from location --%>
-                <c:forEach begin="0" end="8" var="location" items="${locations}">
-                    <li><a href="/details/location/${location.locationId}">${location.name}</a></li>
-                </c:forEach>
-
-            </ul>
-        </div>
-        <div class="contact-insta">
-            <div class="contact-insta-item">
-                <c:forEach begin="0" end="6" var="location" items="${locations}" varStatus="status">
-                    <img src="/uploads/location/${location.banner}" alt="${location.name}">
-                </c:forEach>
-
-            </div>
-        </div>
-    </div>
+    <%@include file="material/footer.jsp" %>
 </div>
-<div id="loginform">
-    <div class="exit">
 
-    </div>
-
-    <div id="login">
-        <div class="headline">
-            <h2>Hello!</h2>
-            <p>Sign into your account</p>
-        </div>
-        <div class="form">
-            <div class="email">
-                <label for="">Email</label>
-                <input type="text" placeholder="Email">
-            </div>
-            <div class="password">
-                <label for="">Password</label>
-                <input type="text" placeholder="Password">
-            </div>
-            <div class="forgotPassword" style="display: inline-block">
-                <div class="rememberMe" style="display: inline-block">
-                    <input type="radio">
-                    <label for="">Remember me</label>
-                </div>
-
-                <a href="#">Forgot Password</a>
-            </div>
-            <button id="signin" onclick=baodeptrai()>
-                Sign in
-            </button>
-        </div>
-        <div class="social">
-            <p>or</p>
-            <div class="icon">
-                <i class="fa-brands fa-facebook-square"></i>
-                <!-- f082 -->
-                <i class="fa-brands fa-google-plus-square"></i>
-                <!-- f0d4 -->
-                <i class="fa-brands fa-twitter-square"></i>
-            </div>
-        </div>
-        <div class="create">
-            <p>Don't have an account? <a href="#">Create</a></p>
-        </div>
-    </div>
-    <div id="signup">
-
-    </div>
-</div>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -434,12 +247,12 @@
                         data.forEach(function(location) {
                             const locationHtml = `
                                 <div class="popular-item">
-                                    <img src="/uploads/location/${location.image}" alt="">
+                                    <img src="/uploads/location/${location.banner}" alt="">
                                     <br>
-                                    <h3>${location.name}</h3>
+                                    <h3>${location.nameLocation}</h3>
                                     <div class="detail">
                                         <div class="detail-title">
-                                            <span>${location.name}</span>
+                                            <span>${location.nameLocation}</span>
                                         </div>
                                         <div class="detail-description">
                                             <span>${location.description}</span>
@@ -452,7 +265,7 @@
                                             </ul>
                                         </div>
                                         <div class="book-now">
-                                            <a href="/details/location/${location.locationId}">
+                                            <a href="/details/location/${location.locationID}">
                                                 <button class="book">
                                                     More Detail
                                                 </button>
@@ -520,7 +333,6 @@
         }
     });
 </script>
-<script src="/js/loginvsload.js"></script>
 <script>
     function Total() {
         let check = true;
@@ -567,39 +379,6 @@
         }
     }
 </script>
-
-<style>
-    .user-info {
-        position: relative;
-        display: inline-block;
-    }
-
-    .avatar {
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-
-    .user-menu {
-        display: none;
-        position: absolute;
-        background-color: white;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-    }
-
-    .user-menu a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
-
-    .user-menu a:hover {
-        background-color: #ddd;
-    }
-</style>
 </body>
 
 </html>

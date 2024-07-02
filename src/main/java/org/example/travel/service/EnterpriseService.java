@@ -17,7 +17,7 @@ public class EnterpriseService {
 
     // Get the enterprise by name
     public Enterprise getEnterpriseByName(String name) {
-        return enterpriseRepository.findByName(name);
+        return enterpriseRepository.findByNameEnterprise(name);
     }
 
     // Save the enterprise

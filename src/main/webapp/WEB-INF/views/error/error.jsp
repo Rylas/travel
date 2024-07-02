@@ -23,6 +23,10 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <h1>Đã xảy ra lỗi!</h1>
+<%@ include file="../material/footer.jsp"%>
+
 </body>
 </html>

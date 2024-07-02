@@ -5,7 +5,7 @@ import org.example.travel.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -40,7 +40,7 @@ public class BookingService {
     public void approveBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElse(null);
         if (booking != null) {
-            booking.setStatus(true);
+            booking.setStatus("Approved");
             bookingRepository.save(booking);
         }
     }
@@ -48,7 +48,7 @@ public class BookingService {
     public void cancelBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElse(null);
         if (booking != null) {
-            booking.setStatus(false);
+            booking.setStatus("Canceled");
             bookingRepository.save(booking);
         }
     }
@@ -56,7 +56,24 @@ public class BookingService {
     public void setCancelDate(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElse(null);
         if (booking != null) {
-            booking.setCancelDate(new Date());
+            booking.setCanceledAt(new Date(System.currentTimeMillis()));
+            bookingRepository.save(booking);
+        }
+    }
+
+    public boolean findBookingByTourIDAndUserID(Long tourID, Long userID) {
+        return bookingRepository.existsByTourTourIDAndUserUserID(tourID, userID);
+    }
+
+    public void updateBooking(Booking booking) {
+        bookingRepository.save(booking);
+    }
+
+    public void pendingBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).
+                orElse(null);
+        if (booking != null) {
+            booking.setStatus("Pending");
             bookingRepository.save(booking);
         }
     }

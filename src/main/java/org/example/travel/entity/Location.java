@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,35 +16,34 @@ import java.util.Set;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long locationId;
-    private String name;
+    private Long locationID;
+    private String nameLocation;
     private String description;
-    private String image;
     private String banner;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private String firstImage;
+    private String secondImage;
+    private String thirdImage;
     private boolean status = false;
     private boolean isHot = false;
-    private int numberCustomer = 0;
-    private int numberView = 0;
+    private int numberViewed = 0;
+    private Date createdAt;
+    private Date updatedAt;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Review> reviews = new HashSet<>();
+//    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<Review> reviews = new HashSet<>();
 
     @ManyToMany(mappedBy = "locations")
     private Set<Tour> tours = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = new Date(System.currentTimeMillis());
+        updatedAt = new Date(System.currentTimeMillis());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = new Date(System.currentTimeMillis());
     }
 }

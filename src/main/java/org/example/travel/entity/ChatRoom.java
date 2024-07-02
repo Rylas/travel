@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,17 +16,25 @@ import java.util.Set;
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long chatRoomID;
+    private boolean status = true;
+    private Date createdAt;
 
-    private String name;
-    private LocalDateTime createdAt;
-    private int status;
-
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "chatRoomID")
     private Set<Message> messages = new HashSet<>();
+
+    // User and admin
+    @ManyToOne
+    @JoinColumn(name = "userID")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "adminID")
+    private User admin;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = new Date(System.currentTimeMillis());
     }
 }

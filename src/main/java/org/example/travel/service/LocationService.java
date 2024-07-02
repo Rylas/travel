@@ -24,7 +24,7 @@ public class LocationService {
     }
 
     public List<Location> getLocationOrderByNumberCustomerDesc() {
-        return locationRepository.getLocationOrderByNumberCustomerDesc();
+        return locationRepository.getLocationsOrderByNumberViewerDesc();
     }
 
     public Location saveLocation(Location location) {
@@ -42,7 +42,7 @@ public class LocationService {
     public void incView(Long id) {
         Location location = locationRepository.findById(id).orElse(null);
         if (location != null) {
-            location.setNumberView(location.getNumberView() + 1);
+            location.setNumberViewed(location.getNumberViewed() + 1);
             locationRepository.save(location);
         }
     }

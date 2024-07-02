@@ -13,6 +13,8 @@
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
+
 <div class="container mt-5">
     <h2>Search Results for "<c:out value="${keyword}" />"</h2>
     <c:if test="${not empty tours}">
@@ -32,13 +34,13 @@
             <c:forEach var="tour" items="${tours}" varStatus="status">
                 <tr>
                     <td>${status.index + 1}</td>
-                    <td>${tour.name}</td>
+                    <td>${tour.nameTour}</td>
                     <td>${tour.description}</td>
                     <td>${tour.startDate}</td>
                     <td>${tour.endDate}</td>
                     <td>${tour.price}</td>
                     <td>
-                        <a href="/details/tour/${tour.tourId}" class="btn btn-info btn-sm">View</a>
+                        <a href="/details/tour/${tour.tourID}" class="btn btn-info btn-sm">View</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -49,6 +51,8 @@
         <p>No tours found matching your keyword.</p>
     </c:if>
 </div>
+<%@ include file="../material/footer.jsp"%>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

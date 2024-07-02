@@ -11,13 +11,20 @@ import java.util.List;
 @Repository
 public interface TourRepository extends JpaRepository<Tour, Long> {
     List<Tour> findAll();
+
     List<Tour> findByIsHot(boolean isHot);
 
-    @Query("SELECT t FROM Tour t ORDER BY t.numberCustomer DESC")
+    @Query("SELECT t FROM Tour t ORDER BY t.numberBooked DESC")
     List<Tour> getTourOrderByNumberCustomerDesc();
 
     Tour save(Tour tour);
 
     // findByNameContaining
-    List<Tour> findByNameContaining(String keyword);
+    List<Tour> findByNameTourContaining(String keyword);
+
+    void deleteByTourID(Long id);
+
+    Tour findByTourID(Long id);
+
+    Tour findByTourIDAndStatusIsTrue(Long id);
 }

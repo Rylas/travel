@@ -47,10 +47,10 @@
         <c:forEach var="enterprise" items="${enterprises}" varStatus="status">
             <tr>
                 <td>${status.index + 1}</td>
-                <td>${enterprise.name}</td>
+                <td>${enterprise.nameEnterprise}</td>
                 <td>${enterprise.description}</td>
-                <td><img src="/uploads/enterprise/${enterprise.image}" alt="${enterprise.name}"></td>
-                <td><img src="/uploads/enterprise/${enterprise.banner}" alt="${enterprise.name}"></td>
+                <td><img src="/uploads/enterprise/${enterprise.logo}" alt="${enterprise.nameEnterprise}"></td>
+                <td><img src="/uploads/enterprise/${enterprise.banner}" alt="${enterprise.nameEnterprise}"></td>
                 <td>${enterprise.address}</td>
                 <td>${enterprise.phone}</td>
                 <td>${enterprise.email}</td>
@@ -60,10 +60,10 @@
                     <c:otherwise>Inactive</c:otherwise>
                 </c:choose></td>
                 <td>
-                    <a href="/admin/enterprise/edit/${enterprise.enterpriseId}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="/admin/enterprise/delete?id=${enterprise.enterpriseId}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this enterprise?');">Delete</a>
+                    <a href="/admin/enterprise/edit/${enterprise.enterpriseID}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="/admin/enterprise/delete?id=${enterprise.enterpriseID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this enterprise?');">Delete</a>
                     <c:if test="${!enterprise.status}">
-                        <a href="/admin/enterprise/active/${enterprise.enterpriseId}" class="btn btn-success btn-sm">Approve</a>
+                        <a href="/admin/enterprise/active/${enterprise.enterpriseID}" class="btn btn-success btn-sm">Approve</a>
                     </c:if>
                 </td>
             </tr>

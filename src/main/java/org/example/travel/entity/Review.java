@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,36 +14,29 @@ import java.time.LocalDateTime;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
-    private String comment;
-    private String rating;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    // Foreign key
-
+    private Long reviewID;
+    private String content;
+    private int star;
+    private Date createdAt;
+    private Date updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "locationId")
-    private Location location;
-
-
-    @ManyToOne
-    @JoinColumn(name = "tourId")
+    @JoinColumn(name = "tourID")
     private Tour tour;
 
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userID")
     private User user;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = new Date(System.currentTimeMillis());
+        updatedAt = new Date(System.currentTimeMillis());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = new Date(System.currentTimeMillis());
     }
 }

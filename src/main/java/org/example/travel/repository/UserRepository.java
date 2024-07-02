@@ -14,9 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User login(String email, String password);
 
     // Register a new user with insert
-    @Query(value = "INSERT INTO users (password, email, name, role, isActive) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
-    int register(String password, String email, String name, String role, boolean active);
-
     // Find user by token
     @Query("SELECT u FROM User u WHERE u.token = ?1")
     User findByToken(String token);
@@ -24,7 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Active account by update
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.isActive = true, u.token = null WHERE u.userId = ?1")
+    @Query("UPDATE User u SET u.isActive = true, u.token = null WHERE u.userID = ?1")
     void activateAccount(Long id);
 
     // Find user by email
@@ -34,12 +31,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Update avatar
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.avatar = ?2 WHERE u.userId = ?1")
+    @Query("UPDATE User u SET u.avatar = ?2 WHERE u.userID = ?1")
     void updateAvatar(Long id, String avatar);
 
     // Update enterprise
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.enterprise = ?2 WHERE u.userId = ?1")
+    @Query("UPDATE User u SET u.enterprise = ?2 WHERE u.userID = ?1")
     void updateEnterprise(Long userId, Long enterpriseId);
+
+    // Ban user
+//    @Modifying
+//    @Transactional
+//    @Query("UPDATE User u SET u.isActive = false, u.isBanned = true, u.reasonBan = ?2 WHERE u.userId = ?1")
+//    void banUser(Long id, String reasonBan);
+//
+//    @Modifying
+//    @Transactional
+//    @Query("UPDATE User u SET u.isActive = true, u.isBanned = false, u.reasonBan = null WHERE u.userId = ?1")
+//    void unbanUser(Long id);
 }

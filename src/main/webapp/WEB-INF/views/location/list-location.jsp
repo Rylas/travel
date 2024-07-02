@@ -33,8 +33,10 @@
             <th>#</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Image</th>
             <th>Banner</th>
+            <th>First Image</th>
+            <th>Second Image</th>
+            <th>Third Image</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -43,17 +45,19 @@
         <c:forEach var="location" items="${locations}" varStatus="status">
             <tr>
                 <td>${status.index + 1}</td>
-                <td>${location.name}</td>
+                <td>${location.nameLocation}</td>
                 <td>${location.description}</td>
-                <td><img src="/uploads/location/${location.image}" alt="${location.name}"></td>
-                <td><img src="/uploads/location/${location.banner}" alt="${location.name}"></td>
+                <td><img src="/uploads/location/${location.banner}" alt="${location.nameLocation}"></td>
+                <td><img src="/uploads/location/${location.firstImage}" alt="${location.nameLocation}"></td>
+                <td><img src="/uploads/location/${location.secondImage}" alt="${location.nameLocation}"></td>
+                <td><img src="/uploads/location/${location.thirdImage}" alt="${location.nameLocation}"></td>
                 <td><c:choose>
                     <c:when test="${location.status}">Active</c:when>
                     <c:otherwise>Inactive</c:otherwise>
                 </c:choose></td>
                 <td>
-                    <a href="location/edit/${location.locationId}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="location/delete?id=${location.locationId}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this location?');">Delete</a>
+                    <a href="location/edit/${location.locationID}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="location/delete?id=${location.locationID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this location?');">Delete</a>
                 </td>
             </tr>
         </c:forEach>
