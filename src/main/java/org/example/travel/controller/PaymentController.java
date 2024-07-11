@@ -51,4 +51,6 @@ public class PaymentController {
         paymentService.deletePayment(id);
         return "redirect:/admin/payment";
     }
+
+
 }

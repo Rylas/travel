@@ -77,18 +77,18 @@
     color: #FF4A52;
 }
 
-#footer .contact-insta {
+#footer .contact-instagram {
     margin: 0 30px;
 }
 
-#footer .contact-insta .contact-instagram-item {
+#footer .contact-instagram .contact-instagram-item {
     display: grid;
     grid-template-columns: repeat(3, 75px);
     grid-template-rows: repeat(2, 75px);
     gap: 15px;
 }
 
-#footer .contact-insta img {
+#footer .contact-instagram img {
     border-radius: 5px;
     width: 75px;
     height: 75px;

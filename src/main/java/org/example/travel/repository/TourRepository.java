@@ -27,4 +27,24 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     Tour findByTourID(Long id);
 
     Tour findByTourIDAndStatusIsTrue(Long id);
+
+    // getRelatedTours
+    @Query("SELECT t FROM Tour t WHERE t.status = true ORDER BY t.numberBooked DESC LIMIT 8")
+    List<Tour> getRelatedTours();
+
+    // getAllPublicTours
+    @Query("SELECT t FROM Tour t WHERE t.status = true ORDER BY t.numberBooked DESC")
+    List<Tour> getAllPublicTours();
+
+    // getTotalVisitors with enterpriseId
+    @Query("SELECT SUM(t.numberViewed) FROM Tour t WHERE t.enterprise.enterpriseID = :enterpriseID")
+    Long getTotalVisitors(Long enterpriseID);
+
+    // getHotestTour with enterpriseId
+    @Query("SELECT t FROM Tour t WHERE t.enterprise.enterpriseID = :enterpriseID ORDER BY t.numberBooked DESC LIMIT 1")
+    Tour getHotestTour(Long enterpriseID);
+
+    // getListVisitorJanuaryToDecember
+    @Query("SELECT SUM(t.numberViewed) FROM Tour t WHERE MONTH(t.createdAt) = :month AND t.enterprise.enterpriseID = :enterpriseID")
+    Long getListVisitorJanuaryToDecember(int month, Long enterpriseID);
 }

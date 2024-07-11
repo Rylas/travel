@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +17,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageID;
     private String content;
-    private Date timestamp;
+    private Timestamp timestamp;
 
     @ManyToOne
     @JoinColumn(name = "chatRoomID")
@@ -28,6 +29,6 @@ public class Message {
 
     @PrePersist
     protected void onCreate() {
-        timestamp = new Date(System.currentTimeMillis());
+        timestamp = Timestamp.valueOf(LocalDateTime.now());
     }
 }

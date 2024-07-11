@@ -27,10 +27,10 @@
                     </a>
                     <ul class="sub_nav">
                         <li><a href="/blog">Blog</a></li>
-                        <li><a href="/single_blog">Single-Blog</a></li>
+                        <li><a href="/singleBlog">Single-Blog</a></li>
                     </ul>
                 </li>
-                <li><a href="/contact" style="background-color: #f1f1f1de; color: #00c961;">Contact </a>
+                <li><a href="/enterprise" style="background-color: #f1f1f1de; color: #00c961;">Enterprise </a>
                 </li>
             </ul>
         </div>
@@ -43,7 +43,7 @@
             <ul>
                 <li><a href="/">Home </a></li>
                 <li><a href="/about">About </a></li>
-                <li><a href="/destiantion">Destination </a></li>
+                <li><a href="/destination">Destination </a></li>
 
                 <li>
                     <a href="">Blog
@@ -51,10 +51,10 @@
                     </a>
                     <ul class="sub_nav">
                         <li><a href="/blog">Blog</a></li>
-                        <li><a href="/single_blog">Single-Blog</a></li>
+                        <li><a href="/singleBlog">Single-Blog</a></li>
                     </ul>
                 </li>
-                <li><a href="/contact">Contact</a></li> </a></li>
+                <li><a href="/enterprise">Enterprise</a></li> </a></li>
             </ul>
         </div>
         <%--    Kiểm tra xem người dùng có đăng nhập hay chưa để hiển thị nút đăng nhập hay là hiển thị thông tin người dùng        --%>
@@ -102,3 +102,8 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener("load", setTimeout(function () {
+        document.getElementById("loadPage").style.display = "none";
+    }, 2000));
+</script>

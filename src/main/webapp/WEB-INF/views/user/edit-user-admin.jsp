@@ -39,7 +39,7 @@
 <div class="container">
     <h2 class="text-center">Edit User</h2>
     <form action="/admin/user/edit" method="post">
-        <input type="hidden" name="userId" value="${user.userId}">
+        <input type="hidden" name="userID" value="${user.userID}">
         <div class="form-group">
             <label for="firstName">First Name</label>
             <input type="text" class="form-control" id="firstName" name="firstName" value="${user.firstName}" required>

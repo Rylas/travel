@@ -44,7 +44,7 @@ public class Booking {
     @JoinColumn(name = "tourID")
     private Tour tour;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "voucherCode")
     private Voucher voucherCode;
 

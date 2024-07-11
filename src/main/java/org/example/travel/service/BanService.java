@@ -30,7 +30,7 @@ public class BanService {
     }
 
     // Get ban by user id
-    public Ban getBanByUserId(Long userID) {
+    public Ban getBanByUserID(Long userID) {
         return banRepository.findByUserUserID(userID);
     }
 }

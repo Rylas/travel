@@ -3,7 +3,9 @@ package org.example.travel.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.travel.entity.*;
 import org.example.travel.service.*;
+import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.sql.Date;
 
 @Controller
@@ -50,10 +49,24 @@ public class TourController {
         }
         tourService.incView(id);
         Tour tour = tourService.getTourByTourIDAndStatusIsTrue(id);
+        Set<Review> listReview = tour.getReviews();
+        int totalRating = 0;
+        for (Review review : listReview) {
+            totalRating += review.getStar();
+        }
+        if (totalRating > 0) {
+            // Get 2 decimal places
+            int avgRating = (int) totalRating / listReview.size();
+            model.addAttribute("avgRating", avgRating);
+        } else {
+            model.addAttribute("avgRating", 0);
+        }
+        List<Tour> relatedTours = tourService.getRelatedTours();
         model.addAttribute("tour", tour);
-        model.addAttribute("reviews", tour.getReviews());
+        model.addAttribute("reviews", listReview);
         Set<Schedule> schedules = tour.getSchedules();
         model.addAttribute("schedules", schedules);
+        model.addAttribute("relatedTours", relatedTours);
 //        return "tour/detail-tour";
         return "element/detail";
     }
@@ -68,16 +81,8 @@ public class TourController {
 
     @GetMapping("/admin/tour")
     public String adminTour(Model model, HttpSession session, RedirectAttributes ra){
-        User user = (User) session.getAttribute("user");
-        if (user == null){
-            ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
+        if (!CheckPermission.checkEnterprise(session, ra)) {
             return "redirect:/login";
-        }
-        String role = user.getRole().getRoleName();
-        if (!Objects.equals(role, "admin")){
-
-            ra.addFlashAttribute("errorMsg", "You don't have permission to access this feature!");
-            return "redirect:/";
         }
         List<Tour> tours = tourService.getAllTours();
         model.addAttribute("tours", tours);
@@ -106,8 +111,7 @@ public class TourController {
                           @RequestParam("enterpriseID") Long enterpriseID,
                           @RequestParam("discountID") Long discountID,
                           Model model, HttpSession session, RedirectAttributes ra) throws ParseException {
-        if (session.getAttribute("user") == null) {
-            ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
+        if(!CheckPermission.checkEnterprise(session, ra)) {
             return "redirect:/login";
         }
 
@@ -175,7 +179,10 @@ public class TourController {
 
 
     @GetMapping("/admin/editTour/{id}")
-    public String editTour(@PathVariable("id") int id, Model model) {
+    public String editTour(@PathVariable("id") int id, Model model, HttpSession session, RedirectAttributes ra) {
+        if(!CheckPermission.checkEnterprise(session, ra)) {
+            return "redirect:/login";
+        }
         // Get format date YYYY-MM-DD
         model.addAttribute("enterprises", enterpriseService.getAllEnterprises());
         model.addAttribute("tour", tourService.getTourByTourID((long) id));
@@ -190,8 +197,7 @@ public class TourController {
                             @RequestParam("image-file3") MultipartFile thirdImage,
                            @RequestParam("banner-file") MultipartFile banner, @RequestParam("locations") List<Long> locationIds, Model model, HttpSession session, RedirectAttributes ra
     ) throws ParseException {
-        if (session.getAttribute("user") == null) {
-            ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
+        if (!CheckPermission.checkEnterprise(session, ra)) {
             return "redirect:/login";
         }
         if (!firstImage.isEmpty()) {
@@ -239,6 +245,9 @@ public class TourController {
     // Get parameter from URL ?id=1
     @GetMapping("/admin/deleteTour")
     public String deleteTour(@RequestParam("id") Long id, Model model, HttpSession session, RedirectAttributes ra) {
+        if (!CheckPermission.checkEnterprise(session, ra)) {
+            return "redirect:/login";
+        }
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
@@ -254,5 +263,21 @@ public class TourController {
         model.addAttribute("tours", tours);
         model.addAttribute("keyword", keyword);
         return "user/search";
+    }
+
+    @GetMapping("/destination")
+    public String destination(Model model) {
+        List<Tour> tours = tourService.getAllPublicTours();
+        model.addAttribute("tours", tours);
+        return "element/destination";
+    }
+
+    @GetMapping("/locations/more")
+    public ResponseEntity<Map<String, Object>> moreLocations(@RequestParam int offset) {
+        Map<String, Object> response = new HashMap<>();
+        List<Tour> tours = tourService.getAllPublicTours();
+        response.put("tours", tours);
+        return ResponseEntity.ok(response);
+
     }
 }

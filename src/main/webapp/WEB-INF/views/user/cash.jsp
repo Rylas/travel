@@ -56,8 +56,8 @@
                 <td>
                     <c:choose>
                         <c:when test="${booking.status == 'Pending'}">
-                            <a href="/booking/edit?id=${booking.bookingID}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="/booking/cancel?id=${booking.bookingID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel</a>
+                            <a href="/booking/edit?id=${booking.bookingID}" class="btn btn-warning btn-sm">Sửa thông tin</a>
+                            <a href="/booking/cancel?id=${booking.bookingID}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn hủy Tour?');">Hủy Tour</a>
                         </c:when>
                         <c:otherwise>
                             <span class="text-muted">${booking.status}</span>

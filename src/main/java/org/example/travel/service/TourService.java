@@ -5,6 +5,7 @@ import org.example.travel.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,10 @@ public class TourService {
     private TourRepository tourRepository;
     public List<Tour> getAllTours() {
         return tourRepository.findAll();
+    }
+
+    public List<Tour> getAllPublicTours() {
+        return tourRepository.getAllPublicTours();
     }
 
     public Tour getTourByTourID(Long id) {
@@ -63,5 +68,34 @@ public class TourService {
             tour.setNumberBooked(tour.getNumberBooked() + 1);
             tourRepository.save(tour);
         }
+    }
+
+    // getRelatedTours
+    public List<Tour> getRelatedTours() {
+        return tourRepository.getRelatedTours();
+    }
+
+    // getTotalVisitors
+    public Long getTotalVisitors(Long enterpriseID) {
+        return tourRepository.getTotalVisitors(enterpriseID) == null ? 0 : tourRepository.getTotalVisitors(enterpriseID);
+    }
+
+    // getTotalTours
+    public Long getTotalTours() {
+        return tourRepository.count();
+    }
+
+    // getHotestTour with enterpriseId
+    public Tour getHotestTour(Long enterpriseID) {
+        return tourRepository.getHotestTour(enterpriseID);
+    }
+
+    // getListVisitorJanuaryToDecember
+    public List<Long> getListVisitorJanuaryToDecember(Long enterpriseID) {
+        List<Long> listVisitorJanuaryToDecember = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            listVisitorJanuaryToDecember.add(tourRepository.getListVisitorJanuaryToDecember(i, enterpriseID) == null ? 0L : tourRepository.getListVisitorJanuaryToDecember(i, enterpriseID));
+        }
+        return listVisitorJanuaryToDecember;
     }
 }

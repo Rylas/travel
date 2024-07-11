@@ -25,6 +25,7 @@ public class Tour {
     private String thirdImage;
     private Date departureDate;
     private Date expectedDate;
+    private int duration;
     private int priceAdult;
     private int priceChild6_10;
     private int priceChild2_5;

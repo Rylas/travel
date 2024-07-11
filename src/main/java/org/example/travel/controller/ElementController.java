@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AboutController {
+public class ElementController {
     @GetMapping("/about")
     public String about() {
         return "element/about";
@@ -20,8 +20,8 @@ public class AboutController {
         return "element/blog";
     }
 
-    @GetMapping("/destination")
-    public String destination() {
-        return "element/detail";
+    @GetMapping("/singleBlog")
+    public String singleBlog() {
+        return "element/single-blog";
     }
 }

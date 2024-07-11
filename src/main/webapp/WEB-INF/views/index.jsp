@@ -61,7 +61,7 @@
 
         <%-- List all hot tour        --%>
         <c:forEach var="tour" items="${hotTours}">
-            <a href="/details/tour/${tour.tourID}" class="mySlides fade">
+            <a href="/details/tour/${tour.tourID}" class="mySlides fade" style="width: 1500px; max-height: 750px;">
                 <img src="/uploads/tour/${tour.banner}" style="width:100%;height: calc(100/3 * 2%);">
                 <div class="text">${tour.nameTour}</div>
             </a>
@@ -102,7 +102,7 @@
             <div class="popular-content">
                 <c:forEach var="location" items="${locations}" varStatus="status">
                     <c:if test="${status.index < 6}">
-                        <div class="popular-item">
+                        <div class="popular-item" style="width: 470px; height: 360px;">
                             <img src="/uploads/location/${location.banner}" alt="">
                             <br>
                             <h3>${location.nameLocation}</h3>
@@ -156,7 +156,7 @@
             <div class="popular-content">
                 <c:forEach var="tour" items="${tours}" varStatus="status">
                     <c:if test="${status.index < 6}">
-                    <div class="popular-item">
+                    <div class="popular-item" style="width: 470px; height: 360px;">
                         <img src="/uploads/tour/${tour.banner}" alt="">
                         <br>
                         <h3>${tour.nameTour}</h3>
@@ -223,11 +223,14 @@
     </div>
 
     <%@include file="material/footer.jsp" %>
+    <%@include file="material/chatWithAdmin.jsp"%>
 </div>
 
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     let offset = 0;
     const limit = 6;
@@ -332,30 +335,6 @@
 
         }
     });
-</script>
-<script>
-    function Total() {
-        let check = true;
-        //check name
-        let name = document.getElementById("name-input").value;
-        if (name.length === 0) {
-            document.getElementById('loi-ten').innerHTML = 'The input of name do not emty';
-            document.getElementById('loi-ten').style.color = 'red';
-            check = false;
-        }
-        //check phone number
-        let phone = document.getElementById("phone-input").value;
-        if (phone.length === 0) {
-            document.getElementById('loi-sdt').innerHTML = 'The input of phone number do not emty';
-            document.getElementById('loi-sdt').style.color = 'red';
-            check = false;
-        }
-        var people = document.getElementsByClassName("people-input")[0].value;
-        var child = document.getElementsByClassName("people-input")[1].value;
-        parseInt(people);
-        document.getElementById("total-number").value = people * 200 + child * 150 + 500 + "$";
-    }
-
 </script>
 <script>
     function toggleUserMenu() {

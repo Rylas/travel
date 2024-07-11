@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,12 +22,12 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
-    public List<Booking> getBookingsByUserId(Long userId) {
-        return bookingRepository.findByUserId(userId);
+    public List<Booking> getBookingsByUserID(Long userId) {
+        return bookingRepository.findByUserID(userId);
     }
 
     public List<Booking> getBookingsByUserIDStatusTrue(Long userId) {
-        return bookingRepository.findByUserIdAndStatusTrue(userId);
+        return bookingRepository.findByUserIDAndStatusTrue(userId);
     }
 
     public Booking getBookingById(Long bookingId) {
@@ -76,5 +77,53 @@ public class BookingService {
             booking.setStatus("Pending");
             bookingRepository.save(booking);
         }
+    }
+
+    // getTotalBookings
+    public Long getTotalBookings(Long enterpriseID) {
+        return bookingRepository.count();
+    }
+
+    // getTotalRevenue
+    public double getTotalRevenue(Long enterpriseID) {
+        return bookingRepository.getTotalRevenue(enterpriseID) == null ? 0 : bookingRepository.getTotalRevenue(enterpriseID);
+    }
+
+    // getTotalRevenueThisYear
+    public double getTotalRevenueThisYear(Long enterpriseID) {
+        return bookingRepository.getTotalRevenueThisYear(enterpriseID) == null ? 0 : bookingRepository.getTotalRevenueThisMonth(enterpriseID);
+    }
+
+    // getTotalRevenueThisMonth
+    public double getTotalRevenueThisMonth(Long enterpriseID) {
+        return bookingRepository.getTotalRevenueThisMonth(enterpriseID) == null ? 0 : bookingRepository.getTotalRevenueThisMonth(enterpriseID);
+    }
+
+    // getTotalRevenueToday
+    public double getTotalRevenueToday(Long enterpriseID) {
+        return bookingRepository.getTotalRevenueToday(enterpriseID) == null ? 0 : bookingRepository.getTotalRevenueToday(enterpriseID);
+    }
+
+    // getListRevenueJanuaryToDecember
+    public List<Long> getListRevenueJanuaryToDecember(Long enterpriseID) {
+        List<Long> listRevenueJanuaryToDecember = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            listRevenueJanuaryToDecember.add(bookingRepository.getListRevenueJanuaryToDecember(i, enterpriseID) == null ? 0L : bookingRepository.getListRevenueJanuaryToDecember(i, enterpriseID));
+        }
+        return listRevenueJanuaryToDecember;
+    }
+
+    //getBookingCountJanuaryToDecember
+    public List<Long> getBookingCountJanuaryToDecember(Long enterpriseID) {
+        List<Long> bookingCountJanuaryToDecember = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            bookingCountJanuaryToDecember.add(bookingRepository.getBookingCountJanuaryToDecember(i, enterpriseID) == null ? 0L : bookingRepository.getBookingCountJanuaryToDecember(i, enterpriseID));
+        }
+        return bookingCountJanuaryToDecember;
+    }
+
+    // getRecentBookings
+    public List<Booking> getRecentBookings(Long enterpriseID) {
+        return bookingRepository.getRecentBookings(enterpriseID);
     }
 }
