@@ -3,6 +3,7 @@ package org.example.travel.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.example.travel.entity.Ban;
+import org.example.travel.entity.Enterprise;
 import org.example.travel.entity.User;
 import org.example.travel.repository.UserRepository;
 import org.example.travel.service.BanService;
@@ -67,13 +68,17 @@ public class AuthenticationController {
         user.setPassword(encryptMD5(user.getPassword()));
         User userCheck = userService.login(user.getEmail(), user.getPassword());
         if (userCheck != null) {
-            Ban ban = banService.getBanByUserId(userCheck.getUserID());
+            Ban ban = banService.getBanByUserID(userCheck.getUserID());
             if (ban != null){
                 ra.addFlashAttribute("errorMsg", "Tài khoản của bạn đã bị khóa! Vui lòng liên lạc với chúng tôi qua email: example@gmail.com hoặc chat với admin để được giải quyết. Xin cảm ơn!");
                 return "redirect:/login";
             }
             if (userCheck.getIsActive()) {
                 httpSession.setAttribute("user", userCheck);
+                Enterprise enterprise = userService.getEnterpriseByUserID(userCheck.getUserID());
+                if (enterprise != null) {
+                    httpSession.setAttribute("enterprise", enterprise);
+                }
                 return "redirect:/";
             }  {
                 ra.addFlashAttribute("errorMsg", "Tài khoản chưa được kích hoạt để sử dụng");

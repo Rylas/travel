@@ -85,16 +85,20 @@
             <input type="date" class="form-control" id="endDate" name="endDate" required>
         </div>
         <div class="form-group">
+            <label for="duration">Thời gian diễn ra tour</label>
+            <input type="number" class="form-control" id="duration" name="duration" required min="1">
+        </div>
+        <div class="form-group">
             <label for="transport">Phương tiện di chuyển</label>
             <input type="text" class="form-control" id="transport" name="transport" required>
         </div>
         <div class="form-group">
             <label for="minPeople">Số khách tối thiểu (Để có thể bắt đầu một tour)</label>
-            <input type="number" class="form-control" id="minPeople" name="minPeople" required>
+            <input type="number" class="form-control" id="minPeople" name="minPeople" required min="0">
         </div>
         <div class="form-group">
             <label for="maxPeople">Số khách tối đa</label>
-            <input type="number" class="form-control" id="maxPeople" name="maxPeople" required>
+            <input type="number" class="form-control" id="maxPeople" name="maxPeople" required min="1">
         </div>
 
         <div class="form-group">
@@ -118,7 +122,7 @@
             <label for="discountID">Giảm giá</label>
             <select class="form-control" id="discountID" name="discountID" required>
                 <c:forEach var="discount" items="${discounts}">
-                    <option value="${discount.discountID}">Giảm ${discount.discountPercentage}%</option>
+                    <option value="${discount.discountID}">Giảm ${discount.discountPercentage}% (${discount.startDate} - ${discount.endDate})</option>
                 </c:forEach>
             </select>
         </div>

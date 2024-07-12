@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mable Mountains</title>
+    <title>${tour.nameTour}</title>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/fontawesome-free-6.0.0-web/css/all.min.css">
     <link rel="stylesheet" href="/css/themify-icons/themify-icons.css">
@@ -21,6 +21,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/detail.css">
+    <style>
+        .list-location {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -68,21 +74,26 @@
                 <div id="home" class="container-fluid tab-pane  active">
                     <div class="rating">
                         <div class="rating-star">
-                            <p id="rating-star-fisrt">
+                            <p id="rating-star-first">
                                     <span>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>
+                                                <c:when test="${i <= avgRating}">
+                                                    <i class="fa-solid fa-star"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="fa-regular fa-star"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
                                     </span>
                                 <span>
-                                        4.44/5 <b>Trong</b> ${tour.reviews.size()} <b>Đánh giá</b>
-                                    </span>
+                                    ${avgRating}/5 <b>Trong</b> ${tour.reviews.size()} <b>Đánh giá</b>
+                                </span>
                             </p>
                             <p id="rating-star-snd">
                                 <span><i class="fa-solid fa-eye"></i> ${tour.numberViewed}</span>
-                                <span><i class="fa-solid fa-thumbs-up"></i> 421</span>
+                                <span><i class="fa-solid fa-thumbs-up"></i> ${tour.reviews.size()}</span>
                                 <span><i class="fa-solid fa-comment"></i> ${tour.reviews.size()}</span>
                             </p>
                         </div>
@@ -129,24 +140,10 @@
                         <div class="book-btn">
                             <p>
                                 <i class="fa-solid fa-cart-plus"></i>
-                                <span>Book now</span>
+                                <a href="/bookTour/${tour.tourID}" class="btn btn-book">Đặt Tour</a>
                             </p>
                         </div>
                     </div>
-<%--                    <div style="margin-top: 10px">--%>
-<%--                        <p style="padding: 0 10px; font-size: 32px;margin: unset;color: var(--main-color);">Paying--%>
-<%--                            online here</p>--%>
-<%--                        <div class="pay">--%>
-<%--                            <p id="payment">Payment now</p>--%>
-<%--                            <div class="book-btn">--%>
-<%--                                <p>--%>
-<%--                                    <i class="fa-solid fa-cart-plus"></i>--%>
-<%--                                    <span>Book now</span>--%>
-<%--                                </p>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
                     <div class="social-contact">
                         <span><i class="fa-brands fa-instagram-square"></i></span>
                         <span><i class="fa-brands fa-facebook-square"></i></span>
@@ -164,24 +161,33 @@
     </div>
 </div>
 <div  class="container-fluid ">
-    <h2 class="textinfo">
-        Tour price includes
+    <h2 class="textInfo">
+        Mô tả
+        <i id="description-btn" class="fas fa-angle-up "></i>
+    </h2>
+    <div id="description-btn-include" class="container-fluid">
+        <p>
+            ${tour.description}
+        </p>
+    </div>
+
+    <h2 class="textInfo">
+        Giá tour bao gồm
         <i id="tour-include-btn" class="fas fa-angle-up "></i>
     </h2>
     <div id="tour-include" class="active container-fluid pane">
         <p>
             <i class="fa-solid fa-check"></i>
-            Sightseeing bus (16, 29, 35, 45 seats depending on the number of guests) according to
-            the program
+            Xe đưa đón tham quan (16, 29, 35, 45 chỗ tùy theo số lượng khách) theo chương trình.
         </p>
 
         <p>
             <i class="fa-solid fa-check"></i>
-            Round-trip airfare Da Nang - Phu Quac
+            Vé máy bay khứ hồi.
         </p>
         <p>
             <i class="fa-solid fa-check"></i>
-            Free 15 kg checked baggage & 7 kg hand luggage
+            Miễn phí 15kg hành lý ký gửi và 7kg hành lý xách tay.
         </p>
         <p class="ms-3">
             <i class="fa-solid fa-wifi"></i>
@@ -189,35 +195,35 @@
         </p>
         <p class="ms-3">
             <i class="fa-solid fa-person-swimming"></i>
-            Poor
+            Bể bơi
         </p>
         <p class="ms-3">
             <i class="fa-solid fa-sun"></i>
-            Air conditioning
+            Điều hòa không khí
         </p>
         <p class="ms-3">
             <i class="fa-solid fa-bacon"></i>
-            Breakfast included
+            Bao gồm bữa sáng
         </p>
         <p>
             <i class="fa-solid fa-check"></i>
-            Standard hotel 2 guests / room or 3 guests / room
+            Khách sạn tiêu chuẩn 2 khách/phòng hoặc 3 khách/phòng
         </p>
         <p>
             <i class="fa-solid fa-check"></i>
-            Sightseeing tickets according to the program
+            Vé tham quan theo chương trình
         </p>
         <p>
             <i class="fa-solid fa-check"></i>
-            Main meals according to the program from 5.5$-10$ VND
+            Các bữa ăn chính theo chương trình từ 100.000 - 200.000 VNĐ/người/bữa
         </p>
         <p>
             <i class="fa-solid fa-check"></i>
-            Travel insurance with the highest compensation 5000$/case
+            Bảo hiểm du lịch với mức bồi thường cao nhất 20.000.000 VNĐ/vụ
         </p>
     </div>
 
-    <h2 class="textinfo">
+    <h2 class="textInfo">
         Giá tour không bao gồm
         <i id="tour-not-include-btn" class="fas fa-angle-down "></i>
     </h2>
@@ -234,7 +240,7 @@
     </div>
 
 
-    <h2 class="textinfo">
+    <h2 class="textInfo">
         Lịch trình tham quan
         <i id="tour-schedule-btn" class="fas fa-angle-down "></i>
     </h2>
@@ -263,8 +269,21 @@
         </table>
     </div>
 
+    <h2 class="textInfo">
+        Các địa điểm tham quan
+        <i id="tour-location-btn" class="fas fa-angle-down "></i>
+    </h2>
+    <div id="tour-location" class="container-fluid">
+        <ul class="list-group">
+            <c:forEach var="location" items="${tour.locations}">
+                <li class="list-group-item">
+                    <a class="list-location" href="/details/location/${location.locationID}">${location.nameLocation}</a>
+                </li>
+            </c:forEach>
+        </ul>
+    </div>
 
-    <h2 class="textinfo">
+    <h2 class="textInfo">
         Điều kiện hủy tour
 
         <i id="tour-condition-cancel-btn" class="fas fa-angle-down "></i>
@@ -290,202 +309,75 @@
         </p>
         <p>
             <i class="fa-solid fa-check"></i>
-            If the tour is canceled within 08-11 days before the departure date: Tour cancellation
-            cost: 50% of the tour price.
-
-
-        </p>
-        <p>
-            <i class="fa-solid fa-check"></i>
             Nếu hủy tour trong vòng 08-11 ngày trước ngày khởi hành: Chi phí huỷ tour: 50% giá tour.
         </p>
     </div>
 </div>
 <div id="menu2" class="container-fluid">
     <div class="row">
-        <div class="col-8">
-            <h2>Thêm đánh giá</h2>
-            <div class="cmt-rating mb-3">
-                <input type="radio" name="star" id="1"><label for="1"></label>
-                <input type="radio" name="star" id="2"><label for="2"></label>
-                <input type="radio" name="star" id="3"><label for="3"></label>
-                <input type="radio" name="star" id="4"><label for="4"></label>
-                <input type="radio" name="star" id="5"><label for="5"></label>
+        <c:if test="${checkTour == true}">
+            <form action="/review/add" method="post" class="col-8">
+                <input type="hidden" name="tourID" value="${tour.tourID}">
+                <h2>Thêm đánh giá</h2>
+                <div class="cmt-rating mb-3">
+                    <input type="radio" name="star" id="1" value="1"><label for="1"></label>
+                    <input type="radio" name="star" id="2" value="2"><label for="2"></label>
+                    <input type="radio" name="star" id="3" value="3"><label for="3"></label>
+                    <input type="radio" name="star" id="4" value="4"><label for="4"></label>
+                    <input type="radio" name="star" id="5" value="5"><label for="5"></label>
 
 
+                </div>
+                <textarea name="" id="textarea1" cols="15" rows="10" placeholder="Đánh giá của bạn?"></textarea>
+                <div class="btn-gr ">
+                    <button class="cmt-btn-1 btn btn-danger">Hủy</button>
+                    <button class="cmt-btn-2 btn btn-info ms-3">Gửi đánh giá</button>
+                </div>
+
+            </form>
+        </c:if>
+        <c:if test="${checkTour != true}">
+            <div class="mt-4">
+                <h4>Thêm đánh giá của riêng bạn</h4>
+                <p>Bạn phải đặt Tour thì mới có thể thêm đánh giá. Hãy đặt tour ngay nào!</p>
             </div>
-            <textarea name="" id="textarea1" cols="15" rows="10" placeholder="What is your comments?"></textarea>
-            <div class="btn-gr ">
-                <button class="cmt-btn-1 btn btn-danger">Cancel</button>
-                <button class="cmt-btn-2 btn btn-info ms-3">Send</button>
+        </c:if>
 
-            </div>
-
-        </div>
     </div>
 
     <div class="row mt-3">
         <div class="col-12">
-            <h3>Unread comments(5)</h3>
-            <div class="cmt-detail mb-3">
-                <div class="cmt-detail-userdate">
-                    <div class="cmt-user">
-                        <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
-                        <div class="ms-3 cmt-user-decript">
-                            <h5>Ngoc Linh</h4>
-                                <p>Good tour</p>
+            <h3>Danh sách đánh giá (${reviews.size()})</h3>
+            <c:forEach var="review" items="${reviews}">
+                <div class="cmt-detail mb-3">
+                    <div class="cmt-detail-userDate">
+                        <div class="cmt-user">
+                            <img src="/uploads/${review.user.avatar}" alt="">
+                            <div class="ms-3 cmt-user-decript">
+                                <h5>${review.user.firstName} ${review.user.lastName}</h5>
+                                <p>${review.content}</p>
+                            </div>
                         </div>
-                    </div>
                     <div class="cmt-date">
-                        <p>20/08/2021 20:30:19</p>
+                        <p><fmt:formatDate value="${review.createdAt}" pattern="dd/MM/yyyy"/></p>
                     </div>
                 </div>
 
                 <div class="cmt-user-rating">
                     <div class="user-rating">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div class="user-action">
-                        <p>
-                            <span>Remove</span>
-                            <span>|</span>
-                            <span>Reply</span>
-                        </p>
+                        <c:forEach var="i" begin="1" end="5">
+                            <c:choose>
+                                <c:when test="${i <= review.star}">
+                                    <i class="fa-solid fa-star"></i>
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="fa-regular fa-star"></i>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
                     </div>
                 </div>
-            </div>
-
-            <div class="cmt-detail mb-3">
-                <div class="cmt-detail-userdate">
-                    <div class="cmt-user">
-                        <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
-                        <div class="ms-3 cmt-user-decript">
-                            <h5>Gia Bao</h4>
-                                <p>I have fun</p>
-                        </div>
-                    </div>
-                    <div class="cmt-date">
-                        <p>20/06/2022 10:30:19</p>
-                    </div>
-                </div>
-
-                <div class="cmt-user-rating">
-                    <div class="user-rating">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div class="user-action">
-                        <p>
-                            <span>Remove</span>
-                            <span>|</span>
-                            <span>Reply</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cmt-detail mb-3">
-                <div class="cmt-detail-userdate">
-                    <div class="cmt-user">
-                        <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
-                        <div class="ms-3 cmt-user-decript">
-                            <h5>Co Thieu Hoang</h4>
-                                <p>Let enjoy this moments</p>
-                        </div>
-                    </div>
-                    <div class="cmt-date">
-                        <p>12/06/2021 15:30:19</p>
-                    </div>
-                </div>
-
-                <div class="cmt-user-rating">
-                    <div class="user-rating">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div class="user-action">
-                        <p>
-                            <span>Remove</span>
-                            <span>|</span>
-                            <span>Reply</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cmt-detail mb-3">
-                <div class="cmt-detail-userdate">
-                    <div class="cmt-user">
-                        <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
-                        <div class="ms-3 cmt-user-decript">
-                            <h5>Khanh Duy</h4>
-                                <p>Good tour</p>
-                        </div>
-                    </div>
-                    <div class="cmt-date">
-                        <p>24/04/2021 12:30:19</p>
-                    </div>
-                </div>
-
-                <div class="cmt-user-rating">
-                    <div class="user-rating">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div class="user-action">
-                        <p>
-                            <span>Remove</span>
-                            <span>|</span>
-                            <span>Reply</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cmt-detail mb-3">
-                <div class="cmt-detail-userdate">
-                    <div class="cmt-user">
-                        <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="">
-                        <div class="ms-3 cmt-user-decript">
-                            <h5>MarkZegbuck</h4>
-                                <p>It so perfect </p>
-                        </div>
-                    </div>
-                    <div class="cmt-date">
-                        <p>20/08/2021 20:30:19</p>
-                    </div>
-                </div>
-
-                <div class="cmt-user-rating">
-                    <div class="user-rating">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div class="user-action">
-                        <p>
-                            <span>Remove</span>
-                            <span>|</span>
-                            <span>Reply</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
 </div>
@@ -497,155 +389,35 @@
     </div>
     <div class="row p-3">
         <div class="tour-sliders">
-            <div id="item1" class="slider-item m-3">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1629099390/image/w0goopi0a6dbhqi9aac3.jpg" alt="">
-                <div class="slide-item-content">
-                    <h3>Hang Nga Villa</h3>
-                    <div class="slide-item-decript">
-                        <p>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span style="color: white; margin-left: 76px;">4 customers review</span>
-                        </p>
-                        <p><span>Time Long: </span><span>4 days</span></p>
-                        <p><span>Start place: </span><span>Ho Chi Minh city</span></p>
-                        <p><span>Remaining Tours: </span><span>5</span></p>
-                        <p><span>Transport: </span><span><i class="fa-solid fa-plane-departure"></i>Plain</span></p>
-                        <p style="display: flex;">
-                            <button class="btn btn-info" style="margin-left: auto">Details</button>
-                        </p>
-                    </div>
+            <c:forEach var="relatedTour" items="${relatedTours}">
+                <a href="/details/tour/${relatedTour.tourID}" id="item1" class="slider-item m-3" style="max-height: 400px">
+                    <img src="/uploads/tour/${relatedTour.banner}" alt="">
+                    <div class="slide-item-content">
+                        <h4>${relatedTour.nameTour}</h4>
+                        <div class="slide-item-description">
+                            <p>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span><i class="fa-solid fa-star"></i></span>
+                                <span style="color: white; margin-left: 76px;">${relatedTour.numberBooked} đánh giá</span>
+                            </p>
+                            <p><span>Thời gian: </span><span>${relatedTour.duration} ngày ${relatedTour.duration} đêm</span></p>
+<%--                            <p><span>Nơi khởi hành: </span><span>${relatedTour.locations[0].nameLocation}</span></p>--%>
+                            <p><span>Số khách đã book: </span><span>${relatedTour.numberBooked}</span></p>
+                            <p><span>Phương tiện: </span><span><i class="fa-solid fa-plane-departure"></i>${relatedTour.transport}</span></p>
+                            <p><span>Giá: </span><span><fmt:formatNumber value="${relatedTour.priceAdult}"/>đ</span></p>
 
-                </div>
-                <div class="slide-price">200$</div>
-            </div>
-            <div id="item2" class="slider-item m-3">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1629099823/image/sbzk9ab3edhl6jo4tybe.jpg" alt="">
-                <div class="slide-item-content">
-                    <h3>Truc Lam Template</h3>
-                    <div class="slide-item-decript">
-                        <p>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span style="color: white; margin-left: 76px;">4 customers review</span>
-                        </p>
-                        <p><span>Time Long: </span><span>4 days</span></p>
-                        <p><span>Start place: </span><span>Ho Chi Minh city</span></p>
-                        <p><span>Remaining Tours: </span><span>5</span></p>
-                        <p><span>Transport: </span><span><i class="fa-solid fa-plane-departure"></i>Plain</span></p>
-                        <p style="display: flex;">
-                            <button class="btn btn-info" style="margin-left: auto">Details</button>
-                        </p>
-                    </div>
-                </div>
-                <div class="slide-price">400$</div>
-            </div>
-            <div id="item3" class="slider-item m-3">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628990210/image/vqnhbdkuegik6nvak7mv.jpg" alt="">
-                <div class="slide-item-content">
-                    <h3>Ban Co peak</h3>
-                    <div class="slide-item-decript">
-                        <p>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span style="color: white; margin-left: 76px;">4 customers review</span>
-                        </p>
-                        <p><span>Time Long: </span><span>4 days</span></p>
-                        <p><span>Start place: </span><span>Ho Chi Minh city</span></p>
-                        <p><span>Remaining Tours: </span><span>5</span></p>
-                        <p><span>Transport: </span><span><i class="fa-solid fa-plane-departure"></i>Plain</span></p>
-                        <p style="display: flex;">
-                            <button class="btn btn-info" style="margin-left: auto">Details</button>
-                        </p>
-                    </div>
+                            <p style="display: flex;">
+                                <button class="btn btn-info" style="margin-left: auto">Xem chi tiết</button>
+                            </p>
+                        </div>
 
-                </div>
-                <div class="slide-price">500$</div>
-            </div>
-            <div id="item4" class="slider-item m-3">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628942113/image/bbwusm2koecqzfzck74c.jpg" alt="">
-                <div class="slide-item-content">
-                    <h3>Phu Quoc island</h3>
-                    <div class="slide-item-decript">
-                        <p>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span style="color: white; margin-left: 76px;">4 customers review</span>
-                        </p>
-                        <p><span>Time Long: </span><span>4 days</span></p>
-                        <p><span>Start place: </span><span>Ho Chi Minh city</span></p>
-                        <p><span>Remaining Tours: </span><span>5</span></p>
-                        <p><span>Transport: </span><span><i class="fa-solid fa-plane-departure"></i>Plain</span></p>
-                        <p style="display: flex;">
-                            <button class="btn btn-info" style="margin-left: auto">Details</button>
-                        </p>
                     </div>
-
-                </div>
-                <div class="slide-price">300$</div>
-            </div>
-            <div id="item5" class="slider-item m-3">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1629100234/image/xqomv3qdcxgnyoajw87y.jpg" alt="">
-                <div class="slide-item-content">
-                    <h3>Ha Long bay</h3>
-                    <div class="slide-item-decript">
-                        <p>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span style="color: white; margin-left: 76px;">4 customers review</span>
-                        </p>
-                        <p><span>Time Long: </span><span>4 days</span></p>
-                        <p><span>Start place: </span><span>Ho Chi Minh city</span></p>
-                        <p><span>Remaining Tours: </span><span>5</span></p>
-                        <p><span>Transport: </span><span><i class="fa-solid fa-plane-departure"></i>Plain</span></p>
-                        <p style="display: flex;">
-                            <button class="btn btn-info" style="margin-left: auto">Details</button>
-                        </p>
-                    </div>
-
-                </div>
-                <div class="slide-price">250$</div>
-            </div>
-            <div id="item6" class="slider-item m-3">
-                <img src="https://banahills.sunworld.vn/wp-content/uploads/2018/08/lam-mua-lam-gio-tai-viet-nam-chua-du-cau-vang-tiep-tuc-chinh-phuc-the-gioi-1206-768x432.jpg" alt="">
-                <div class="slide-item-content">
-                    <h3>Ba Na Hills</h3>
-                    <div class="slide-item-decript">
-                        <p>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span><i class="fa-solid fa-star"></i></span>
-                            <span style="color: white; margin-left: 76px;">4 customers review</span>
-                        </p>
-                        <p><span>Time Long: </span><span>4 days</span></p>
-                        <p><span>Start place: </span><span>Ho Chi Minh city</span></p>
-                        <p><span>Remaining Tours: </span><span>5</span></p>
-                        <p><span>Transport: </span><span><i class="fa-solid fa-plane-departure"></i>Plain</span></p>
-                        <p style="display: flex;">
-                            <button class="btn btn-info" style="margin-left: auto">Details</button>
-                        </p>
-                    </div>
-
-                </div>
-                <div class="slide-price">300$</div>
-            </div>
+                    <div class="slide-price">HOT</div>
+                </a>
+            </c:forEach>
 
         </div>
     </div>

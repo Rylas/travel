@@ -303,7 +303,7 @@
 
 }
 
-.about-me-decript{
+.about-me-description {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -334,7 +334,6 @@
 
 #content #about-me .about-me-img {
     display: flex;
-    padding: auto;
     width: 100%;
     height: 50%;
 }
@@ -350,7 +349,6 @@
 
 #content #about-me button,
 #content .news-content-text button {
-    margin-bottom: 10;
     appearance: none;
     background-color: transparent;
     border: 2px solid #1A1A1A;
@@ -419,7 +417,6 @@
 
 #tour-news {
     width: 100%;
-    display: inline-block;
     display: grid;
     padding: 20px;
     grid-template-columns: 2fr 2fr 3fr;

@@ -30,26 +30,9 @@ a {
 }
 
 :root {
-    --font-text: font-family: -apple-system,
-        system-ui,
-        system-ui,
-        "Segoe UI",
-        Roboto,
-        "Helvetica Neue",
-        "Fira Sans",
-        Ubuntu,
-        Oxygen,
-        "Oxygen Sans",
-        Cantarell,
-        "Droid Sans",
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Lucida Grande",
-        Helvetica,
-        Arial,
-        sans-serif;
+    --font-text: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
 
 #loadPage {
     position: fixed;
@@ -267,29 +250,13 @@ a {
     color: white;
 }
 
-.contact-insta img {
+.contact-instagram img {
     border-radius: 5px;
     width: 75px;
     height: 75px;
 }
 
 
-
-#loginform {
-    /* visibility:hidden; */
-    display: flex;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgb(76 76 76 / 23%);
-    z-index: 1000;
-    /* display: flex; */
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
 
 #login>div {
     position: relative;
@@ -552,21 +519,6 @@ form {
     text-align: center;
 }
 
-#signup {
-    position: absolute !important;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 400px;
-    height: 500px;
-    background: url(../img/login.jpg);
-    background-size: cover;
-    border-radius: 30px;
-    position: relative;
-    color: black;
-    box-shadow: 1px 1px 8px rgb(0 0 0 / 31%);
-}
 
 #signup button {
     margin-top: 5px;

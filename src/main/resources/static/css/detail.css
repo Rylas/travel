@@ -58,9 +58,9 @@
 .nav-item.active{
     color: var(--main-color);
     border-style: solid;
-    border-top: 100% 1px #ccc;
-    border-left: 100% 1px #ccc;
-    border-right: 100% 1px #ccc;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
     border-bottom: 0;
     border-radius: 15px;
 }
@@ -71,12 +71,12 @@
 }
 .rating-star{
 }
-#rating-star-fisrt{
+#rating-star-first{
     display: flex;
     justify-content: space-between;
 }
 
-#rating-star-fisrt i{
+#rating-star-first i{
     color: rgb(228, 172, 17);
 }
 #rating-star-snd{
@@ -132,11 +132,11 @@
 }
 .pay .book-btn:hover p{
     color: var(--main-color);
-    animation: btnanimate 1s linear;
+    animation: btnAnimate 1s linear;
     /* opacity: 0.7; */
 }
 
-@keyframes btnanimate {
+@keyframes btnAnimate {
     0%{
         transform: rotateZ(0) scale3d(0.5,0.75,0.5);
     }
@@ -185,14 +185,14 @@
     /*max-height: 630px;*/
     /*overflow-y: scroll;*/
 }
-.textinfo{
+.textInfo{
     display: flex;
     justify-content: space-between;
     align-content: center;
     padding: 10px;
     border: 1px dashed var(--main-color);
 }
-.textinfo{
+.textInfo{
     color: var(--main-color) !important;
 }
 #tour-include,#tour-not-include,#tour-condition-cancel{
@@ -255,7 +255,7 @@
 }
 .cmt-rating label::before{
     content: '\f005';
-    font-family: fontAwesome;
+    font-family: fontAwesome, serif;
     color: #ccc;
 }
 .cmt-rating label::after{
@@ -263,7 +263,7 @@
     top: 0;
     left: 0;
     content: '\f005';
-    font-family: fontAwesome;
+    font-family: fontAwesome, serif;
     opacity: 0;
     color: var(--main-color);
 }
@@ -290,7 +290,7 @@
     padding: 14px;
     font-weight: 500;
 }
-.cmt-detail-userdate,.cmt-user-rating{
+.cmt-detail-userDate,.cmt-user-rating{
     display: flex;
     justify-content: space-between;
 }
@@ -352,7 +352,7 @@
     transition: transform 0.75s ease-in;
     transform: translateY(0);
 }
-.slider-item:hover .slide-item-content .slide-item-decript{
+.slider-item:hover .slide-item-content .slide-item-description{
     transition: opacity 1s linear;
     opacity: 1;
 }
@@ -397,10 +397,10 @@
     border-color:  transparent var(--main-color);
     
 }
-.slide-item-content .slide-item-decript{
+.slide-item-content .slide-item-description {
     opacity: 0;
 }
-.slide-item-content .slide-item-decript i{
+.slide-item-content .slide-item-description i{
     color: var(--main-color);
 }
 .slide-item-content h3{
@@ -417,12 +417,12 @@
     height: 6px;
     background-color: var(--main-color);
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 0;
     transition: width linear 0.75s;
     border-radius: 3px;
 }
-.slide-item-decript p span:last-child{
+.slide-item-description p span:last-child{
     margin-left: 10px;
     color: wheat;
     font-weight: 600;

@@ -6,7 +6,7 @@ CREATE TABLE roles (
 
 
 CREATE TABLE users (
-                       userId BIGINT PRIMARY KEY AUTO_INCREMENT,
+                       userID BIGINT PRIMARY KEY AUTO_INCREMENT,
                        firstName VARCHAR(255),
                        lastName VARCHAR(255),
                        email VARCHAR(255) NOT NULL UNIQUE,
@@ -29,6 +29,6 @@ CREATE TABLE bans (
                       reason VARCHAR(255),
                       createdAt DATE,
                       updatedAt DATE,
-                      userId BIGINT,
-                      FOREIGN KEY (userId) REFERENCES users (userId)
+                      userID BIGINT,
+                      FOREIGN KEY (userId) REFERENCES users (userID)
 );

@@ -1,11 +1,13 @@
 package org.example.travel.service;
 
 import org.example.travel.entity.Ban;
+import org.example.travel.entity.Enterprise;
 import org.example.travel.entity.User;
 import org.example.travel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,8 +49,8 @@ public class UserService {
         userRepository.updateAvatar(user.getUserID(), user.getAvatar());
     }
 
-    public void updateEnterprise(Long userId, Long enterpriseId) {
-        userRepository.updateEnterprise(userId, enterpriseId);
+    public void updateEnterprise(Long userID, Long enterpriseId) {
+        userRepository.updateEnterprise(userID, enterpriseId);
     }
 
     public void deleteUser(Long id) {
@@ -67,4 +69,15 @@ public class UserService {
     public void unbanUser(Long userID) {
         banService.unbanUser(userID);
     }
+
+    // getEnterpriseByUserID
+    public Enterprise getEnterpriseByUserID(Long userID) {
+        return userRepository.getEnterpriseByUserID(userID);
+    }
+
+    // getNewUsersEnterprise with enterpriseId
+    public List<User> getNewUsersOfEnterprise(Long enterpriseID) {
+            return userRepository.getNewUsersEnterprise(enterpriseID);
+    }
+
 }

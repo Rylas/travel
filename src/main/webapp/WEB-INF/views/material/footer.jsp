@@ -33,7 +33,7 @@
             <li><a href="#">Ha Giang</a></li>
         </ul>
     </div>
-    <div class="contact-insta">
+    <div class="contact-instagram">
         <div class="contact-instagram-item">
             <img src="/img/img1.jpg" alt="">
             <img src="/img/img2.jpg" alt="">

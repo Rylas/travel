@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,18 +28,18 @@
     <div id="slider">
             <span>
                 <h3>
-                    Destination
+                    Tour nổi bật
                 </h3>
                 <span>
-                    Interesting places everywhere,suitable for everyone
+                    Địa điểm thú vị ở mọi nơi, phù hợp với mọi người
                 </span>
             </span>
     </div>
     <div id="content">
         <div id="where-togo">
-            <h3>Where you want to go?</h3>
-            <input type="text" placeholder="Where to go? ">
-            <input type="" placeholder="Date">
+            <h3>Hãy cho tôi biết nơi bạn muốn đi?</h3>
+            <input type="text" placeholder="Nơi bạn muốn đến?" style="padding-left: 10px" name="locationName">
+            <input type="date" placeholder="Date" name="date">
             <select name="" id="">
                 <option value="" aria-placeholder="Travel type">Travel Type</option>
                 <option value="">Some option</option>
@@ -45,295 +47,69 @@
             </select>
             <div class="search-btn">
                 <button class="btn">
-                    Search
+                    Tìm kiếm
                 </button>
 
             </div>
         </div>
         <div id="content-area">
-            <div class="content-item">
-                <img src="/img/des_content1.jpg" alt="">
-                <a href="#">$500</a>
-                <div class="plan">
-                    <div class="plan-title">
-                        <span>Da Nang</span>
-                    </div>
-                    <div class="plan-tour">
-                        <p>
-                            Time Long:
-                            <span style="color: #1ec6b6; ">Two days one night</span>
-                        </p>
-                        <p>
-                            Start Place:
-                            <span style="color: #1ec6b6;">Thua Thien Hue</span>
-                        </p>
-                        <p>
-                            Transport:
-                            <span style="color: #1ec6b6; margin-right: 0.5em;">Plane
+            <c:forEach var="tour" items="${tours}">
+                <div class="content-item" style="height: 470px; min-width: 350px">
+                    <img src="/uploads/tour/${tour.banner}" alt="">
+                    <a href="#">Hot</a>
+                    <div class="plan">
+                        <div class="plan-title">
+                            <span>${tour.nameTour}</span>
+                        </div>
+                        <div class="plan-tour">
+                            <p>
+                                Thời gian:
+                                <span style="color: #1ec6b6; ">${tour.duration} ngày ${tour.duration - 1} đêm</span>
+                            </p>
+                            <p>
+                                Giá:
+                                <span style="color: #1ec6b6;"><fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</span>
+                            </p>
+                            <p>
+                                Phương tiện:
+                                <span style="color: #1ec6b6; margin-right: 0.5em;">${tour.transport}
                                     <i class="fa-solid fa-plane"></i></span>
-                        </p>
-                        <div class="book-now">
-                            <button class="book">
-                                Book Now
-                            </button>
+                            </p>
+                            <div class="book-now">
+                                <button class="book">
+                                    Đặt ngay
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="item-text">
-                    <h3>Da Nang</h3>
-                    <span class="country">Viet Nam</span> <br>
-                    <span class="star">
+                    <div class="item-text">
+                        <h3>${tour.nameTour}</h3>
+                        <span class="country">${tour.numberBooked} khách hàng</span> <br>
+                        <span class="star">
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                         </span>
-                    <span class="review">
-                            (20 review)
+                        <span class="review">
+                            (${tour.reviews.size()} review)
                         </span>
-                    <span class="day">
+                        <span class="day">
                             <i class="fa-solid fa-clock"></i>
-                            5 Days
+                            ${tour.duration} ngày
                         </span>
-                </div>
-            </div>
-            <div class="content-item">
-                <img src="/img/dalat_popular.jpg" alt="">
-                <a href="#">$500</a>
-                <div class="plan">
-                    <div class="plan-title">
-                        <span>Da Lat</span>
-                    </div>
-                    <div class="plan-tour">
-                        <p>
-                            Time Long:
-                            <span style="color: #1ec6b6; ">Two days one night</span>
-                        </p>
-                        <p>
-                            Start Place:
-                            <span style="color: #1ec6b6;">Thua Thien Hue</span>
-                        </p>
-                        <p>
-                            Transport:
-                            <span style="color: #1ec6b6;">Plane
-                                    <i class="fa-solid fa-plane"></i></span>
-                        </p>
-                        <div class="book-now">
-                            <button class="book">
-                                Book Now
-                            </button>
-                        </div>
                     </div>
                 </div>
-                <div class="item-text">
-                    <h3>Da Lat</h3>
-                    <span class="country">Viet Nam</span> <br>
-                    <span class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </span>
-                    <span class="review">
-                            (20 review)
-                        </span>
-                    <span class="day">
-                            <i class="fa-solid fa-clock"></i>
-                            5 Days
-                        </span>
+            </c:forEach>
+            <c:if test="${tours.size() > 6}">
+                <div class="search-btn">
+                    <button class="btn" id="more-btn">
+                        More Location
+                    </button>
                 </div>
-            </div>
-            <div class="content-item">
-                <img src="/img/ninhthuab-popular.webp" alt="">
-                <a href="#">$500</a>
-                <div class="plan">
-                    <div class="plan-title">
-                        <span>Nha Trang</span>
-                    </div>
-                    <div class="plan-tour">
-                        <p>
-                            Time Long:
-                            <span style="color: #1ec6b6; ">Two days one night</span>
-                        </p>
-                        <p>
-                            Start Place:
-                            <span style="color: #1ec6b6;">Thua Thien Hue</span>
-                        </p>
-                        <p>
-                            Transport:
-                            <span style="color: #1ec6b6;">Plane
-                                    <i class="fa-solid fa-plane"></i></span>
-                        </p>
-                        <div class="book-now">
-                            <button class="book">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-text">
-                    <h3>Nha Trang</h3>
-                    <span class="country">Viet Nam</span> <br>
-                    <span class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </span>
-                    <span class="review">
-                            (20 review)
-                        </span>
-                    <span class="day">
-                            <i class="fa-solid fa-clock"></i>
-                            5 Days
-                        </span>
-                </div>
-            </div>
-            <div class="content-item">
-                <img src="/img/ha-giang.jpg" alt="">
-                <a href="#">$500</a>
-                <div class="plan">
-                    <div class="plan-title">
-                        <span>Ha Giang</span>
-                    </div>
-                    <div class="plan-tour">
-                        <p>
-                            Time Long:
-                            <span style="color: #1ec6b6; ">Two days one night</span>
-                        </p>
-                        <p>
-                            Start Place:
-                            <span style="color: #1ec6b6;">Thua Thien Hue</span>
-                        </p>
-                        <p>
-                            Transport:
-                            <span style="color: #1ec6b6;">Plane
-                                    <i class="fa-solid fa-plane"></i></span>
-                        </p>
-                        <div class="book-now">
-                            <button class="book">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-text">
-                    <h3>Ha Giang</h3>
-                    <span class="country">Viet Nam</span> <br>
-                    <span class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </span>
-                    <span class="review">
-                            (20 review)
-                        </span>
-                    <span class="day">
-                            <i class="fa-solid fa-clock"></i>
-                            5 Days
-                        </span>
-                </div>
-            </div>
-            <div class="content-item">
-                <img src="/img/phuquoc-popular.jpg" alt="">
-                <a href="#">$500</a>
-                <div class="plan">
-                    <div class="plan-title">
-                        <span>Phu Quoc</span>
-                    </div>
-                    <div class="plan-tour">
-                        <p>
-                            Time Long:
-                            <span style="color: #1ec6b6; ">Two days one night</span>
-                        </p>
-                        <p>
-                            Start Place:
-                            <span style="color: #1ec6b6;">Thua Thien Hue</span>
-                        </p>
-                        <p>
-                            Transport:
-                            <span style="color: #1ec6b6;">Plane
-                                    <i class="fa-solid fa-plane"></i></span>
-                        </p>
-                        <div class="book-now">
-                            <button class="book">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-text">
-                    <h3>Phu Quoc</h3>
-                    <span class="country">Viet Nam</span> <br>
-                    <span class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </span>
-                    <span class="review">
-                            (20 review)
-                        </span>
-                    <span class="day">
-                            <i class="fa-solid fa-clock"></i>
-                            5 Days
-                        </span>
-                </div>
+            </c:if>
 
-            </div>
-            <div class="content-item">
-                <img src="/img/Sapa-popular.jpg" alt="">
-                <a href="#">$500</a>
-                <div class="plan">
-                    <div class="plan-title">
-                        <span>Sa Pa</span>
-                    </div>
-                    <div class="plan-tour">
-                        <p>
-                            Time Long:
-                            <span style="color: #1ec6b6; ">Two days one night</span>
-                        </p>
-                        <p>
-                            Start Place:
-                            <span style="color: #1ec6b6;">Thua Thien Hue</span>
-                        </p>
-                        <p>
-                            Transport:
-                            <span style="color: #1ec6b6;">Plane
-                                    <i class="fa-solid fa-plane"></i></span>
-                        </p>
-                        <div class="book-now">
-                            <button class="book">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-text">
-                    <h3>SaPa</h3>
-                    <span class="country">Viet Nam</span> <br>
-                    <span class="star">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </span>
-                    <span class="review">
-                            (20 review)
-                        </span>
-                    <span class="day">
-                            <i class="fa-solid fa-clock"></i>
-                            5 Days
-                        </span>
-                </div>
-            </div>
             <div class="search-btn">
                 <button class="btn">
                     More Place
@@ -343,7 +119,7 @@
         </div>
         <div id="share-story">
             <div class="share-text">
-                <h3>Share Your Story</h3>
+                <h3>Chia sẻ chuyến đi của bạn</h3>
             </div>
             <div class="share-img">
                 <div class="story-item">

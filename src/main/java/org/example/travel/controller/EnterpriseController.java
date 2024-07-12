@@ -5,6 +5,7 @@ import org.example.travel.entity.Enterprise;
 import org.example.travel.entity.User;
 import org.example.travel.service.EnterpriseService;
 import org.example.travel.service.FileStorageService;
+import org.example.travel.service.StatisticsService;
 import org.example.travel.service.UserService;
 import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Objects;
+
 
 @Controller
 public class EnterpriseController {
@@ -30,6 +33,8 @@ public class EnterpriseController {
 
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private StatisticsService statisticsService;
 
     @GetMapping("/enterprise")
     public String enterprise(HttpSession session, RedirectAttributes ra) {
@@ -37,7 +42,38 @@ public class EnterpriseController {
             ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
         }
-        return "add";
+        if (session.getAttribute("enterprise") != null) {
+            return "redirect:/enterprise/dashboard";
+        }
+        return "enterprise/registerEnterprise";
+    }
+
+    @PostMapping("/enterprise")
+    public String registerEnterprise(Enterprise enterprise, @RequestParam("logo-file") MultipartFile image,
+                                     @RequestParam("banner-file") MultipartFile banner, HttpSession session, RedirectAttributes ra) {
+        if (!image.isEmpty()) {
+            // Generate a random name for the image
+            String imageName = fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
+            // Store the image in the file storage
+            String imagePath = fileStorageService.storeFile(image, imageName, "images/enterprise/");
+            // Set the image path to the enterprise object
+            enterprise.setLogo(imagePath);
+        }
+
+        if (!banner.isEmpty()) {
+            // Generate a random name for the banner
+            String bannerName = fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
+            // Store the banner in the file storage
+            String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/enterprise/");
+            // Set the banner path to the enterprise object
+            enterprise.setBanner(bannerPath);
+        }
+        // Get current time
+        Enterprise newEnterprise1 =  enterpriseService.saveEnterprise(enterprise);
+        User user = (User) session.getAttribute("user");
+        userService.updateEnterprise(user.getUserID(), newEnterprise1.getEnterpriseID());
+        ra.addFlashAttribute("successMsg", "Register enterprise successfully!");
+        return "redirect:/";
     }
 
     @PostMapping("/admin/enterprise/add")
@@ -115,18 +151,34 @@ public class EnterpriseController {
         return "redirect:/admin/enterprise";
     }
 
-        @GetMapping("/admin/enterprise/delete")
-        public String deleteEnterprise(@RequestParam("id") Long enterpriseID) {
-            Enterprise enterprise = enterpriseService.getEnterpriseById(enterpriseID);
-            try {
-                File image = new File(enterprise.getLogo());
-                File banner = new File(enterprise.getBanner());
-                image.delete();
-                banner.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            enterpriseService.deleteEnterprise(enterpriseID);
-            return "redirect:/admin/enterprise";
+    @GetMapping("/admin/enterprise/delete")
+    public String deleteEnterprise(@RequestParam("id") Long enterpriseID) {
+        Enterprise enterprise = enterpriseService.getEnterpriseById(enterpriseID);
+        try {
+            File image = new File(enterprise.getLogo());
+            File banner = new File(enterprise.getBanner());
+            image.delete();
+            banner.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        enterpriseService.deleteEnterprise(enterpriseID);
+        return "redirect:/admin/enterprise";
+    }
+
+    @GetMapping("/enterprise/dashboard")
+    public String enterpriseDashboard(HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("user") == null) {
+            ra.addFlashAttribute("errorMsg", "You need to login to use this feature!");
+            return "redirect:/login";
+        }
+        if (session.getAttribute("enterprise") == null) {
+            ra.addFlashAttribute("errorMsg", "You need to register an enterprise to use this feature!");
+            return "redirect:/enterprise";
+        }
+        Enterprise enterprise = (Enterprise) session.getAttribute("enterprise");
+        Map<String, Object> statistics = statisticsService.getStatistics(enterprise.getEnterpriseID());
+        session.setAttribute("statistics", statistics);
+        return "enterprise/dashboard";
+    }
 }

@@ -9,9 +9,7 @@ document.getElementById("signup").style.display = "none";
 // document.getElementById("sear").onmouseover = function () { mouseover() };
 // document.getElementById("search-id").onmouseout = function () { mouseout() };
 
-window.addEventListener("load", setTimeout(function () {
-    document.getElementById("loadpage").style.display = "none";
-}, 2000));
+
 
 
 

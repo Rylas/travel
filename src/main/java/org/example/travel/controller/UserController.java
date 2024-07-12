@@ -81,7 +81,7 @@ public class UserController {
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
-        model.addAttribute("bookings", bookingService.getBookingsByUserId(user.getUserID()));
+        model.addAttribute("bookings", bookingService.getBookingsByUserID(user.getUserID()));
         return "user/cash";
     }
 }

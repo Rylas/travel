@@ -55,8 +55,9 @@
 </head>
 <body>
 <%@ include file="../material/navbar.jsp"%>
+<%--<form action="/bookTour" method="post" class="container mt-5">--%>
 
-<form action="/bookTour" method="post" class="container mt-5">
+<form action="/payment/pay" method="post" class="container mt-5">
     <input type="hidden" name="tourID" value="${tour.tourID}">
     <div class="row">
         <div class="col-md-8">
@@ -142,6 +143,10 @@
                 </div>
                 <div class="form-group">
                     <h5 class="text-primary">Tổng tiền: <span class="price" id="totalPrice">0đ</span></h5>
+                    <input value="" name="amount" hidden id="amount">
+                    <input name="currency" value="VND" hidden>
+                    <input name="bankCode" value="" hidden>
+                    <input name="language" value="vn" hidden>
                 </div>
                 <div class="form-group">
                     <h5 class="text-primary">Ghi chú:</h5>
@@ -205,6 +210,7 @@
         document.getElementById('child2Price').innerText = formatCurrency(totalChild2Price);
         document.getElementById('infantPrice').innerText = formatCurrency(totalInfantPrice);
         document.getElementById('totalPrice').innerText = formatCurrency(totalPrice);
+        document.getElementById('amount').value = totalPrice;
     }
 
     function applyVoucher() {
