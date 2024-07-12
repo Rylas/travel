@@ -52,5 +52,33 @@ public class PaymentController {
         return "redirect:/admin/payment";
     }
 
+    @GetMapping("/payment/result")
+    public String paymentResult(
+            @RequestParam("vnp_Amount") String amount,
+            @RequestParam("vnp_BankCode") String bankCode,
+            @RequestParam("vnp_CardType") String cardType,
+            @RequestParam("vnp_OrderInfo") String orderInfo,
+            @RequestParam("vnp_PayDate") String payDate,
+            @RequestParam("vnp_ResponseCode") String responseCode,
+            @RequestParam("vnp_TmnCode") String tmnCode,
+            @RequestParam("vnp_TransactionNo") String transactionNo,
+            @RequestParam("vnp_TransactionStatus") String transactionStatus,
+            @RequestParam("vnp_TxnRef") String txnRef,
+            @RequestParam("vnp_SecureHash") String secureHash,
+            Model model
+    ) {
+        model.addAttribute("amount", amount);
+        model.addAttribute("bankCode", bankCode);
+        model.addAttribute("cardType", cardType);
+        model.addAttribute("orderInfo", orderInfo);
+        model.addAttribute("payDate", payDate);
+        model.addAttribute("responseCode", responseCode);
+        model.addAttribute("tmnCode", tmnCode);
+        model.addAttribute("transactionNo", transactionNo);
+        model.addAttribute("transactionStatus", transactionStatus);
+        model.addAttribute("txnRef", txnRef);
+        model.addAttribute("secureHash", secureHash);
+        return "payment/result";
+    }
 
 }

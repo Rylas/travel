@@ -1,10 +1,12 @@
 package org.example.travel.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.travel.entity.Booking;
 import org.example.travel.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,7 +54,7 @@ public class VnPayController {
             @RequestParam String vnp_BankCode,
             @RequestParam String vnp_CardType,
             @RequestParam String vnp_PayDate,
-            @RequestParam String vnp_TransactionStatus) {
+            @RequestParam String vnp_TransactionStatus, Model model) {
 
         Map<String, String> response = new HashMap<>();
         response.put("vnp_ResponseCode", vnp_ResponseCode);
@@ -64,6 +66,7 @@ public class VnPayController {
         response.put("vnp_CardType", vnp_CardType);
         response.put("vnp_PayDate", vnp_PayDate);
         response.put("vnp_TransactionStatus", vnp_TransactionStatus);
+        model.addAttribute("response", response);
 
         return ResponseEntity.ok(response);
     }

@@ -55,9 +55,8 @@
 </head>
 <body>
 <%@ include file="../material/navbar.jsp"%>
-<%--<form action="/bookTour" method="post" class="container mt-5">--%>
 
-<form action="/payment/pay" method="post" class="container mt-5">
+<form action="/bookTour" method="post" class="container mt-5" id="form-book">
     <input type="hidden" name="tourID" value="${tour.tourID}">
     <div class="row">
         <div class="col-md-8">
@@ -143,10 +142,7 @@
                 </div>
                 <div class="form-group">
                     <h5 class="text-primary">Tổng tiền: <span class="price" id="totalPrice">0đ</span></h5>
-                    <input value="" name="amount" hidden id="amount">
-                    <input name="currency" value="VND" hidden>
-                    <input name="bankCode" value="" hidden>
-                    <input name="language" value="vn" hidden>
+
                 </div>
                 <div class="form-group">
                     <h5 class="text-primary">Ghi chú:</h5>
@@ -170,6 +166,41 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+    let amount = 0;
+    $('#form-book').submit(function(e) {
+        // Prevent the form from submitting via the browser.
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/payment/pay',
+            data: {
+                amount: amount,
+        currency: 'VND',
+                bankCode: null,
+                language: 'vn',
+            },
+            success: function(response) {
+                if (response.code == "00") {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/bookTour',
+                        data: $('#form-book').serialize(),
+                        success: function(response) {
+                            alert('Đặt tour thành công. Đang chuyển hướng đến trang thanh toán...');
+                        },
+                        error: function(error) {
+                            alert('Đặt tour thất bại. Vui lòng thử lại.');
+                        }
+                    });
+                    window.location.href = response.data;
+
+                }
+            },
+            error: function(error) {
+                alert('Đặt tour thất bại. Vui lòng thử lại.');
+            }
+        });
+    });
     const adultPrice = ${tour.priceAdult};
     const child1Price = ${tour.priceChild6_10};
     const child2Price = ${tour.priceChild2_5};
@@ -210,7 +241,7 @@
         document.getElementById('child2Price').innerText = formatCurrency(totalChild2Price);
         document.getElementById('infantPrice').innerText = formatCurrency(totalInfantPrice);
         document.getElementById('totalPrice').innerText = formatCurrency(totalPrice);
-        document.getElementById('amount').value = totalPrice;
+        amount = totalPrice;
     }
 
     function applyVoucher() {
