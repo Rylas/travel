@@ -16,8 +16,8 @@ public class ChatRoomService {
         return chatRoomRepository.findByUserIDAndStatusTrue(userID);
     }
 
-    public void saveChatRoom(ChatRoom chatRoom) {
-        chatRoomRepository.save(chatRoom);
+    public ChatRoom saveChatRoom(ChatRoom chatRoom) {
+        return chatRoomRepository.save(chatRoom);
     }
 
     public ChatRoom getChatRoomByID(Long chatRoomID) {
