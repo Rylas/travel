@@ -1,5 +1,6 @@
 package org.example.travel.controller;
 
+import org.example.travel.dto.MessageDTO;
 import org.example.travel.entity.*;
 import org.example.travel.service.ChatRoomService;
 import org.example.travel.service.MessageService;
@@ -8,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 @Controller
@@ -23,49 +28,27 @@ public class WebSocketChatController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    //Get all messages from the chat room
-//    @MessageMapping("/chat/getMessages")
-//    @SendTo("/topic/messages")
-
-
+    // Send message to the admin or user
     @MessageMapping("/chat")
-    public void sendMessage(ChatMessage chatMessage) {
-        MessageResponseSocket messageResponseSocket = new MessageResponseSocket();
-        if (chatMessage.getSenderID() == null) {
-            messageResponseSocket.setStatus("error");
-            messageResponseSocket.setContent("You must login to chat");
-            messagingTemplate.convertAndSendToUser(chatMessage.getSenderID().toString(), "/queue/messages", messageResponseSocket);
-            return;
-        }
-        User sender = userService.getUserByUserID(chatMessage.getSenderID());
-        User receiver = userService.getUserByUserID(chatMessage.getUserID());
-        if (sender == null || receiver == null) {
-            messageResponseSocket.setStatus("error");
-            messageResponseSocket.setContent("User not found");
-            messagingTemplate.convertAndSendToUser(chatMessage.getSenderID().toString(), "/queue/messages", messageResponseSocket);
-            return;
-        }
-        Message message = new Message();
-        message.setContent(chatMessage.getContent());
-        ChatRoom chatRoom = chatRoomService.getChatRoomByUserIDAndStatusTrue(receiver.getUserID());
+    @SendToUser("/queue/messages")
+    public void send(MessageDTO message) throws Exception {
+        ChatRoom chatRoom = chatRoomService.getChatRoomByID(message.getSenderID());
         if (chatRoom == null) {
             chatRoom = new ChatRoom();
-            chatRoom.setUser(receiver);
-            chatRoomService.saveChatRoom(chatRoom);
+            chatRoom.setUser(userService.getUserByUserID(message.getSenderID()));
+            chatRoom.setAdmin(userService.getUserByUserID(1L));
+            chatRoom = chatRoomService.saveChatRoom(chatRoom);
         }
-        message.setChatRoom(chatRoom);
-        message.setUser(receiver);
-        messageService.saveMessage(message);
-        messageResponseSocket.setStatus("success");
-        messageResponseSocket.setContent(message.getContent());
-        messageResponseSocket.setTimestamp(message.getTimestamp());
-        messageResponseSocket.setSender(message.getUser().getFirstName() + " " + message.getUser().getLastName());
+        Message newMessage = new Message();
+        newMessage.setTimestamp(Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
+        newMessage.setContent(message.getContent());
+        newMessage.setUser(userService.getUserByUserID(message.getSenderID()));
+        newMessage.setChatRoom(chatRoom);
+        messageService.saveMessage(newMessage);
 
-        // Gửi tin nhắn đến người nhận
-        if (Objects.equals(chatMessage.getSenderID(), chatMessage.getUserID())) {
-            messagingTemplate.convertAndSendToUser("1", "/queue/messages", messageResponseSocket);
-        } else {
-            messagingTemplate.convertAndSendToUser(chatMessage.getUserID().toString(), "/queue/messages", messageResponseSocket);
-        }
+        // Gửi tin nhắn tới người nhận
+        messagingTemplate.convertAndSendToUser(message.getSender(), "/queue/messages", message);
     }
+
+
 }

@@ -29,10 +29,12 @@
     $(document).ready(function() {
         let stompClient = null;
         let userID;
+        let sender;
         <%
             if (session.getAttribute("user") != null) {
         %>
         userID = ${sessionScope.user.userID};
+        sender = "${sessionScope.user.userID}-${sessionScope.user.firstName}-${sessionScope.user.lastName}";
         <%
             } else {
         %>
@@ -40,13 +42,14 @@
         <%
             }
         %>
-        function connect() {
-            const socket = new SockJS('/ws');
+
+        function connect(user) {
+            var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
+            stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages', function(message) {
-                    showMessage(JSON.parse(message.body));
+                stompClient.subscribe('/user/queue/messages', function (messageOutput) {
+                    showMessage(JSON.parse(messageOutput.body));
                 });
             });
         }
@@ -64,11 +67,23 @@
         }
 
         $('#sendBtn').click(function() {
-            const content = $('#chatContent').val();
-
-            stompClient.send("/app/chat", {}, JSON.stringify({'content': content, 'userID': userID, 'senderID': userID}));
+            sendMessage();
             $('#chatContent').val('');
         });
+
+        function sendMessage() {
+            var text = document.getElementById('chatContent').value;
+            stompClient.send("/app/chat", {}, JSON.stringify({'content': text, 'sender': sender, 'senderID': userID}));
+            const timestamp = new Date(data.timestamp).toLocaleTimeString();
+
+            $('#chat-body').append(
+                '<div class="chat-message left"> <strong>' + "You:" + ':</strong>' +
+                text +
+                '<span class="timestamp">' + timestamp + '</span></div>'
+            );
+            $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
+
+        }
 
         function showMessage(message, role) {
             const messageDiv = $('<div>').addClass('message');
@@ -85,7 +100,7 @@
             }
 
             $('#chat-body').append(messageDiv);
-            $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight); // Scroll to the bottom
+            $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
         }
 
         document.getElementById('chat-button').addEventListener('click', function() {
@@ -96,7 +111,7 @@
             document.getElementById('chat-window').style.display = 'none';
         });
 
-        connect();
+        connect(sender);
         loadChatRooms();
     });
 </script>
