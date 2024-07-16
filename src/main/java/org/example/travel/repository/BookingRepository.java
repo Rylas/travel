@@ -49,4 +49,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
     // getRecentBookings
     @Query("SELECT b FROM Booking b WHERE b.tour.enterprise.enterpriseID = :enterpriseID ORDER BY b.createdAt DESC LIMIT 7")
     List<Booking> getRecentBookings(Long enterpriseID);
+
+    // findByEnterpriseID
+    @Query("SELECT b FROM Booking b WHERE b.tour.enterprise.enterpriseID = :enterpriseID")
+    List<Booking> findByEnterpriseID(Long enterpriseID);
+
+    // getTotalBookings with enterpriseId
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.tour.enterprise.enterpriseID = :enterpriseID")
+    Long getTotalBookings(Long enterpriseID);
 }

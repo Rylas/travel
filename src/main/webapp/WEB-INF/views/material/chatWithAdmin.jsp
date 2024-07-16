@@ -74,8 +74,8 @@
         function sendMessage() {
             var text = document.getElementById('chatContent').value;
             stompClient.send("/app/chat", {}, JSON.stringify({'content': text, 'sender': sender, 'senderID': userID}));
-            const timestamp = new Date(data.timestamp).toLocaleTimeString();
 
+            const timestamp = new Date().toLocaleTimeString();
             $('#chat-body').append(
                 '<div class="chat-message left"> <strong>' + "You:" + ':</strong>' +
                 text +

@@ -39,6 +39,7 @@ public class Tour {
     private boolean isHot = false;
     private Date createdAt;
     private Date updatedAt;
+    private String linkVideo;
 
     @ManyToOne
     @JoinColumn(name = "discountID")

@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <title>Admin - Cập nhập thông tin Tour</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -19,8 +21,8 @@
             <input type="text" class="form-control" id="nameTour" name="nameTour" value="${tour.nameTour}" required>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required>${tour.description}</textarea>
+            <label for="editor">Description</label>
+            <textarea class="form-control" id="editor" name="description" rows="3" required>${tour.description}</textarea>
         </div>
         <div class="form-group">
             <label for="banner-file">Banner</label>
@@ -47,6 +49,11 @@
             <img src="/uploads/tour/${tour.thirdImage}" alt="${tour.nameTour}" class="img-thumbnail mt-2" width="150">
         </div>
         <div class="form-group">
+            <label for="linkVideo">Link Video</label>
+            <iframe width="560" height="315" src="${tour.linkVideo}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <input type="text" class="form-control" id="linkVideo" name="linkVideo" value="${tour.linkVideo}" required>
+        </div>
+        <div class="form-group">
             <label for="priceAdult">Giá người lớn</label>
             <input type="text" class="form-control" id="priceAdult" name="priceAdult" value="${tour.priceAdult}" required>
         </div>
@@ -69,6 +76,10 @@
         <div class="form-group">
             <label for="expectedDate">Ngày dự kiến</label>
             <input type="date" class="form-control" id="expectedDate" name="expectedDate" value="<fmt:formatDate value="${tour.expectedDate}" pattern="yyyy-MM-dd"/>" required>
+        </div>
+        <div class="form-group">
+            <label for="duration">Thời gian diễn ra tour</label>
+            <input type="number" class="form-control" id="duration" name="duration" value="${tour.duration}" required min="1">
         </div>
         <div class="form-group">
             <label for="transport">Transport</label>
@@ -129,5 +140,40 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    // When choose new file, show the new image
+    $('#banner-file').change(function () {
+        var input = this;
+        var url = URL.createObjectURL(input.files[0]);
+        $(input).next().next().attr('src', url);
+    });
+    $('#image-file1').change(function () {
+        var input = this;
+        var url = URL.createObjectURL(input.files[0]);
+        $(input).next().next().attr('src', url);
+    });
+    $('#image-file2').change(function () {
+        var input = this;
+        var url = URL.createObjectURL(input.files[0]);
+        $(input).next().next().attr('src', url);
+    });
+    $('#image-file3').change(function () {
+        var input = this;
+        var url = URL.createObjectURL(input.files[0]);
+        $(input).next().next().attr('src', url);
+    });
+    // load video
+    $('#linkVideo').change(function () {
+        var url = $(this).val();
+        var video = '<iframe width="560" height="315" src="' + url + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        $(this).prev().prev().html(video);
+    });
+</script>
+<script>
+    CKEDITOR.replace('editor', {
+        filebrowserUploadUrl: '/uploadImage',
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 </body>
 </html>

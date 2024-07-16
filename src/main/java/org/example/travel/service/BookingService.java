@@ -80,8 +80,8 @@ public class BookingService {
     }
 
     // getTotalBookings
-    public Long getTotalBookings(Long enterpriseID) {
-        return bookingRepository.count();
+    public Long getTotalBookingsOfEnterprise(Long enterpriseID) {
+        return bookingRepository.getTotalBookings(enterpriseID) == null ? 0 : bookingRepository.getTotalBookings(enterpriseID);
     }
 
     // getTotalRevenue
@@ -126,4 +126,11 @@ public class BookingService {
     public List<Booking> getRecentBookings(Long enterpriseID) {
         return bookingRepository.getRecentBookings(enterpriseID);
     }
+
+    // getBookingsByEnterprise
+    public List<Booking> getBookingsByEnterprise(Long enterpriseID) {
+        return bookingRepository.findByEnterpriseID(enterpriseID);
+    }
+
+    //
 }

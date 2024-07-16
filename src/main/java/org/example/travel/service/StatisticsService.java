@@ -27,7 +27,7 @@ public class StatisticsService {
         // Lấy tổng số lượng visitor của tất cả các tour
         long totalVisitors = tourService.getTotalVisitors(id);
         // Lấy tổng số lượng booking của tất cả các tour
-        long totalBookings = bookingService.getTotalBookings(id);
+        long totalBookings = bookingService.getTotalBookingsOfEnterprise(id);
         // Lấy tổng doanh thu của tất cả các tour
         long totalRevenue = (long) bookingService.getTotalRevenue(id);
         // Lấy tổng doanh thu trong năm này
@@ -39,7 +39,7 @@ public class StatisticsService {
         long totalRevenueToday = (long) bookingService.getTotalRevenueToday(id);
 
         // Lấy tổng số lượng tour
-        long totalTours = tourService.getTotalTours();
+        long totalTours = tourService.getTotalToursEnterprise(id);
 
         Tour hotestTour = tourService.getHotestTour(id);
 

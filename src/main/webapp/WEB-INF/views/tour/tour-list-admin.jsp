@@ -38,7 +38,6 @@
         <tr>
             <th>#</th>
             <th>Tên</th>
-            <th>Mô tả</th>
 <%--            <th>Image</th>--%>
             <th>Ảnh bìa</th>
             <th>Giá người lớn</th>
@@ -55,7 +54,6 @@
             <tr>
                 <td>${status.index + 1}</td>
                 <td>${tour.nameTour}</td>
-                <td>${tour.description}</td>
                 <td><img src="/uploads/tour/${tour.banner}" alt="${tour.banner}"></td>
 <%--                <td><img src="/uploads/tour/${tour.banner}" alt="${tour.name}"></td>--%>
                 <td class="price"><fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</td>

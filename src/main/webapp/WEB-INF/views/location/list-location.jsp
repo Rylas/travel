@@ -32,7 +32,6 @@
         <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Banner</th>
             <th>First Image</th>
             <th>Second Image</th>
@@ -46,7 +45,6 @@
             <tr>
                 <td>${status.index + 1}</td>
                 <td>${location.nameLocation}</td>
-                <td>${location.description}</td>
                 <td><img src="/uploads/location/${location.banner}" alt="${location.nameLocation}"></td>
                 <td><img src="/uploads/location/${location.firstImage}" alt="${location.nameLocation}"></td>
                 <td><img src="/uploads/location/${location.secondImage}" alt="${location.nameLocation}"></td>

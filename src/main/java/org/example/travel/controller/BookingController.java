@@ -2,10 +2,7 @@ package org.example.travel.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.example.travel.entity.Booking;
-import org.example.travel.entity.Tour;
-import org.example.travel.entity.User;
-import org.example.travel.entity.Voucher;
+import org.example.travel.entity.*;
 import org.example.travel.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -36,6 +33,12 @@ public class BookingController {
     @Autowired
     private VoucherService voucherService;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
+
+    @Autowired
+    private GroupTourService groupTourService;
+
 
     @GetMapping("/bookTour/{id}")
     public String bookTour(@PathVariable("id") int id, Model model, HttpSession session) {
@@ -43,6 +46,8 @@ public class BookingController {
             model.addAttribute("errorMsg", "You need to login to use this feature!");
             return "redirect:/login";
         }
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
         model.addAttribute("tour", tourService.getTourByTourID((long) id));
         model.addAttribute("payments", paymentService.getAllPayments());
         return "tour/book-tour";
@@ -104,7 +109,7 @@ public class BookingController {
         oldBooking.setTotalPrice(totalAmount);
 
         bookingService.updateBooking(oldBooking);
-        return "redirect:/cash";
+        return "redirect:/mytour";
     }
 
     private static int getTotalAmount(Booking booking, Tour tour, Voucher voucher) {
@@ -129,7 +134,7 @@ public class BookingController {
         // Set cancel date
         bookingService.setCancelDate(id);
         bookingService.cancelBooking(id);
-        return "redirect:/cash";
+        return "redirect:/mytour";
     }
 
 
@@ -139,6 +144,17 @@ public class BookingController {
     public String cashPage(Model model){
         model.addAttribute("bookings", bookingService.getAllBookings());
         return "booking/admin-list";
+    }
+
+    @GetMapping("/enterprise/booking")
+    public String enterpriseBookingPage(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        Enterprise enterprise = enterpriseService.getEnterpriseById(user.getEnterprise().getEnterpriseID());
+        if (enterprise == null){
+            return "redirect:/";
+        }
+        model.addAttribute("bookings", bookingService.getBookingsByEnterprise(enterprise.getEnterpriseID()));
+        return "enterprise/booking";
     }
 
     @GetMapping("/admin/booking/detail/{id}")
@@ -164,6 +180,23 @@ public class BookingController {
         String message = "Đơn đặt tour của bạn đã được xác nhận! Thông tin tour: " + bookingService.getBookingById(id).getTour().getNameTour();
         mailService.sendActivationEmail(mailAddress, subject, message, "Thông Báo Xác Nhận","Xem chi tiết", "http://localhost:8080/booking/detail/" + id);
         bookingService.approveBooking(id);
+        GroupTour groupTour = groupTourService.getGroupTourByTourIDAndStatusTrue(bookingService.getBookingById(id).getTour().getTourID());
+        if (groupTour != null && groupTour.getCurrentPeople() + bookingService.getBookingById(id).getTotalPeople() <= groupTour.getMaxPeople()) {
+            groupTour.setCurrentPeople(groupTour.getCurrentPeople() + bookingService.getBookingById(id).getTotalPeople());
+            groupTourService.updateGroupTour(groupTour);
+        } else {
+            GroupTour newGroupTour = new GroupTour();
+            newGroupTour.setTour(bookingService.getBookingById(id).getTour());
+            newGroupTour.setEnterprise(bookingService.getBookingById(id).getTour().getEnterprise());
+            newGroupTour.setStartDate(bookingService.getBookingById(id).getDepartureDate());
+            newGroupTour.setEndDate(bookingService.getBookingById(id).getDepartureDate());
+            newGroupTour.setMaxPeople(bookingService.getBookingById(id).getTour().getMaxPeople());
+            newGroupTour.setCurrentPeople(bookingService.getBookingById(id).getTotalPeople());
+            newGroupTour.setPrice(bookingService.getBookingById(id).getTotalPrice());
+            newGroupTour.setStatus(true);
+            groupTourService.updateGroupTour(newGroupTour);
+        }
+
         return "redirect:/admin/booking";
     }
 

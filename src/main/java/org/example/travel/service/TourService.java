@@ -81,8 +81,8 @@ public class TourService {
     }
 
     // getTotalTours
-    public Long getTotalTours() {
-        return tourRepository.count();
+    public Long getTotalToursEnterprise(Long enterpriseID) {
+        return tourRepository.findByEnterprise_EnterpriseID(enterpriseID).stream().count();
     }
 
     // getHotestTour with enterpriseId
@@ -97,5 +97,10 @@ public class TourService {
             listVisitorJanuaryToDecember.add(tourRepository.getListVisitorJanuaryToDecember(i, enterpriseID) == null ? 0L : tourRepository.getListVisitorJanuaryToDecember(i, enterpriseID));
         }
         return listVisitorJanuaryToDecember;
+    }
+
+    // getToursByEnterpriseID
+    public List<Tour> getToursByEnterpriseID(Long enterpriseID) {
+        return tourRepository.findByEnterprise_EnterpriseID(enterpriseID);
     }
 }

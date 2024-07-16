@@ -51,10 +51,13 @@ public class Booking {
     @OneToMany(mappedBy = "booking")
     private List<BookingDetail> bookingDetails;
 
-    // User
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "group_tour_id")
+    private GroupTour groupTour;
 
     @PrePersist
     protected void onCreate() {
