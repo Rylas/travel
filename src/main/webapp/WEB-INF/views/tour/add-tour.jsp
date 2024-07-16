@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <title>Add New Tour</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+
     <style>
         .container {
             max-width: 600px;
@@ -41,8 +43,8 @@
             <input type="text" class="form-control" id="nameTour" name="nameTour" required>
         </div>
         <div class="form-group">
-            <label for="description">Mô tả về tour</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            <label for="editor">Mô tả về tour</label>
+            <textarea class="form-control" id="editor" name="description" rows="3" required></textarea>
         </div>
         <div class="form-group">
             <label for="banner-file">Ảnh bìa</label>
@@ -59,6 +61,10 @@
         <div class="form-group">
             <label for="image-file3">Ảnh thứ ba về tour</label>
             <input type="file" class="form-control-file" id="image-file3" name="image-file3" required>
+        </div>
+        <div class="form-group">
+            <label for="linkVideo">Đường dẫn Youtube về tour</label>
+            <input type="text" class="form-control" id="linkVideo" name="linkVideo" required>
         </div>
         <div class="form-group">
             <label for="priceAdult">Giá cho người lớn</label>
@@ -150,5 +156,11 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    CKEDITOR.replace('editor', {
+        filebrowserUploadUrl: '/uploadImage',
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 </body>
 </html>

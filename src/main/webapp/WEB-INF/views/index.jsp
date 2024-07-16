@@ -111,7 +111,7 @@
                                     <span>${location.nameLocation}</span>
                                 </div>
                                 <div class="detail-description">
-                                    <span>${location.description}</span>
+<%--                                    <span>${location.description}</span>--%>
                                     <ul>
                                         <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
                                         <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
@@ -165,7 +165,7 @@
                                 <span>${tour.nameTour}</span>
                             </div>
                             <div class="detail-description">
-                                <span>${tour.description}</span>
+<%--                                <span>${tour.description}</span>--%>
                                 <ul>
                                     <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
                                     <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>

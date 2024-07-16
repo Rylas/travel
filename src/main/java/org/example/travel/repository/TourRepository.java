@@ -47,4 +47,10 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     // getListVisitorJanuaryToDecember
     @Query("SELECT SUM(t.numberViewed) FROM Tour t WHERE MONTH(t.createdAt) = :month AND t.enterprise.enterpriseID = :enterpriseID")
     Long getListVisitorJanuaryToDecember(int month, Long enterpriseID);
+
+    // getToursByEnterpriseID
+
+    List<Tour> findByEnterprise_EnterpriseID(Long enterpriseID);
+
+
 }

@@ -26,6 +26,16 @@
             color: #007bff;
             text-decoration: none;
         }
+        .image-container{
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .contain-img{
+            width: 24%;
+            height: 200px;
+            overflow: hidden;
+        }
     </style>
 </head>
 
@@ -36,31 +46,26 @@
     <div class="row">
         <div class="col-lg-7" id="container-left">
             <div class="contain-video">
-                <iframe src="https://www.youtube.com/embed/Punf53Et1MM" title="YouTube video player" frameborder="0"
+                <iframe src="${tour.linkVideo}" title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen=""></iframe>
             </div>
-            <div class="contain-img">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628942417/image/c4vtfovmhmeaio7nrux0.png"
-                     alt="">
-            </div>
-            <div class="contain-img">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628942417/image/jbrybkui7vdejqqtvkmk.jpg"
-                     alt="">
-            </div>
-            <div class="contain-img">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628942418/image/jge2n1wcssnxgvqud4vp.jpg"
-                     alt="">
-            </div>
-            <div class="contain-img">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628942418/image/nmqqdtpktwnjo2eo2mct.jpg"
-                     alt="">
-            </div>
-            <div class="contain-img">
-                <img src="https://res.cloudinary.com/wonder-place/image/upload/v1628942419/image/c5wqp6qqcmvhut42gcob.jpg"
-                     alt="">
+            <div class="image-container">
+                <div class="contain-img">
+                    <img src="/uploads/tour/${tour.banner}" alt="">
+                </div>
+                <div class="contain-img">
+                    <img src="/uploads/tour/${tour.firstImage}" alt="">
+                </div>
+                <div class="contain-img">
+                    <img src="/uploads/tour/${tour.secondImage}" alt="">
+                </div>
+                <div class="contain-img">
+                    <img src="/uploads/tour/${tour.thirdImage}" alt="">
+                </div>
             </div>
         </div>
+
 
         <div class="col-lg-5" id="container-right">
             <div class="container-fluid">
@@ -105,21 +110,23 @@
 
                             <span> <fmt:formatDate value="${tour.departureDate}" pattern="dd/MM/yyyy"/></span>
                         </p>
-                        <p class="info-item">
-                            <span>Ngày khởi hành: </span>
-<%--                            <option value="">18/06/2022</option>--%>
-<%--                            <option value="">19/06/2022</option>--%>
-<%--                            <option value="">20/06/2022</option>--%>
-<%--                            <option value="">21/06/2022</option>--%>
-                            <select name="" id="">
-<%--                                List all day from departureDate to expectedDate --%>
-
-                            </select>
-                        </p>
+<%--                        <p class="info-item">--%>
+<%--                            <span>Ngày khởi hành: </span>--%>
+<%--&lt;%&ndash;                            <option value="">18/06/2022</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <option value="">19/06/2022</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <option value="">20/06/2022</option>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <option value="">21/06/2022</option>&ndash;%&gt;--%>
+<%--                            <select name="" id="">--%>
+<%--&lt;%&ndash;                                List all day from departureDate to expectedDate &ndash;%&gt;--%>
+<%--                                <c:forEach var="i" begin="${tour.expectedDate.time}" end="${tour.departureDate.time}">--%>
+<%--                                    <option value="${i}"><fmt:formatDate value="${i}" pattern="dd/MM/6yyyy"/></option>--%>
+<%--                                </c:forEach>--%>
+<%--                            </select>--%>
+<%--                        </p>--%>
                         <p class="info-item">
                             <span>Thời gian: </span>
 
-                            <span> 2 Days one night</span>
+                            <span> ${tour.duration} ngày ${tour.duration - 1} đêm</span>
                         </p>
                         <p class="info-item">
                             <span>Nơi xuất phát: </span>
@@ -403,7 +410,7 @@
                                 <span><i class="fa-solid fa-star"></i></span>
                                 <span style="color: white; margin-left: 76px;">${relatedTour.numberBooked} đánh giá</span>
                             </p>
-                            <p><span>Thời gian: </span><span>${relatedTour.duration} ngày ${relatedTour.duration} đêm</span></p>
+                            <p><span>Thời gian: </span><span>${relatedTour.duration} ngày ${relatedTour.duration - 1} đêm</span></p>
 <%--                            <p><span>Nơi khởi hành: </span><span>${relatedTour.locations[0].nameLocation}</span></p>--%>
                             <p><span>Số khách đã book: </span><span>${relatedTour.numberBooked}</span></p>
                             <p><span>Phương tiện: </span><span><i class="fa-solid fa-plane-departure"></i>${relatedTour.transport}</span></p>

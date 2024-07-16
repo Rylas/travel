@@ -11,12 +11,12 @@
     />
     <link
       rel="icon"
-      href="assets/img/kaiadmin/favicon.ico"
+      href="/assets/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
 
     <!-- Fonts and icons -->
-    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -27,7 +27,7 @@
             "Font Awesome 5 Brands",
             "simple-line-icons",
           ],
-          urls: ["assets/css/fonts.min.css"],
+          urls: ["/assets/css/fonts.min.css"],
         },
         active: function () {
           sessionStorage.fonts = true;
@@ -36,12 +36,12 @@
     </script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="/assets/css/kaiadmin.min.css" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="assets/css/demo.css" />
+    <link rel="stylesheet" href="/assets/css/demo.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -52,7 +52,7 @@
           <div class="logo-header" data-background-color="dark">
             <a href="index.html" class="logo">
               <img
-                src="assets/img/kaiadmin/logo_light.svg"
+                src="/assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
@@ -89,8 +89,8 @@
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="../demo1/index.html">
-                        <span class="sub-item">Dashboard 1</span>
+                      <a href="/admin">
+                        <span class="sub-item">Dashboard</span>
                       </a>
                     </li>
                   </ul>
@@ -112,7 +112,7 @@
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/booking">
-                        <span class="sub-item">View all</span>
+                        <span class="sub-item">Danh sách booking</span>
                       </a>
                     </li>
                   </ul>
@@ -121,19 +121,19 @@
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarLayouts">
                   <i class="fas fa-th-list"></i>
-                  <p>Enterprise</p>
+                  <p>Doanh nghiệp</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/enterprise">
-                        <span class="sub-item">View all Enterprise</span>
+                        <span class="sub-item">Tất cả doanh nghiệp</span>
                       </a>
                     </li>
                     <li>
                       <a href="/admin/enterprise/add">
-                        <span class="sub-item">Add new Enterprise</span>
+                        <span class="sub-item">Thêm một doanh nghiệp mới</span>
                       </a>
                     </li>
                   </ul>
@@ -142,31 +142,31 @@
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#forms">
                   <i class="fas fa-pen-square"></i>
-                  <p>Location</p>
+                  <p>Địa điểm</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/location">
-                        <span class="sub-item">View all Location</span>
+                        <span class="sub-item">Danh sách địa điểm</span>
                       </a>
                     </li>
                     <li>
                       <a href="/admin/location/add">
-                        <span class="sub-item">Add a new Location</span>
+                        <span class="sub-item">Thêm một địa điểm mới</span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
+                <a data-bs-toggle="collapse" href="#tour">
                   <i class="fas fa-table"></i>
                   <p>Tour</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="tables">
+                <div class="collapse" id="tour">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/tour">
@@ -203,12 +203,12 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#charts">
+                <a data-bs-toggle="collapse" href="#discount">
                   <i class="far fa-chart-bar"></i>
-                  <p>Charts</p>
+                  <p>Khuyến mãi</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="charts">
+                <div class="collapse" id="discount">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/discount">
@@ -224,12 +224,12 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#charts">
+                <a data-bs-toggle="collapse" href="#voucher">
                   <i class="far fa-chart-bar"></i>
                   <p>Mã giảm giá</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="charts">
+                <div class="collapse" id="voucher">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/voucher">
@@ -245,12 +245,12 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#charts">
+                <a data-bs-toggle="collapse" href="#payment">
                   <i class="far fa-chart-bar"></i>
                   <p>Phương thức thanh toán</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="charts">
+                <div class="collapse" id="payment">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="/admin/payment">
@@ -315,7 +315,7 @@
             <div class="logo-header" data-background-color="dark">
               <a href="index.html" class="logo">
                 <img
-                  src="assets/img/kaiadmin/logo_light.svg"
+                  src="/assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
                   class="navbar-brand"
                   height="20"
@@ -413,7 +413,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="assets/img/jm_denis.jpg"
+                                src="/assets/img/jm_denis.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -426,7 +426,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="assets/img/chadengle.jpg"
+                                src="/assets/img/chadengle.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -439,7 +439,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="assets/img/mlane.jpg"
+                                src="/assets/img/mlane.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -454,7 +454,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="assets/img/talha.jpg"
+                                src="/assets/img/talha.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -522,7 +522,7 @@
                           <a href="#">
                             <div class="notif-img">
                               <img
-                                src="assets/img/profile2.jpg"
+                                src="/assets/img/profile2.jpg"
                                 alt="Img Profile"
                               />
                             </div>
@@ -640,7 +640,7 @@
                   >
                     <div class="avatar-sm">
                       <img
-                        src="assets/img/profile.jpg"
+                        src="/assets/img/profile.jpg"
                         alt="..."
                         class="avatar-img rounded-circle"
                       />
@@ -656,7 +656,7 @@
                         <div class="user-box">
                           <div class="avatar-lg">
                             <img
-                              src="assets/img/profile.jpg"
+                              src="/assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
@@ -915,7 +915,7 @@
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/id.png"
+                                      src="/assets/img/flags/id.png"
                                       alt="indonesia"
                                     />
                                   </div>
@@ -928,7 +928,7 @@
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/us.png"
+                                      src="/assets/img/flags/us.png"
                                       alt="united states"
                                     />
                                   </div>
@@ -941,7 +941,7 @@
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/au.png"
+                                      src="/assets/img/flags/au.png"
                                       alt="australia"
                                     />
                                   </div>
@@ -954,7 +954,7 @@
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/ru.png"
+                                      src="/assets/img/flags/ru.png"
                                       alt="russia"
                                     />
                                   </div>
@@ -967,7 +967,7 @@
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/cn.png"
+                                      src="/assets/img/flags/cn.png"
                                       alt="china"
                                     />
                                   </div>
@@ -980,7 +980,7 @@
                                 <td>
                                   <div class="flag">
                                     <img
-                                      src="assets/img/flags/br.png"
+                                      src="/assets/img/flags/br.png"
                                       alt="brazil"
                                     />
                                   </div>
@@ -1042,7 +1042,7 @@
                       <div class="item-list">
                         <div class="avatar">
                           <img
-                            src="assets/img/jm_denis.jpg"
+                            src="/assets/img/jm_denis.jpg"
                             alt="..."
                             class="avatar-img rounded-circle"
                           />
@@ -1079,7 +1079,7 @@
                       <div class="item-list">
                         <div class="avatar">
                           <img
-                            src="assets/img/talha.jpg"
+                            src="/assets/img/talha.jpg"
                             alt="..."
                             class="avatar-img rounded-circle"
                           />
@@ -1098,7 +1098,7 @@
                       <div class="item-list">
                         <div class="avatar">
                           <img
-                            src="assets/img/chadengle.jpg"
+                            src="/assets/img/chadengle.jpg"
                             alt="..."
                             class="avatar-img rounded-circle"
                           />
@@ -1538,41 +1538,41 @@
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/core/popper.min.js"></script>
-    <script src="assets/js/core/bootstrap.min.js"></script>
+    <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="/assets/js/core/popper.min.js"></script>
+    <script src="/assets/js/core/bootstrap.min.js"></script>
 
     <!-- jQuery Scrollbar -->
-    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
     <!-- Chart JS -->
-    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+    <script src="/assets/js/plugin/chart.js/chart.min.js"></script>
 
     <!-- jQuery Sparkline -->
-    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+    <script src="/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
     <!-- Chart Circle -->
-    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+    <script src="/assets/js/plugin/chart-circle/circles.min.js"></script>
 
     <!-- Datatables -->
-    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+    <script src="/assets/js/plugin/datatables/datatables.min.js"></script>
 
     <!-- Bootstrap Notify -->
-    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
     <!-- jQuery Vector Maps -->
-    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+    <script src="/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="/assets/js/plugin/jsvectormap/world.js"></script>
 
     <!-- Sweet Alert -->
-    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
     <!-- Kaiadmin JS -->
-    <script src="assets/js/kaiadmin.min.js"></script>
+    <script src="/assets/js/kaiadmin.min.js"></script>
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="assets/js/setting-demo.js"></script>
-    <script src="assets/js/demo.js"></script>
+    <script src="/assets/js/setting-demo.js"></script>
+    <script src="/assets/js/demo.js"></script>
     <script>
       $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",

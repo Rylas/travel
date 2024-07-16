@@ -74,7 +74,7 @@ public class UserController {
         return "redirect:/information";
     }
 
-    @GetMapping("/cash")
+    @GetMapping("/mytour")
     public String cash(HttpSession session, RedirectAttributes ra, Model model){
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");

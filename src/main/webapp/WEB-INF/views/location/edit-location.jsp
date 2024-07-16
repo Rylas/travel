@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <title>Edit Location</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -19,8 +21,8 @@
             <input type="text" class="form-control" id="nameLocation" name="nameLocation" value="${location.nameLocation}" required>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required>${location.description}</textarea>
+            <label for="editor">Description</label>
+            <textarea class="form-control" id="editor" name="description" rows="3" required>${location.description}</textarea>
         </div>
         <div class="form-group">
             <label for="banner-file">Banner</label>
@@ -66,5 +68,11 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    CKEDITOR.replace('editor', {
+        filebrowserUploadUrl: '/uploadImage',
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 </body>
 </html>

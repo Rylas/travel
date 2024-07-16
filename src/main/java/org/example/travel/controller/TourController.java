@@ -101,6 +101,8 @@ public class TourController {
                           @RequestParam("image-file1") MultipartFile firstImage,
                             @RequestParam("image-file2") MultipartFile secondImage,
                             @RequestParam("image-file3") MultipartFile thirdImage,
+                          @RequestParam("linkVideo") String linkVideo,
+                          @RequestParam("duration") int duration,
                           @RequestParam("banner-file") MultipartFile banner,
                           @RequestParam("locations") List<Long> locationIDs,
                           @RequestParam("transport") String transport,
@@ -122,7 +124,9 @@ public class TourController {
         tour.setPriceChild6_10(Integer.parseInt(priceChild6_10));
         tour.setPriceChild2_5(Integer.parseInt(priceChild2_5));
         tour.setPriceChild2(Integer.parseInt(priceChild2));
+        tour.setLinkVideo(linkVideo);
         tour.setTransport(transport);
+        tour.setDuration(duration);
         tour.setHot(isHot);
         tour.setMaxPeople(maxPeople);
         tour.setMinPeople(minPeople);
@@ -189,6 +193,18 @@ public class TourController {
         model.addAttribute("locations", locationService.getAllLocations());
         model.addAttribute("discounts", discountService.getAllDiscounts());
         return "tour/edit-tour";
+    }
+
+    @GetMapping("/enterprise/tour")
+    public String listTour(Model model, HttpSession session, RedirectAttributes ra) {
+        if (!CheckPermission.checkEnterprise(session, ra)) {
+            return "redirect:/login";
+        }
+        User user = (User) session.getAttribute("user");
+
+        List<Tour> tours = tourService.getToursByEnterpriseID(user.getEnterprise().getEnterpriseID());
+        model.addAttribute("tours", tours);
+        return "enterprise/tour";
     }
 
     @PostMapping("/admin/editTour")
@@ -278,6 +294,5 @@ public class TourController {
         List<Tour> tours = tourService.getAllPublicTours();
         response.put("tours", tours);
         return ResponseEntity.ok(response);
-
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,47 @@ public class LocationController {
         locationService.incView((long) id);
         model.addAttribute("location", locationService.getLocationById((long) id));
         return "location/detail-location";
+    }
+
+    @GetMapping("/enterprise/location")
+    public String listLocationEnterprise(Model model) {
+        model.addAttribute("locations", locationService.getAllLocations());
+        return "enterprise/add-location";
+    }
+
+    @PostMapping("/enterprise/location")
+    public String addLocationEnterprise(Location location, @RequestParam("image-file1") MultipartFile firstImage,
+                                        @RequestParam("image-file2") MultipartFile secondImage,
+                                        @RequestParam("image-file3") MultipartFile thirdImage,
+                                        @RequestParam("banner-file") MultipartFile banner, Model model, RedirectAttributes ra) {
+        if (!firstImage.isEmpty()) {
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(firstImage.getOriginalFilename()));
+            String imagePath = fileStorageService.storeFile(firstImage, imageName, "images/location/");
+            location.setFirstImage(imagePath);
+        }
+
+        if (!secondImage.isEmpty()) {
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(secondImage.getOriginalFilename()));
+            String imagePath = fileStorageService.storeFile(secondImage, imageName, "images/location/");
+            location.setSecondImage(imagePath);
+        }
+
+        if (!thirdImage.isEmpty()) {
+            String imageName = "image-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(thirdImage.getOriginalFilename()));
+            String imagePath = fileStorageService.storeFile(thirdImage, imageName, "images/location/");
+            location.setThirdImage(imagePath);
+        }
+
+        if (!banner.isEmpty()) {
+            String bannerName = "banner-location-" + fileStorageService.generateRandomName(Objects.requireNonNull(banner.getOriginalFilename()));
+            String bannerPath = fileStorageService.storeFile(banner, bannerName, "images/location/");
+            location.setBanner(bannerPath);
+        }
+        location.setStatus(false);
+        location.setHot(false);
+        locationService.saveLocation(location);
+        ra.addFlashAttribute("msg", "Gửi yêu cầu thành công");
+        return "redirect:/enterprise/location";
     }
 
     @GetMapping("/admin/location")

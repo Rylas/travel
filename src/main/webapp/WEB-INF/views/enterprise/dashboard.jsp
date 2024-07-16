@@ -115,50 +115,25 @@
                         <div class="collapse" id="base">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/admin/booking">
+                                    <a href="/enterprise/booking">
                                         <span class="sub-item">View all</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                            <i class="fas fa-th-list"></i>
-                            <p>Enterprise</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="sidebarLayouts">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/enterprise">
-                                        <span class="sub-item">View all Enterprise</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/enterprise/add">
-                                        <span class="sub-item">Add new Enterprise</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#forms">
                             <i class="fas fa-pen-square"></i>
-                            <p>Location</p>
+                            <p>Địa điểm</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="forms">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/admin/location">
-                                        <span class="sub-item">View all Location</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/location/add">
-                                        <span class="sub-item">Add a new Location</span>
+                                    <a href="/enterprise/location">
+                                        <span class="sub-item">Yêu cầu thêm địa điểm mới</span>
                                     </a>
                                 </li>
                             </ul>
@@ -173,55 +148,34 @@
                         <div class="collapse" id="tables">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/admin/tour">
+                                    <a href="/enterprise/tour">
                                         <span class="sub-item">View all Tours</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="/admin/tour/add">
-                                        <span class="sub-item">Add a new Tour</span>
+                                        <span class="sub-item">Thêm Tour mới</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/enterprise/grouptour">
+                                        <span class="sub-item">Danh sách các tour được book</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#charts">
-                            <i class="far fa-chart-bar"></i>
-                            <p>Charts</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="charts">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a href="/admin/discount">
-                                        <span class="sub-item">Xem danh sách Ưu đãi</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/discount/add">
-                                        <span class="sub-item">Thêm một Ưu đãi mơi</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#charts">
+                        <a data-bs-toggle="collapse" href="#voucher">
                             <i class="far fa-chart-bar"></i>
                             <p>Mã giảm giá</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse" id="charts">
+                        <div class="collapse" id="voucher">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/admin/voucher">
-                                        <span class="sub-item">Xem danh sách Mã giảm giá</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/admin/voucher/add">
-                                        <span class="sub-item">Thêm Mã giảm giá mới</span>
+                                    <a href="/enterprise/voucher">
+                                        <span class="sub-item">Yêu cầu mã giảm giá mới</span>
                                     </a>
                                 </li>
                             </ul>

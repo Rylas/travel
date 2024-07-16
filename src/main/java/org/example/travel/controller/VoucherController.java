@@ -11,12 +11,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class VoucherController {
     @Autowired
     private VoucherService voucherService;
+
+    @GetMapping("/enterprise/voucher")
+    public String listVoucher(Model model) {
+        model.addAttribute("vouchers", voucherService.getAllVouchers());
+        return "enterprise/voucher";
+    }
+
+    @PostMapping("/enterprise/voucher/add")
+    public String addVoucher(Voucher voucher) {
+        voucher.setStatus(false);
+        voucherService.saveVoucher(voucher);
+        return "redirect:/enterprise/voucher";
+    }
 
     @GetMapping("/admin/voucher")
     public String voucher(Model model) {

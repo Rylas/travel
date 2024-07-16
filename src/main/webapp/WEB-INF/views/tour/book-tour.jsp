@@ -65,21 +65,21 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="name">Họ tên *</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Họ tên" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Họ tên" value="${user.firstName} ${user.lastName}" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="phone">Số điện thoại *</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" required>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại" value="${user.phone}" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="address">Địa chỉ</label>
-                        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ" value="${user.address}" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="email">Email *</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="${user.email}" required>
                     </div>
                 </div>
                 <div class="form-row">
