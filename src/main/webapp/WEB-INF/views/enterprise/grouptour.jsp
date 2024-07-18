@@ -42,8 +42,8 @@
         <c:forEach var="groupTour" items="${groupTours}" varStatus="status">
             <tr>
                 <td>${status.index + 1}</td>
-                <td>${groupTour.tour.name}</td>
-                <td>${groupTour.enterprise.name}</td>
+                <td>${groupTour.tour.nameTour}</td>
+                <td>${groupTour.enterprise.nameEnterprise}</td>
                 <td><c:choose>
                     <c:when test="${groupTour.status}">Active</c:when>
                     <c:otherwise>Inactive</c:otherwise>
@@ -57,7 +57,7 @@
                     <a href="groupTour/active/${groupTour.groupTourID}" class="btn btn-primary btn-sm">Bắt đầu Tour</a>
                     <a href="groupTour/detail/${groupTour.groupTourID}" class="btn btn-info btn-sm">Chi tiết</a>
                     <a href="groupTour/edit/${groupTour.groupTourID}" class="btn btn-warning btn-sm">Sửa</a>
-                    <a href="groupTour/delete?id=${groupTour.groupTourID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this group tour?');">Xóa</a>
+                    <a href="groupTour/delete/${groupTour.groupTourID}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this group tour?');">Xóa</a>
                 </td>
             </tr>
         </c:forEach>

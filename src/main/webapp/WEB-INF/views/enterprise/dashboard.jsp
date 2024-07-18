@@ -153,7 +153,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/admin/tour/add">
+                                    <a href="/enterprise/tour/add">
                                         <span class="sub-item">Thêm Tour mới</span>
                                     </a>
                                 </li>

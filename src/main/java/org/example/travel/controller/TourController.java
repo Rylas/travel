@@ -6,6 +6,7 @@ import org.example.travel.service.*;
 import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.sql.Date;
 
@@ -39,6 +41,7 @@ public class TourController {
 
     @Autowired
     private DiscountService discountService;
+
 
     @GetMapping("/details/tour/{id}")
     public String details(@PathVariable("id") long id, Model model, HttpSession session) {
@@ -77,6 +80,16 @@ public class TourController {
         model.addAttribute("locations", locationService.getAllLocations());
         model.addAttribute("discounts", discountService.getAllDiscounts());
         return "tour/add-tour";
+    }
+
+    @GetMapping("/enterprise/tour/add")
+    public String addTourEnterprise(Model model, HttpSession session, RedirectAttributes ra) {
+        if (!CheckPermission.checkEnterprise(session, ra)) {
+            return "redirect:/login";
+        }
+        model.addAttribute("locations", locationService.getAllLocations());
+        model.addAttribute("discounts", discountService.getAllDiscounts());
+        return "enterprise/add-tour";
     }
 
     @GetMapping("/admin/tour")
@@ -275,7 +288,8 @@ public class TourController {
 
     @GetMapping("/search")
     public String searchTours(@RequestParam("keyword") String keyword, Model model) {
-        List<Tour> tours = tourService.searchTours(keyword);
+//        List<Tour> tours = tourService.searchTours(keyword);
+        List<Tour> tours = tourService.searchTourByEverything(keyword);
         model.addAttribute("tours", tours);
         model.addAttribute("keyword", keyword);
         return "user/search";
@@ -291,8 +305,28 @@ public class TourController {
     @GetMapping("/locations/more")
     public ResponseEntity<Map<String, Object>> moreLocations(@RequestParam int offset) {
         Map<String, Object> response = new HashMap<>();
-        List<Tour> tours = tourService.getAllPublicTours();
-        response.put("tours", tours);
+        try {
+            List<Location> locations = locationService.getLocations(offset, 6);
+            response.put("locations", locations);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+        }
         return ResponseEntity.ok(response);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void checkAndUpdateDepartureDates() {
+        List<Tour> tours = tourService.getAllTours();
+        LocalDate now = LocalDate.now();
+
+        for (Tour tour : tours) {
+            if (tour.getDepartureDate() != null && now.minusDays(tour.getDuration()).isAfter(tour.getDepartureDate().toLocalDate())) {
+                tour.setDepartureDate(Date.valueOf(now.plusDays(1)));
+                tour.setExpectedDate(Date.valueOf(now.plusDays(tour.getDuration())));
+                tourService.save(tour);
+            }
+        }
     }
 }

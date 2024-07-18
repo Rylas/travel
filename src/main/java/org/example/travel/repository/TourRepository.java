@@ -52,5 +52,8 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
 
     List<Tour> findByEnterprise_EnterpriseID(Long enterpriseID);
 
+    // searchTourByEverything
+    @Query("SELECT t FROM Tour t WHERE t.nameTour LIKE %:keyword% OR t.description LIKE %:keyword%")
+    List<Tour> searchTourByEverything(String keyword);
 
 }

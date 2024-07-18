@@ -103,4 +103,14 @@ public class TourService {
     public List<Tour> getToursByEnterpriseID(Long enterpriseID) {
         return tourRepository.findByEnterprise_EnterpriseID(enterpriseID);
     }
+
+    // searchTourByEverything
+    public List<Tour> searchTourByEverything(String keyword) {
+        return tourRepository.searchTourByEverything(keyword);
+    }
+
+    // save
+    public void save(Tour tour) {
+        tourRepository.save(tour);
+    }
 }
