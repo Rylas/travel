@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.travel.entity.*;
 import org.example.travel.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BookingController {
@@ -41,9 +46,9 @@ public class BookingController {
 
 
     @GetMapping("/bookTour/{id}")
-    public String bookTour(@PathVariable("id") int id, Model model, HttpSession session) {
+    public String bookTour(@PathVariable("id") int id, Model model, HttpSession session, RedirectAttributes ra) {
         if (session.getAttribute("user") == null) {
-            model.addAttribute("errorMsg", "You need to login to use this feature!");
+            ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
@@ -53,15 +58,45 @@ public class BookingController {
         return "tour/book-tour";
     }
 
+
+
     // Thực hiện việc booking
-    @PostMapping("/bookTour")
-    public String handleBookTour(@RequestParam("tourID") String tourID,
-                                @RequestParam("voucher") String voucherCode, @RequestParam("paymentID") long paymentID, Booking booking, Model model, HttpSession session) {
+    @PostMapping("/bookTour/{id}")
+    public ResponseEntity<Map<String, String>> handleBookTour(RedirectAttributes ra, @RequestParam("tourID") String tourID,
+                                                              @RequestParam("voucher") String voucherCode, @RequestParam("paymentID") long paymentID, Booking booking, Model model, HttpSession session) {
         // Lưu người dùng book tour
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Bạn cần đăng nhập để sử dụng chức năng này!"));
+        }
+
+        LocalDate departureDate = booking.getDepartureDate().toLocalDate();
+        LocalDate expectedDate = booking.getExpectedDate().toLocalDate();
+        if (departureDate.isBefore(LocalDate.now())) {
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Ngày khởi hành không hợp lệ!"));
+        }
+
+        if (expectedDate.isBefore(LocalDate.now())) {
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Ngày trở về không hợp lệ!"));
+        }
+
+        if (departureDate.isAfter(expectedDate)) {
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Ngày khởi hành không thể sau ngày trở về!"));
+        }
+
+
+
         booking.setUser(user);
         booking.setPayment(paymentService.getPaymentById(paymentID));
-        booking.setTotalPeople(booking.getTotalAdults() + booking.getTotalChildren2() + booking.getTotalChildren2_5() + booking.getTotalChildren6_10());
+        int totalPeople = booking.getTotalAdults() + booking.getTotalChildren2() + booking.getTotalChildren2_5() + booking.getTotalChildren6_10();
+        if (totalPeople == 0) {
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Số người không hợp lệ!"));
+        }
+        if (totalPeople > tourService.getTourByTourID(Long.parseLong(tourID)).getMaxPeople()) {
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Số người vượt quá số lượng cho phép!"));
+        }
+        booking.setTotalPeople(totalPeople);
         // Lưu tour được book
         tourService.incCustomer(Long.parseLong(tourID));
         Voucher voucher = voucherService.getVoucherByVoucherCode(voucherCode);
@@ -71,8 +106,7 @@ public class BookingController {
         int totalAmount = getTotalAmount(booking, tour, voucher);
         booking.setTotalPrice(totalAmount);
         bookingService.addBooking(booking);
-        model.addAttribute("message", "Đặt tour thành công!");
-        return "redirect:/cash";
+        return ResponseEntity.ok(Map.of("status", "1", "message", "Đặt tour thành công!"));
     }
 
     @GetMapping("/booking/edit")
@@ -109,7 +143,7 @@ public class BookingController {
         oldBooking.setTotalPrice(totalAmount);
 
         bookingService.updateBooking(oldBooking);
-        return "redirect:/mytour";
+        return "redirect:/cash";
     }
 
     private static int getTotalAmount(Booking booking, Tour tour, Voucher voucher) {
@@ -134,7 +168,7 @@ public class BookingController {
         // Set cancel date
         bookingService.setCancelDate(id);
         bookingService.cancelBooking(id);
-        return "redirect:/mytour";
+        return "redirect:/cash";
     }
 
 
@@ -179,24 +213,37 @@ public class BookingController {
         String subject = "Thông báo xác nhận đơn đặt tour";
         String message = "Đơn đặt tour của bạn đã được xác nhận! Thông tin tour: " + bookingService.getBookingById(id).getTour().getNameTour();
         mailService.sendActivationEmail(mailAddress, subject, message, "Thông Báo Xác Nhận","Xem chi tiết", "http://localhost:8080/booking/detail/" + id);
-        bookingService.approveBooking(id);
-        GroupTour groupTour = groupTourService.getGroupTourByTourIDAndStatusTrue(bookingService.getBookingById(id).getTour().getTourID());
-        if (groupTour != null && groupTour.getCurrentPeople() + bookingService.getBookingById(id).getTotalPeople() <= groupTour.getMaxPeople()) {
-            groupTour.setCurrentPeople(groupTour.getCurrentPeople() + bookingService.getBookingById(id).getTotalPeople());
+        Booking booking = bookingService.getBookingById(id);
+        booking.setStatus("Approved");
+        List<GroupTour> groupTours = groupTourService.getGroupTourByTourTourIDAndStatus(bookingService.getBookingById(id).getTour().getTourID(), "Waiting");
+        if (groupTours.isEmpty()){
+            GroupTour groupTour = new GroupTour();
+            groupTour.setTour(booking.getTour());
+            groupTour.setEnterprise(booking.getTour().getEnterprise());
+            groupTour.setStartDate(booking.getDepartureDate());
+            groupTour.setEndDate(booking.getExpectedDate());
+            groupTour.setMaxPeople(tourService.getTourByTourID(booking.getTour().getTourID()).getMaxPeople());
+            groupTour.setCurrentPeople(booking.getTotalPeople());
+            groupTour.setStatus("Waiting");
             groupTourService.updateGroupTour(groupTour);
+            booking.setGroupTour(groupTour);
+            bookingService.updateBooking(booking);
         } else {
-            GroupTour newGroupTour = new GroupTour();
-            newGroupTour.setTour(bookingService.getBookingById(id).getTour());
-            newGroupTour.setEnterprise(bookingService.getBookingById(id).getTour().getEnterprise());
-            newGroupTour.setStartDate(bookingService.getBookingById(id).getDepartureDate());
-            newGroupTour.setEndDate(bookingService.getBookingById(id).getDepartureDate());
-            newGroupTour.setMaxPeople(bookingService.getBookingById(id).getTour().getMaxPeople());
-            newGroupTour.setCurrentPeople(bookingService.getBookingById(id).getTotalPeople());
-            newGroupTour.setPrice(bookingService.getBookingById(id).getTotalPrice());
-            newGroupTour.setStatus(true);
-            groupTourService.updateGroupTour(newGroupTour);
-        }
+            for (GroupTour groupTour : groupTours){
+                if (groupTour.getCurrentPeople() + booking.getTotalPeople() <= groupTour.getMaxPeople()){
+                    if (groupTour.getCurrentPeople() + booking.getTotalPeople() == groupTour.getMaxPeople()){
+                        groupTour.setStatus("In Process");
+                    }
+                    groupTour.setCurrentPeople(groupTour.getCurrentPeople() + booking.getTotalPeople());
 
+                    booking.setGroupTour(groupTour);
+
+                    bookingService.updateBooking(booking);
+                    groupTourService.updateGroupTour(groupTour);
+                    break;
+                }
+            }
+        }
         return "redirect:/admin/booking";
     }
 

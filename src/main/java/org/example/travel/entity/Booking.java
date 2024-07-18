@@ -56,7 +56,7 @@ public class Booking {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "group_tour_id")
+    @JoinColumn(name = "groupTourID")
     private GroupTour groupTour;
 
     @PrePersist

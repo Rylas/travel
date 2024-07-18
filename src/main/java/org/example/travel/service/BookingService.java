@@ -132,5 +132,8 @@ public class BookingService {
         return bookingRepository.findByEnterpriseID(enterpriseID);
     }
 
-    //
+    // getBookingsByUserIDAndStatusApproved
+    public List<Booking> getBookingsByUserIDAndStatusApproved(Long userID) {
+        return bookingRepository.findByUserIDAndStatus(userID, "Approved");
+    }
 }

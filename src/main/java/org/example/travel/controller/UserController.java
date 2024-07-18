@@ -1,18 +1,24 @@
 package org.example.travel.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.travel.entity.Booking;
+import org.example.travel.entity.GroupTour;
 import org.example.travel.entity.User;
 import org.example.travel.service.BookingService;
 import org.example.travel.service.FileStorageService;
+import org.example.travel.service.GroupTourService;
 import org.example.travel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -22,6 +28,8 @@ public class UserController {
     private FileStorageService fileStorageService;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private GroupTourService groupTourService;
 
     // Hàm xem thông tin của người dùng
     @GetMapping("/information")
@@ -74,7 +82,7 @@ public class UserController {
         return "redirect:/information";
     }
 
-    @GetMapping("/mytour")
+    @GetMapping("/cash")
     public String cash(HttpSession session, RedirectAttributes ra, Model model){
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");
@@ -83,5 +91,29 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         model.addAttribute("bookings", bookingService.getBookingsByUserID(user.getUserID()));
         return "user/cash";
+    }
+
+    @GetMapping("/mytour")
+    public String myTour(HttpSession session, RedirectAttributes ra, Model model){
+        if (session.getAttribute("user") == null) {
+            ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");
+            return "redirect:/login";
+        }
+        User user = (User) session.getAttribute("user");
+        List<Booking> bookings = bookingService.getBookingsByUserIDAndStatusApproved(user.getUserID());
+        model.addAttribute("bookings", bookings);
+        return "user/mytour";
+    }
+
+    @GetMapping("/mytour/details/{groupTourID}")
+    public String myTourDetail(@PathVariable("groupTourID") Long groupTourID, Model model, HttpSession session, RedirectAttributes ra){
+        if (session.getAttribute("user") == null) {
+            ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");
+            return "redirect:/login";
+        }
+        User user = (User) session.getAttribute("user");
+        GroupTour groupTour = groupTourService.findGroupTourById(groupTourID);
+        model.addAttribute("groupTour", groupTour);
+        return "user/mytour_detail";
     }
 }

@@ -16,7 +16,7 @@ public class GroupTour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupTourID;
-    private Boolean status;
+    private  String status;
     private Date startDate;
     private Date endDate;
     private int maxPeople;

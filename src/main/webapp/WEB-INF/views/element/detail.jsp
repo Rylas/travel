@@ -36,6 +36,10 @@
             height: 200px;
             overflow: hidden;
         }
+        a {
+            text-decoration: none;
+            color: rgb(24, 126, 199) !important;
+        }
     </style>
 </head>
 
@@ -131,7 +135,22 @@
                         <p class="info-item">
                             <span>Nơi xuất phát: </span>
 
-                            <span>Da Nang</span>
+                            <a href="/details/location/${tour.locations.stream().findFirst().get().locationID}">${tour.locations.stream().findFirst().get().nameLocation}</a>
+                        </p>
+                        <p class="info-item">
+                            <span>Số người tối thiểu: </span>
+
+                            <span>${tour.minPeople}</span>
+                        </p>
+                        <p class="info-item">
+                            <span>Số người tối đa: </span>
+
+                            <span>${tour.maxPeople}</span>
+                        </p>
+                        <p class="info-item">
+                            <span>Số người đã đặt tour: </span>
+
+                            <span>${tour.numberBooked}</span>
                         </p>
                     </div>
 

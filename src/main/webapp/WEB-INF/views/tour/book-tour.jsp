@@ -56,7 +56,7 @@
 <body>
 <%@ include file="../material/navbar.jsp"%>
 
-<form action="/bookTour" method="post" class="container mt-5" id="form-book">
+<form action="/bookTour/${tour.tourID}" method="post" class="container mt-5" id="form-book">
     <input type="hidden" name="tourID" value="${tour.tourID}">
     <div class="row">
         <div class="col-md-8">
@@ -180,20 +180,25 @@
                 language: 'vn',
             },
             success: function(response) {
-                if (response.code == "00") {
+                let check = false;
+                if (response.code === "00") {
                     $.ajax({
                         type: 'POST',
-                        url: '/bookTour',
+                        url: '/bookTour/${tour.tourID}',
                         data: $('#form-book').serialize(),
-                        success: function(response) {
-                            alert('Đặt tour thành công. Đang chuyển hướng đến trang thanh toán...');
+                        success: function(res) {
+                            if (res.status === '1') {
+                                alert(res.message);
+                                window.location.href = response.data;
+                                console.log("Success");
+                            } else {
+                                alert(res.message);
+                            }
                         },
                         error: function(error) {
                             alert('Đặt tour thất bại. Vui lòng thử lại.');
                         }
                     });
-                    window.location.href = response.data;
-
                 }
             },
             error: function(error) {

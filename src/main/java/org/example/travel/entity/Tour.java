@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,6 +75,17 @@ public class Tour {
 
     @PreUpdate
     protected void onUpdate() {
+
         updatedAt = new Date(System.currentTimeMillis());
+        checkAndUpdateDepartureDate();
     }
+
+    // Tự động cập nhập departureDate mỗi khi tới hạn duration (ngày)
+    private void checkAndUpdateDepartureDate() {
+        LocalDate now = LocalDate.now();
+        if (departureDate != null && now.minusDays(duration).isAfter(departureDate.toLocalDate())) {
+            departureDate = Date.valueOf(now.plusDays(1));
+        }
+    }
+
 }

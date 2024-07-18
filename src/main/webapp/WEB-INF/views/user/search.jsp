@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,9 +24,9 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+<%--                <th>Description</th>--%>
+                <th>Departure Date</th>
+                <th>Expected Date</th>
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
@@ -35,10 +36,12 @@
                 <tr>
                     <td>${status.index + 1}</td>
                     <td>${tour.nameTour}</td>
-                    <td>${tour.description}</td>
-                    <td>${tour.startDate}</td>
-                    <td>${tour.endDate}</td>
-                    <td>${tour.price}</td>
+<%--                    <td>${tour.description}</td>--%>
+                    <td>${tour.departureDate}</td>
+                    <td>${tour.expectedDate}</td>
+                    <td>
+                        <fmt:formatNumber value="${tour.priceAdult}" type="number" /> đ
+                    </td>
                     <td>
                         <a href="/details/tour/${tour.tourID}" class="btn btn-info btn-sm">View</a>
                     </td>
