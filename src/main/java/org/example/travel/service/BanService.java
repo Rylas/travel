@@ -25,7 +25,7 @@ public class BanService {
     public void unbanUser(Long userID) {
         Ban ban = banRepository.findByUserUserID(userID);
         if (ban != null) {
-            banRepository.deleteById(ban.getBanID());
+            banRepository.unBan(ban.getBanID());
         }
     }
 

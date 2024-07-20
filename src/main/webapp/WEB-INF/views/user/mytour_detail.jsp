@@ -58,8 +58,20 @@
                 <td>${groupTour.endDate}</td>
             </tr>
             <tr>
-                <th>Giá</th>
-                <td><fmt:formatNumber value="${groupTour.price}" type="number" groupingUsed="true" />đ</td>
+                <th>Giá người lớn</th>
+                <td><fmt:formatNumber value="${groupTour.tour.priceAdult}" type="number" groupingUsed="true" />đ</td>
+            </tr>
+            <tr>
+                <th>Giá trẻ em từ 6 - 10 tuổi</th>
+                <td><fmt:formatNumber value="${groupTour.tour.priceChild6_10}" type="number" groupingUsed="true" />đ</td>
+            </tr>
+            <tr>
+                <th>Giá trẻ em dưới 2 - 5 tuổi</th>
+                <td><fmt:formatNumber value="${groupTour.tour.priceChild2_5}" type="number" groupingUsed="true" />đ</td>
+            </tr>
+            <tr>
+                <th>Giá em bé dưới 2 tuổi</th>
+                <td><fmt:formatNumber value="${groupTour.tour.priceChild2}" type="number" groupingUsed="true" />đ</td>
             </tr>
             <tr>
                 <th>Số lượng tối đa</th>

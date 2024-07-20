@@ -39,6 +39,8 @@ public class User {
     private String token;
     private Date createdAt;
     private Date updatedAt;
+    private String facebookID;
+    private String googleID;
 
     @ManyToOne
     @JoinColumn(name = "enterpriseID")

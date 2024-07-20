@@ -80,4 +80,19 @@ public class UserService {
             return userRepository.getNewUsersEnterprise(enterpriseID);
     }
 
+
+    // findByGoogleID
+    public User findByGoogleID(String googleID) {
+        return userRepository.findByGoogleID(googleID);
+    }
+
+    // findByGoogleIDAndEmail
+    public User findByGoogleIDAndEmail(String googleID, String email) {
+        return userRepository.findByGoogleIDAndEmail(googleID, email);
+    }
+
+    // findByFacebookID
+    public User findByFacebookID(String facebookID) {
+        return userRepository.findByFacebookID(facebookID);
+    }
 }

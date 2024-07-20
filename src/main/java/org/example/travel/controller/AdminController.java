@@ -93,7 +93,6 @@ public class AdminController {
 
     @GetMapping("/admin/user/unban")
     public String unbanUser(@RequestParam("id") Long id) {
-        System.out.println(id);
         userService.unbanUser(id);
         return "redirect:/admin/user";
     }

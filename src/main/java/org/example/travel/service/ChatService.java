@@ -18,7 +18,8 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public List<ChatRoomDTO> getAllChatRooms(long userID) {
-        return chatRoomRepository.findByUserUserIDAndStatusTrue(userID).stream()
+        return chatRoomRepository.findByUserUserIDAndStatusTrueOrderByLastMessageTimestampDesc(userID)
+                .stream()
                 .map(ChatRoomMapper::toDto)
                 .collect(Collectors.toList());
     }
