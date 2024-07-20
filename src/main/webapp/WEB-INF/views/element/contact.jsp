@@ -69,7 +69,7 @@
                                 <i class="ti-email"></i>
                             </div>
                             <div class="text">
-                                <h4>travelwy@fpt.edu.com</h4>
+                                <h4>dunghqde180512@fpt.edu.vn</h4>
                                 <p>Send us your query anytime!</p>
                             </div>
                         </div>

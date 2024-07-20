@@ -1,12 +1,10 @@
 package org.example.travel.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.travel.entity.Booking;
 import org.example.travel.entity.Enterprise;
 import org.example.travel.entity.User;
-import org.example.travel.service.EnterpriseService;
-import org.example.travel.service.FileStorageService;
-import org.example.travel.service.StatisticsService;
-import org.example.travel.service.UserService;
+import org.example.travel.service.*;
 import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,6 +34,8 @@ public class EnterpriseController {
     private FileStorageService fileStorageService;
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private BookingService bookingService;
 
     @GetMapping("/enterprise")
     public String enterprise(HttpSession session, RedirectAttributes ra) {
@@ -51,6 +52,47 @@ public class EnterpriseController {
     @PostMapping("/enterprise")
     public String registerEnterprise(Enterprise enterprise, @RequestParam("logo-file") MultipartFile image,
                                      @RequestParam("banner-file") MultipartFile banner, HttpSession session, RedirectAttributes ra) {
+        // Regex name
+        if (!enterprise.getNameEnterprise().matches("^[a-zA-Z0-9 ]{1,50}$")) {
+            ra.addFlashAttribute("errorMsg", "Name is invalid!");
+            return "redirect:/enterprise";
+        }
+        // Regex address
+        if (!enterprise.getAddress().matches("^[a-zA-Z0-9 ]{1,100}$")) {
+            ra.addFlashAttribute("errorMsg", "Address is invalid!");
+            return "redirect:/enterprise";
+        }
+        // Regex description
+        if (!enterprise.getDescription().matches("^[a-zA-Z0-9 ]{1,500}$")) {
+            ra.addFlashAttribute("errorMsg", "Description is invalid!");
+            return "redirect:/enterprise";
+        }
+        // Regex logo
+        if (!Objects.requireNonNull(image.getOriginalFilename()).matches(".*\\.(jpg|jpeg|png)$")) {
+            ra.addFlashAttribute("errorMsg", "Logo is invalid!");
+            return "redirect:/enterprise";
+        }
+        // Regex banner
+        if (!Objects.requireNonNull(banner.getOriginalFilename()).matches(".*\\.(jpg|jpeg|png)$")) {
+            ra.addFlashAttribute("errorMsg", "Banner is invalid!");
+            return "redirect:/enterprise";
+        }
+
+        // Regex phone
+        if (!enterprise.getPhone().matches("^0[0-9]{9,10}$")) {
+            ra.addFlashAttribute("errorMsg", "Phone number is invalid!");
+            return "redirect:/enterprise";
+        }
+        // Regex email
+        if (!enterprise.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            ra.addFlashAttribute("errorMsg", "Email is invalid!");
+            return "redirect:/enterprise";
+        }
+        // Regex website
+        if (!enterprise.getWebsite().matches("^(http://|https://)?(www\\.)?[a-zA-Z0-9]+\\.[a-zA-Z]{2,6}$")) {
+            ra.addFlashAttribute("errorMsg", "Website is invalid!");
+            return "redirect:/enterprise";
+        }
         if (!image.isEmpty()) {
             // Generate a random name for the image
             String imageName = fileStorageService.generateRandomName(Objects.requireNonNull(image.getOriginalFilename()));
@@ -180,5 +222,16 @@ public class EnterpriseController {
         Map<String, Object> statistics = statisticsService.getStatistics(enterprise.getEnterpriseID());
         session.setAttribute("statistics", statistics);
         return "enterprise/dashboard";
+    }
+
+    @GetMapping("/enterprise/grouptour")
+    public String enterpriseGroupTour(HttpSession session, RedirectAttributes ra, Model model){
+        if (!CheckPermission.checkEnterprise(session, ra)) {
+            return "redirect:/login";
+        }
+        User user = (User) session.getAttribute("user");
+        List<Booking> bookings = bookingService.getBookingsByEnterprise(user.getEnterprise().getEnterpriseID());
+        model.addAttribute("bookings", bookings);
+        return "enterprise/groupTourList";
     }
 }

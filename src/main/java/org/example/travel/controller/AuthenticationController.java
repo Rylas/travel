@@ -103,6 +103,25 @@ public class AuthenticationController {
     // RedirectAttributes dùng để truyền tham số điều hướng trang web (ví dụ: lời nhắn)
     // HttpServletRequest dùng để lấy thông tin request từ client
     public String register(User user, @RequestParam("confirmPassword") String confirmPassword, RedirectAttributes ra, HttpServletRequest request) {
+        // Regex kiểm tra email
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        if (!user.getEmail().matches(emailRegex)) {
+            ra.addFlashAttribute("msg", "Email không hợp lệ, vui lòng kiểm tra lại!");
+            return "redirect:/register";
+        }
+        // Regex kiểm tra số điện thoại
+        String phoneRegex = "0\\d{9,10}";
+        if (!user.getPhone().matches(phoneRegex)) {
+            ra.addFlashAttribute("msg", "Số điện thoại không hợp lệ, vui lòng kiểm tra lại!");
+            return "redirect:/register";
+        }
+        // Regex kiểm tra mật khẩu
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20}$";
+        if (!user.getPassword().matches(passwordRegex)) {
+            ra.addFlashAttribute("msg", "Mật khẩu phải chứa ít nhất 1 chữ số, 1 chữ thường, 1 chữ hoa và từ 6-20 ký tự!");
+            return "redirect:/register";
+        }
+
         if (confirmPassword.isEmpty() || !user.getPassword().equals(confirmPassword)) {
             ra.addFlashAttribute("msg", "Mật khẩu không khớp, vui lòng kiểm tra lại!");
             return "redirect:/register";
@@ -245,5 +264,4 @@ public class AuthenticationController {
     }
 
     // Hàm để gửi email kèm token để kích hoạt tài khoản hoặc quên mật khẩu
-
 }

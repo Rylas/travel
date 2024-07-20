@@ -17,6 +17,18 @@
         .msg {
             color: green;
         }
+        span.msg {
+            display: block;
+            margin: 10px 0;
+        }
+
+        span.successMsg {
+            color: #2ecc71;
+        }
+
+        span.errorMsg {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -24,7 +36,8 @@
 
 <div class="container">
     <h2 class="text-center">Booked Tours</h2>
-    <p class="msg">${msg}</p>
+    <span class="msg errorMsg">${errorMsg}</span>
+    <span class="msg successMsg">${successMsg}</span>
     <table class="table table-striped">
         <thead>
         <tr>

@@ -120,11 +120,19 @@
     <span class="msg successMsg">${successMsg}</span>
     <span class="msg errorMsg">${errorMsg}</span>
     <button type="submit">Đăng nhập</button>
+
+    <!-- Thêm nút đăng nhập bằng Google -->
+    <button onclick="window.location.href='/google-login';" style="background-color: #db4a39; margin-top: 20px;">Đăng nhập bằng Google</button>
+
+    <!-- Thêm nút đăng nhập bằng Facebook -->
+    <button onclick="window.location.href='/facebook';" style="background-color: #3b5998; margin-top: 10px;">Đăng nhập bằng Facebook</button>
+
     <div class="links">
         <a href="/register">Đăng ký</a>
         <a href="/forgot-password">Quên mật khẩu</a>
     </div>
 </form>
+
 <%@include file="../material/footer.jsp"%>
 </body>
 </html>

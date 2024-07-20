@@ -1,11 +1,15 @@
 package org.example.travel.repository;
 
+import org.example.travel.entity.Location;
 import org.example.travel.entity.Tour;
 import org.example.travel.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 
 @Repository
@@ -56,4 +60,18 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     @Query("SELECT t FROM Tour t WHERE t.nameTour LIKE %:keyword% OR t.description LIKE %:keyword%")
     List<Tour> searchTourByEverything(String keyword);
 
+    // searchTourByKeywordDateGroup
+    @Query("SELECT t FROM Tour t WHERE (t.nameTour LIKE %:keyword% OR t.description LIKE %:keyword%) AND t.isGroup = :isGroup AND t.departureDate >= :date")
+    List<Tour> searchTourByKeywordDateGroup(String keyword, Date date, boolean isGroup);
+
+    @Query("SELECT t FROM Tour t WHERE t.status = true ORDER BY t.numberBooked DESC")
+    Page<Tour> findAllActiveTours(Pageable pageable);
+
+    // getTotalVisitorsAdmin
+    @Query("SELECT SUM(t.numberViewed) FROM Tour t")
+    Long getTotalVisitorsAdmin();
+
+    // getListVisitorJanuaryToDecember
+    @Query("SELECT SUM(t.numberViewed) FROM Tour t WHERE MONTH(t.createdAt) = :month")
+    Long getListVisitorJanuaryToDecember(int month);
 }

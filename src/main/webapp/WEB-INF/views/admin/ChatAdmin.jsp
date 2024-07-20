@@ -537,6 +537,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",
@@ -567,123 +569,163 @@
 </script>
 <script>
     $(document).ready(function(){
-        let userID;
-        let token;
-        <%
-            if (session.getAttribute("user") != null) {
-        %>
-        userID = ${sessionScope.user.userID};
-        <%--token = "${sessionScope.token}";--%>
 
-        <%
-            } else {
-        %>
-        userID = null;
-        <%
-            }
-        %>
-        let chatRoomID = null;
-        let websocket = null;
-        function connect(token){
-            websocket = new WebSocket("ws://localhost:8080/chat/" + token + "/" + userID);
+    });
+    let receiverID;
+    let userID;
+    let token;
+    let userRole;
+    <%
+        if (session.getAttribute("user") != null) {
+    %>
+    userID = ${sessionScope.user.userID};
+    userRole = "${sessionScope.user.role.roleName}";
+    <%--token = "${sessionScope.token}";--%>
 
-            websocket.onopen = function(message) {processOpen(message);};
-            websocket.onmessage = function(message) {processMessage(message);};
-            websocket.onclose = function(message) {processClose(message);};
-            websocket.onerror = function(message) {processError(message);};
-
-            function processOpen(message) {
-                console.log("Server connect... \n");
-            }
-            function processMessage(message) {
-                const data = JSON.parse(message.data);
-                const timestamp = new Date(data.timestamp).toLocaleTimeString();
-                if (data.sender.userID !== ${sessionScope.user.userID}) {
-                    $('#chatBox').append(
-                        '<div class="chat-message left"> <strong>' + data.user.name + ':</strong>' +
-                        data.content +
-                        '<span class="timestamp">' + timestamp + '</span></div>'
-                    );
-                }
-                $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-            }
-            function processClose(message) {
-                console.log("Server disconnect... \n");
-            }
-            function processError(message) {
-                console.log("Error... \n");
-            }
+    <%
+        } else {
+    %>
+    userID = null;
+    userRole = null;
+    <%
         }
+    %>
+    var stompClient = null;
 
-        function disconnect(){
-            if(websocket !== null){
-                websocket.close();
-            }
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            stompClient.subscribe('/topic/messages/admin', function(message) {
+                showMessage(JSON.parse(message.body));
+            });
+
+        });
+    }
+
+    // function sendMessage() {
+    //     var content = document.getElementById('message').value;
+    //     if (userRole === 'admin') {
+    //         stompClient.send("/app/chat/user/" + userID, {}, JSON.stringify({
+    //             'content': content,
+    //             'senderID': userID,
+    //             'role': userRole,
+    //             'timestamp': new Date().toISOString()
+    //         }));
+    //     } else {
+    //         stompClient.send("/app/chat/admin", {}, JSON.stringify({'text': content}));
+    //     }
+    // }
+    //
+    // function showMessage(message) {
+    //     var response = document.getElementById('response');
+    //     var p = document.createElement('p');
+    //     p.appendChild(document.createTextNode(message.from + ": " + message.text));
+    //     response.appendChild(p);
+    // }
+    $('.user-link').on('click', function(e){
+        e.preventDefault();
+        receiverID = $(this).data('userid');
+        $('#chatWith').text('Chat with ' + $(this).text());
+        // disconnect();
+        // connect(receiverID);
+        loadChat(receiverID);
+    });
+
+    function disconnect(){
+        if(stompClient !== null){
+            stompClient.disconnect();
         }
+    }
 
-        $('.user-link').on('click', function(e){
-            e.preventDefault();
-            let receiverID = $(this).data('userid');
-            token = $(this).data('token');
-            $('#chatWith').text('Chat with ' + $(this).text());
-            disconnect();
-            connect(token);
-
-            loadChat(receiverID);
-        });
-
-        $('#chatInput').on('keypress', function(e){
-            if(e.which === 13){
-                $('#sendBtn').click();
-            }
-        });
-
-        $('#sendBtn').on('click', function(){
-            var message = $('#chatInput').val();
-            if(message.trim() !== ''){
-                sendMessage(message, chatRoomID);
-                $('#chatInput').val('');
-            }
-        });
-
-        function loadChat(userId){
-            fetch('/api/chat/rooms/' + userId)
-                .then(response => response.json())
-                .then(chatMessages => {
-                    $('#chatBox').html('');
-                    console.log(chatMessages);
-
-                    chatMessages.forEach(message => {
-                        const timestamp = new Date(message.timestamp).toLocaleTimeString();
-                        if (message.user.userID === ${sessionScope.user.userID}) {
-                            $('#chatBox').append(
-                                '<div class="chat-message right"> <strong>Admin:</strong>'
-                                + message.content +
-                                '<span class="timestamp">' +  timestamp + '</span></div>'
-                            )
-                        } else {
-                            $('#chatBox').append(
-                                '<div class="chat-message left"><strong>' + message.user.name + ':</strong>' +
-                                message.content +
-                                '<span class="timestamp">' + timestamp+'</span></div>'
-                            )
-                        }
-                    });
-                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-                });
-        }
-
-        function sendMessage(message){
-            websocket.send(message);
-            const timestamp = new Date().toLocaleTimeString();
-            $('#chatBox').append(
-                '<div class="chat-message right"><strong>Admin:</strong>'
-                + message +
-                '<span class="timestamp">' + timestamp + '</span></div>'
-            );
-            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    $('#chatInput').on('keypress', function(e){
+        if(e.which === 13){
+            $('#sendBtn').click();
         }
     });
+
+    $('#sendBtn').on('click', function(){
+        const message = $('#chatInput').val();
+        if(message.trim() !== ''){
+            sendMessage(message);
+            $('#chatInput').val('');
+        } else {
+            alert('Please enter a message');
+        }
+    });
+
+    function loadChat(userId){
+        fetch('/api/chat/rooms/' + userId)
+            .then(response => response.json())
+            .then(chatMessages => {
+                $('#chatBox').html('');
+                console.log(chatMessages);
+
+                chatMessages.forEach(message => {
+                    const msg = message.messages;
+                    msg.forEach(m => {
+                        const parts = m.timestamp.split(" ");
+                        const timePart = parts[0];
+                        const dateParts = parts[1].split("-");
+                        const newTimestamp = dateParts[2] + '-' +dateParts[1] +'-'+dateParts[0] +'T'+timePart;
+                        const dateObject = new Date(newTimestamp);
+                        const timestamp = dateObject.toLocaleTimeString();
+                        if(m.userID === userId){
+                            $('#chatBox').append(
+                                '<div class="chat-message left"><strong>' + message.name + ':</strong>'
+                                + m.content +
+                                '<span class="timestamp">' + timestamp + '</span></div>'
+                            );
+                        } else {
+                            $('#chatBox').append(
+                                '<div class="chat-message right"><strong>Admin:</strong>'
+                                + m.content +
+                                '<span class="timestamp">' + timestamp + '</span></div>'
+                            );
+                        }
+                    }
+                    );
+                });
+                $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+            });
+    }
+
+    function showMessage(message) {
+        const timestamp = new Date(message.timestamp).toLocaleTimeString();
+        if (message.userID === receiverID) {
+            $('#chatBox').append(
+                '<div class="chat-message left"><strong>' + message.name + ':</strong>'
+                + message.content +
+                '<span class="timestamp">' + timestamp + '</span></div>'
+            );
+        } else {
+            $('#chatBox').append(
+                '<div class="chat-message right"><strong>Admin:</strong>'
+                + message.content +
+                '<span class="timestamp">' + timestamp + '</span></div>'
+            );
+        }
+        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    }
+
+    function sendMessage(message){
+        const timestamp = new Date().toLocaleTimeString();
+        $('#chatBox').append(
+            '<div class="chat-message left"><strong>Admin:</strong>'
+            + message +
+            '<span class="timestamp">' + timestamp + '</span></div>'
+        );
+        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+        stompClient.send("/app/chat/user/" + receiverID, {}, JSON.stringify({
+            'content': message,
+            'userID': userID,
+            'role': userRole,
+            'timestamp': new Date().toISOString()
+        }));
+    }
+    window.onload = function() {
+        connect();
+    }
 </script>
 </body>
 </html>

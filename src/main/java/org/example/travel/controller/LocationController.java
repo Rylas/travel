@@ -24,10 +24,7 @@ public class LocationController {
     private FileStorageService fileStorageService;
 
 
-    @GetMapping("/location/more")
-    public List<Location> getMoreLocations(@RequestParam int offset, @RequestParam int limit) {
-        return locationService.getLocations(offset, limit);
-    }
+
 
     @GetMapping("/details/location/{id}")
     public String details(@PathVariable("id") int id, Model model) {

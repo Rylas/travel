@@ -1,10 +1,16 @@
 package org.example.travel.service;
 
+import org.example.travel.entity.Location;
 import org.example.travel.entity.Tour;
 import org.example.travel.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,10 +68,10 @@ public class TourService {
         }
     }
 
-    public void incCustomer(Long id) {
+    public void incCustomer(Long id, int numberCustomer) {
         Tour tour = tourRepository.findByTourID(id);
         if (tour != null) {
-            tour.setNumberBooked(tour.getNumberBooked() + 1);
+            tour.setNumberBooked(tour.getNumberBooked() + numberCustomer);
             tourRepository.save(tour);
         }
     }
@@ -112,5 +118,40 @@ public class TourService {
     // save
     public void save(Tour tour) {
         tourRepository.save(tour);
+    }
+
+    // searchTourByKeywordDateGroup
+    public List<Tour> searchTourByKeywordDateGroup(String keyword, Date date, boolean isGroup) {
+        return tourRepository.searchTourByKeywordDateGroup(keyword, date, isGroup);
+    }
+
+    // loadTours
+    public Page<Tour> loadTours(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "numberViewed");
+        return tourRepository.findAllActiveTours(pageable);
+    }
+
+    // getTotalVisitorsAdmin
+    public Long getTotalVisitorsAdmin() {
+        return tourRepository.getTotalVisitorsAdmin() == null ? 0 : tourRepository.getTotalVisitorsAdmin();
+    }
+
+    // getTotalToursAdmin
+    public Long getTotalToursAdmin() {
+        return tourRepository.findAll().stream().count();
+    }
+
+    // getHotestTourAdmin
+    public Tour getHotestTourAdmin() {
+        return tourRepository.getTourOrderByNumberCustomerDesc().get(0);
+    }
+
+    // getListVisitorJanuaryToDecemberAdmin
+    public List<Long> getListVisitorJanuaryToDecemberAdmin() {
+        List<Long> listVisitorJanuaryToDecember = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            listVisitorJanuaryToDecember.add(tourRepository.getListVisitorJanuaryToDecember(i, null) == null ? 0L : tourRepository.getListVisitorJanuaryToDecember(i, null));
+        }
+        return listVisitorJanuaryToDecember;
     }
 }

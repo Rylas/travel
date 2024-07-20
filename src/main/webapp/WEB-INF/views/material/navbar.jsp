@@ -107,3 +107,25 @@
         document.getElementById("loadPage").style.display = "none";
     }, 2000));
 </script>
+<script>
+    function toggleUserMenu() {
+        var menu = document.getElementById("userMenu");
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.avatar')) {
+            var menus = document.getElementsByClassName("user-menu");
+            for (var i = 0; i < menus.length; i++) {
+                var openMenu = menus[i];
+                if (openMenu.style.display === "block") {
+                    openMenu.style.display = "none";
+                }
+            }
+        }
+    }
+</script>

@@ -94,6 +94,13 @@
             <input type="number" class="form-control" id="maxPeople" name="maxPeople" value="${tour.maxPeople}" required>
         </div>
         <div class="form-group">
+            <label for="isGroup">Số người tối đa</label>
+            <select class="form-control" id="isGroup" name="group" required>
+                <option value="true" ${tour.group ? 'selected' : ''}>Tổ chức theo đoàn (Gộp đoàn)</option>
+                <option value="false" ${!tour.group ? 'selected' : ''}>Khách hàng tự chọn ngày (Cá nhân)</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="schedule">Schedule</label>
             <a href="/admin/tour/schedule?tourID=${tour.tourID}" class="btn btn-primary" id="schedule">Chỉnh sửa lịch trình của Tour</a>
         </div>

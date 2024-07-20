@@ -61,4 +61,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // get 6 latest user booking with enterpriseID
     @Query("SELECT u FROM User u JOIN u.bookings b WHERE b.tour.enterprise.enterpriseID = ?1 ORDER BY b.createdAt DESC LIMIT 6")
     List<User> getNewUsersEnterprise(Long enterpriseID);
+
+    // Find user by googleID
+    @Query("SELECT u FROM User u WHERE u.googleID = ?1")
+    User findByGoogleID(String googleID);
+
+    // findByGoogleIDAndEmail
+    @Query("SELECT u FROM User u WHERE u.googleID = ?1 OR u.email = ?2")
+    User findByGoogleIDAndEmail(String googleID, String email);
+
+    // Find user by facebookID
+    @Query("SELECT u FROM User u WHERE u.facebookID = ?1")
+    User findByFacebookID(String facebookID);
+
+    // getNewUsersAdmin
+    @Query("SELECT u FROM User u WHERE u.isActive = true ORDER BY u.createdAt DESC LIMIT 6")
+    List<User> getNewUsersAdmin();
 }

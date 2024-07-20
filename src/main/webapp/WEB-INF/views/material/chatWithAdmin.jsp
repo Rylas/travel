@@ -25,93 +25,137 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.3.0/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>
     $(document).ready(function() {
-        let stompClient = null;
-        let userID;
-        let sender;
-        <%
-            if (session.getAttribute("user") != null) {
-        %>
-        userID = ${sessionScope.user.userID};
-        sender = "${sessionScope.user.userID}-${sessionScope.user.firstName}-${sessionScope.user.lastName}";
-        <%
-            } else {
-        %>
-        userID = null;
-        <%
-            }
-        %>
+        // let stompClient = null;
 
-        function connect(user) {
-            var socket = new SockJS('/ws');
-            stompClient = Stomp.over(socket);
-            stompClient.connect({}, function (frame) {
-                console.log('Connected: ' + frame);
-                stompClient.subscribe('/user/queue/messages', function (messageOutput) {
-                    showMessage(JSON.parse(messageOutput.body));
-                });
-            });
+    });
+    let userID;
+    let sender;
+    let userRole;
+    <%
+        if (session.getAttribute("user") != null) {
+    %>
+    userID = ${sessionScope.user.userID};
+    sender = "${sessionScope.user.userID}-${sessionScope.user.firstName}-${sessionScope.user.lastName}";
+    userRole = "${sessionScope.user.role.roleName}";
+    <%
+        } else {
+    %>
+    userID = null;
+    userRole = null;
+    <%
         }
+    %>
 
-        function loadChatRooms() {
-            fetch('/api/chat/rooms/' + userID)
-                .then(response => response.json())
-                .then(chatRooms => {
-                    chatRooms.forEach(chatRoom => {
-                        chatRoom.messages.forEach(message => {
-                            showMessage(message, chatRoom.role);
-                        });
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+
+            stompClient.subscribe('/topic/messages/' + userID, function(message) {
+                showMessage(JSON.parse(message.body));
+                console.log(message)
+            });
+        });
+    }
+
+    // function sendMessage() {
+    //     var content = document.getElementById('message').value;
+    //
+    //     stompClient.send("/app/chat/admin", {}, JSON.stringify({'text': content}));
+    // }
+    //
+    // function showMessage(message) {
+    //     var response = document.getElementById('response');
+    //     var p = document.createElement('p');
+    //     p.appendChild(document.createTextNode(message.from + ": " + message.text));
+    //     response.appendChild(p);
+    // }
+
+    function loadChatRooms() {
+        fetch('/api/chat/rooms/' + userID)
+            .then(response => response.json())
+            .then(chatRooms => {
+
+                chatRooms.forEach(chatRoom => {
+                    chatRoom.messages.forEach(message => {
+                        showMessage(message);
                     });
                 });
-        }
+            });
+    }
 
-        $('#sendBtn').click(function() {
+    $('#sendBtn').click(function() {
+        sendMessage();
+        $('#chatContent').val('');
+    });
+
+    $('#chatContent').keypress(function(e) {
+        if (e.which === 13) {
             sendMessage();
             $('#chatContent').val('');
-        });
-
-        function sendMessage() {
-            var text = document.getElementById('chatContent').value;
-            stompClient.send("/app/chat", {}, JSON.stringify({'content': text, 'sender': sender, 'senderID': userID}));
-
-            const timestamp = new Date().toLocaleTimeString();
-            $('#chat-body').append(
-                '<div class="chat-message left"> <strong>' + "You:" + ':</strong>' +
-                text +
-                '<span class="timestamp">' + timestamp + '</span></div>'
-            );
-            $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
-
         }
-
-        function showMessage(message, role) {
-            const messageDiv = $('<div>').addClass('message');
-            const senderDiv = $('<div>').addClass('sender').text(message.userID);
-            const contentDiv = $('<div>').addClass('content').text(message.content);
-            const timestampDiv = $('<div>').addClass('timestamp').text(message.timestamp);
-
-            if (role === "user") {
-                messageDiv.addClass('user');
-                messageDiv.append(senderDiv).append(contentDiv);
-            } else {
-                messageDiv.addClass('admin');
-                messageDiv.append(senderDiv).append(contentDiv).append(timestampDiv);
-            }
-
-            $('#chat-body').append(messageDiv);
-            $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
-        }
-
-        document.getElementById('chat-button').addEventListener('click', function() {
-            document.getElementById('chat-window').style.display = 'block';
-        });
-
-        document.getElementById('close-chat').addEventListener('click', function() {
-            document.getElementById('chat-window').style.display = 'none';
-        });
-
-        connect(sender);
-        loadChatRooms();
     });
+
+    function sendMessage() {
+        const content = document.getElementById('chatContent').value;
+
+        stompClient.send("/app/chat/admin", {}, JSON.stringify({
+            'content': content,
+            'userID': userID,
+            'role': userRole,
+            'timestamp': new Date().toISOString()
+        }));
+
+        const timestamp = new Date().toLocaleTimeString();
+
+        const messageDiv = $('<div>').addClass('message');
+        const senderDiv = $('<div>').addClass('sender').text(userID);
+        const contentDiv = $('<div>').addClass('content').text(content);
+        const timestampDiv = $('<div>').addClass('timestamp').text(timestamp);
+        $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
+        messageDiv.addClass('user');
+        messageDiv.append(senderDiv).append(contentDiv).append(timestampDiv);
+        $('#chat-body').append(messageDiv);
+        $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
+
+    }
+
+    function showMessage(message) {
+        const messageDiv = $('<div>').addClass('message');
+        const senderDiv = $('<div>').addClass('sender').text(message.userID);
+        const contentDiv = $('<div>').addClass('content').text(message.content);
+        const timestampDiv = $('<div>').addClass('timestamp').text(message.timestamp);
+
+        if (userID === message.userID) {
+            messageDiv.addClass('user');
+            messageDiv.append(senderDiv).append(contentDiv).append(timestampDiv);
+        } else {
+            messageDiv.addClass('admin');
+            messageDiv.append(senderDiv).append(contentDiv).append(timestampDiv);
+        }
+
+        $('#chat-body').append(messageDiv);
+        $('#chat-body').scrollTop($('#chat-body')[0].scrollHeight);
+    }
+
+    document.getElementById('chat-button').addEventListener('click', function() {
+        document.getElementById('chat-window').style.display = 'block';
+    });
+
+    document.getElementById('close-chat').addEventListener('click', function() {
+        document.getElementById('chat-window').style.display = 'none';
+    });
+
+
+    window.onload = function() {
+        connect();
+        loadChatRooms();
+    }
 </script>

@@ -36,22 +36,22 @@
             </span>
     </div>
     <div id="content">
-        <div id="where-togo">
+        <form action="/search" id="where-togo" style="min-width: 90%">
             <h3>Hãy cho tôi biết nơi bạn muốn đi?</h3>
-            <input type="text" placeholder="Nơi bạn muốn đến?" style="padding-left: 10px" name="locationName">
+            <input type="text" placeholder="Nơi bạn muốn đến?" style="padding-left: 10px" name="keyword">
             <input type="date" placeholder="Date" name="date">
-            <select name="" id="">
-                <option value="" aria-placeholder="Travel type">Travel Type</option>
-                <option value="">Some option</option>
-                <option value="">Another option</option>
+            <select name="groupTour" id="groupTour">
+                <option value="both" aria-placeholder="Travel type">Travel Type</option>
+                <option value="true">Đi theo đoàn</option>
+                <option value="false">Đi cá nhân</option>
             </select>
             <div class="search-btn">
-                <button class="btn">
+                <button class="btn" type="submit">
                     Tìm kiếm
                 </button>
 
             </div>
-        </div>
+        </form>
         <div id="content-area">
             <c:forEach var="tour" items="${tours}">
                 <div class="content-item" style="height: 470px; min-width: 350px">
@@ -76,8 +76,8 @@
                                     <i class="fa-solid fa-plane"></i></span>
                             </p>
                             <div class="book-now">
-                                <button class="book">
-                                    Đặt ngay
+                                <button class="book" onclick="window.location.href = '/details/tour/${tour.tourID}'">
+                                    Xem chi tiết
                                 </button>
                             </div>
                         </div>
@@ -161,58 +161,58 @@
 <%@include file="../material/footer.jsp"%>
 
 <script>
-    const buts = document.querySelectorAll(".book-now button ");
-    buts.forEach(but => {
-            but.addEventListener("click", bookTour);
-            function bookTour(event) {
-                console.log(event.target);
-                const template1 = ` <div class="cover-book-form">
-            <div id="book-form">
-                <div id="content-form">
-
-                </div>
-                <div id="input-form">
-
-                    <form action="">
-                        <div class="title-form">
-                            <h3>Book Now</h3>
-                        </div>
-                        <div>
-                        <span>Name*</span>
-                        <input type="text" placeholder="Nguyen Van A" id="name-input">
-                        <span id="loi-ten" class="loi"></span>
-                        </div>
-                        <div>
-                        <span>Number phone*</span>
-                        <input type="number" placeholder="Number phone" id="phone-input">
-                         <span id="loi-sdt" class="loi"></span>
-                         </div>
-                         <div>
-                        <span>Address*</span>
-                        <input type="text" placeholder="Street/Village-Ward/Commune-City/District" id="address-input">
-                        <span id="loi-dia-chi" class="loi"></span>
-                        </div>
-                        <div>
-                        <span>Adult*</span>
-                        <input type="number" placeholder="200$/ 1 people" id="adult-input" class="people-input">
-                        <span id="loi-so-luong"> </span>
-                        </div>
-                        <span>Child</span>
-                        <input type="number" placeholder="150$/ 1 people" id="child-input" class="people-input">
-                        <span style="display:inline-block;">ToTal</span>
-                        <input type="text" id="total-number" placeholder="Total" style="width:20%;display: inline-block;margin-left: 10%;">
-                        <button class="confirm" type="button" onclick="return Total()" >
-                            Confirm
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>`
-                document.body.insertAdjacentHTML("beforeend", template1);
-
-            }
-        }
-    )
+    // const buts = document.querySelectorAll(".book-now button ");
+    // buts.forEach(but => {
+    //         but.addEventListener("click", bookTour);
+    //         function bookTour(event) {
+    //             console.log(event.target);
+    //             const template1 = ` <div class="cover-book-form">
+    //         <div id="book-form">
+    //             <div id="content-form">
+    //
+    //             </div>
+    //             <div id="input-form">
+    //
+    //                 <form action="">
+    //                     <div class="title-form">
+    //                         <h3>Book Now</h3>
+    //                     </div>
+    //                     <div>
+    //                     <span>Name*</span>
+    //                     <input type="text" placeholder="Nguyen Van A" id="name-input">
+    //                     <span id="loi-ten" class="loi"></span>
+    //                     </div>
+    //                     <div>
+    //                     <span>Number phone*</span>
+    //                     <input type="number" placeholder="Number phone" id="phone-input">
+    //                      <span id="loi-sdt" class="loi"></span>
+    //                      </div>
+    //                      <div>
+    //                     <span>Address*</span>
+    //                     <input type="text" placeholder="Street/Village-Ward/Commune-City/District" id="address-input">
+    //                     <span id="loi-dia-chi" class="loi"></span>
+    //                     </div>
+    //                     <div>
+    //                     <span>Adult*</span>
+    //                     <input type="number" placeholder="200$/ 1 people" id="adult-input" class="people-input">
+    //                     <span id="loi-so-luong"> </span>
+    //                     </div>
+    //                     <span>Child</span>
+    //                     <input type="number" placeholder="150$/ 1 people" id="child-input" class="people-input">
+    //                     <span style="display:inline-block;">ToTal</span>
+    //                     <input type="text" id="total-number" placeholder="Total" style="width:20%;display: inline-block;margin-left: 10%;">
+    //                     <button class="confirm" type="button" onclick="return Total()" >
+    //                         Confirm
+    //                     </button>
+    //                 </form>
+    //             </div>
+    //         </div>
+    //     </div>`
+    //             document.body.insertAdjacentHTML("beforeend", template1);
+    //
+    //         }
+    //     }
+    // )
     document.body.addEventListener("click", function (e) {
         if (e.target.matches(".cover-book-form")) {
             e.target.parentNode.removeChild(e.target);

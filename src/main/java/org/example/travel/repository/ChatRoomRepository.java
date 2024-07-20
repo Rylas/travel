@@ -15,4 +15,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     // Tìm phòng chat theo userID và status = true
     @Query("SELECT c FROM ChatRoom c WHERE c.user.userID = ?1 AND c.status = true")
     ChatRoom findByUserIDAndStatusTrue(Long userID);
+
+    // findByUserUserIDAndStatusTrueOrderByLastMessageTimestampDesc
+    @Query("SELECT c FROM ChatRoom c WHERE c.user.userID = ?1 AND c.status = true ORDER BY c.createdAt DESC")
+    List<ChatRoom> findByUserUserIDAndStatusTrueOrderByLastMessageTimestampDesc(Long userID);
 }

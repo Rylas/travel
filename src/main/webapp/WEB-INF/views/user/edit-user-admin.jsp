@@ -33,11 +33,16 @@
             background-color: #0056b3;
             color: white;
         }
+
     </style>
 </head>
 <body>
+<%@ include file="../material/navbar.jsp" %>
 <div class="container">
     <h2 class="text-center">Edit User</h2>
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger">${errorMessage}</div>
+    </c:if>
     <form action="/admin/user/edit" method="post">
         <input type="hidden" name="userID" value="${user.userID}">
         <div class="form-group">
@@ -58,14 +63,14 @@
         </div>
         <div class="form-group">
             <label for="role">Role</label>
-            <select class="form-control" id="role" name="role" required>
+            <select class="form-control" id="role" name="roleID" required>
                 <option value="user" ${user.role == 'user' ? 'selected' : ''}>User</option>
                 <option value="admin" ${user.role == 'admin' ? 'selected' : ''}>Admin</option>
             </select>
         </div>
         <div class="form-group">
             <label for="active">Active</label>
-            <select class="form-control" id="active" name="active" required>
+            <select class="form-control" id="active" name="isActive" required>
                 <option value="true" ${user.isActive ? 'selected' : ''}>Yes</option>
                 <option value="false" ${!user.isActive ? 'selected' : ''}>No</option>
             </select>
@@ -75,6 +80,8 @@
         </div>
     </form>
 </div>
+<%@ include file="../material/footer.jsp" %>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

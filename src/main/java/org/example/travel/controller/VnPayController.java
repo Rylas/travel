@@ -25,6 +25,7 @@ public class VnPayController {
                                                                 @RequestParam("bankCode") String bankCode,
                                                                 @RequestParam("language") String language,
                                                                 @RequestParam("currency") String currency,
+                                                              @RequestParam("bookingID") String bookingID,
                                                               HttpServletRequest req) throws IOException {
 
         if (Objects.equals(currency, "USD")) {
@@ -35,7 +36,7 @@ public class VnPayController {
             language = "en";
         }
 
-        String paymentUrl = paymentService.getRequest(amount, bankCode, language, currency, req);
+        String paymentUrl = paymentService.getRequest(amount, bankCode, language, currency, Long.parseLong(bookingID), req);
         Map<String, String> response = new HashMap<>();
         response.put("code", "00");
         response.put("message", "success");

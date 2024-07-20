@@ -65,4 +65,49 @@ public class StatisticsService {
 
         return statistics;
     }
+
+    public Map<String, Object> getStatisticsAdmin() {
+        Map<String, Object> statistics = new HashMap<>();
+
+        // Lấy tổng số lượng visitor của tất cả các tour
+        long totalVisitors = tourService.getTotalVisitorsAdmin();
+        // Lấy tổng số lượng booking của tất cả các tour
+        long totalBookings = bookingService.getTotalBookingsAdmin();
+        // Lấy tổng doanh thu của tất cả các tour
+        long totalRevenue = (long) bookingService.getTotalRevenueAdmin();
+        // Lấy tổng doanh thu trong năm này
+        long totalRevenueThisYear = (long) bookingService.getTotalRevenueThisYearAdmin();
+        // Lấy tổng doanh thu trong tháng này
+        long totalRevenueThisMonth = (long) bookingService.getTotalRevenueThisMonthAdmin();
+
+        // Lấy tổng doanh thu trong hôm nay
+        long totalRevenueToday = (long) bookingService.getTotalRevenueTodayAdmin();
+
+        // Lấy tổng số lượng tour
+        long totalTours = tourService.getTotalToursAdmin();
+
+        Tour hotestTour = tourService.getHotestTourAdmin();
+
+        List<Long> listRevenueJanuaryToDecember = bookingService.getListRevenueJanuaryToDecemberAdmin();
+        List<Long> bookingCountJanuaryToDecember = bookingService.getBookingCountJanuaryToDecemberAdmin();
+        List<Long> listVisitorJanuaryToDecember = tourService.getListVisitorJanuaryToDecemberAdmin();
+        List<User> listNewUsers = userService.getNewUsersAdmin();
+        List<Booking> listBooking = bookingService.getRecentBookingsAdmin();
+
+        statistics.put("totalVisitors", totalVisitors);
+        statistics.put("totalBookings", totalBookings);
+        statistics.put("totalRevenue", totalRevenue);
+        statistics.put("totalRevenueThisYear", totalRevenueThisYear);
+        statistics.put("totalRevenueThisMonth", totalRevenueThisMonth);
+        statistics.put("totalRevenueToday", totalRevenueToday);
+        statistics.put("totalTours", totalTours);
+        statistics.put("hotestTour", hotestTour);
+        statistics.put("listRevenueJanuaryToDecember", listRevenueJanuaryToDecember);
+        statistics.put("bookingCountJanuaryToDecember", bookingCountJanuaryToDecember);
+        statistics.put("listVisitorJanuaryToDecember", listVisitorJanuaryToDecember);
+        statistics.put("listNewUsers", listNewUsers);
+        statistics.put("listBooking", listBooking);
+
+        return statistics;
+    }
 }

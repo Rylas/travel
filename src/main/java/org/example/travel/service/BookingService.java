@@ -136,4 +136,55 @@ public class BookingService {
     public List<Booking> getBookingsByUserIDAndStatusApproved(Long userID) {
         return bookingRepository.findByUserIDAndStatus(userID, "Approved");
     }
+
+    // getTotalBookingsAdmin
+    public Long getTotalBookingsAdmin() {
+        return bookingRepository.getTotalBookingsAdmin() == null ? 0 : bookingRepository.getTotalBookingsAdmin();
+    }
+
+    //getTotalRevenueAdmin
+    public double getTotalRevenueAdmin() {
+        return bookingRepository.getTotalRevenueAdmin() == null ? 0 : bookingRepository.getTotalRevenueAdmin();
+    }
+
+    // getTotalRevenueThisYearAdmin
+    public double getTotalRevenueThisYearAdmin() {
+        return bookingRepository.getTotalRevenueThisYearAdmin() == null ? 0 : bookingRepository.getTotalRevenueThisYearAdmin();
+    }
+
+    // getTotalRevenueThisMonthAdmin
+    public double getTotalRevenueThisMonthAdmin() {
+        return bookingRepository.getTotalRevenueThisMonthAdmin() == null ? 0 : bookingRepository.getTotalRevenueThisMonthAdmin();
+    }
+
+    // getTotalRevenueTodayAdmin
+    public double getTotalRevenueTodayAdmin() {
+        return bookingRepository.getTotalRevenueTodayAdmin() == null ? 0 : bookingRepository.getTotalRevenueTodayAdmin();
+    }
+
+    // getListRevenueJanuaryToDecemberAdmin
+    public List<Long> getListRevenueJanuaryToDecemberAdmin() {
+        List<Long> listRevenueJanuaryToDecember = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            listRevenueJanuaryToDecember.add(bookingRepository.getListRevenueJanuaryToDecemberAdmin(i) == null ? 0L : bookingRepository.getListRevenueJanuaryToDecemberAdmin(i));
+        }
+        return listRevenueJanuaryToDecember;
+    }
+
+    // getBookingCountJanuaryToDecemberAdmin
+    public List<Long> getBookingCountJanuaryToDecemberAdmin() {
+        List<Long> bookingCountJanuaryToDecember = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            bookingCountJanuaryToDecember.add(bookingRepository.getBookingCountJanuaryToDecemberAdmin(i) == null ? 0L : bookingRepository.getBookingCountJanuaryToDecemberAdmin(i));
+        }
+        return bookingCountJanuaryToDecember;
+    }
+
+    // getListVisitorJanuaryToDecemberAdmin
+
+
+    // getRecentBookingsAdmin
+    public List<Booking> getRecentBookingsAdmin() {
+        return bookingRepository.getRecentBookingsAdmin();
+    }
 }

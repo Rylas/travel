@@ -12,6 +12,7 @@ public class ChatRoomMapper {
         chatRoomDTO.setName(chatRoom.getUser().getFirstName() + " " + chatRoom.getUser().getLastName());
         chatRoomDTO.setMessages(
                 chatRoom.getMessages().stream()
+                        .sorted((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()))
                         .map(MessageMapper::toDto)
                         .collect(Collectors.toList())
         );

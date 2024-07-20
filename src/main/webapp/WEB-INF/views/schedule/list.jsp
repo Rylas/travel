@@ -35,7 +35,6 @@
             <th>Time End</th>
             <th>Date</th>
             <th>Title</th>
-            <th>Description</th>
             <th>Tour</th>
             <th>Location</th>
             <th>Actions</th>
@@ -49,7 +48,6 @@
                 <td>${schedule.timeEnd}</td>
                 <td>${schedule.date}</td>
                 <td>${schedule.title}</td>
-                <td>${schedule.description}</td>
                 <td>${schedule.tour.nameTour}</td>
                 <td>${schedule.location.nameLocation}</td>
                 <td>
