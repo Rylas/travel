@@ -22,15 +22,15 @@ public class GroupTourController {
     @Autowired
     private GroupTourService groupTourService;
 
-    @GetMapping("/enterprise/grouptour")
-    public String getGroupTour(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        Enterprise enterprise = user.getEnterprise();
-        // Get all group tours of tour of enterprise
-        List<GroupTour> groupTours = groupTourService.getGroupTourByTourTourID(enterprise.getEnterpriseID());
-        model.addAttribute("groupTours", groupTours);
-        return "enterprise/grouptour";
-    }
+//    @GetMapping("/enterprise/grouptour")
+//    public String getGroupTour(Model model, HttpSession session) {
+//        User user = (User) session.getAttribute("user");
+//        Enterprise enterprise = user.getEnterprise();
+//        // Get all group tours of tour of enterprise
+//        List<GroupTour> groupTours = groupTourService.getGroupTourByTourTourID(enterprise.getEnterpriseID());
+//        model.addAttribute("groupTours", groupTours);
+//        return "enterprise/grouptour";
+//    }
 
     @GetMapping("/enterprise/grouptour/active/{groupTourID}")
     public String activeGroupTour(Model model, HttpSession session) {

@@ -1,5 +1,8 @@
 package org.example.travel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "locations")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "locationID")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +34,8 @@ public class Location {
     private Date createdAt;
     private Date updatedAt;
 
-//    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Review> reviews = new HashSet<>();
-
     @ManyToMany(mappedBy = "locations")
+    @JsonBackReference
     private Set<Tour> tours = new HashSet<>();
 
     @PrePersist

@@ -95,4 +95,9 @@ public class UserService {
     public User findByFacebookID(String facebookID) {
         return userRepository.findByFacebookID(facebookID);
     }
+
+    // getNewUsersAdmin
+    public List<User> getNewUsersAdmin() {
+        return userRepository.getNewUsersAdmin();
+    }
 }

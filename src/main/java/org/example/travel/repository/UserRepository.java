@@ -73,4 +73,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Find user by facebookID
     @Query("SELECT u FROM User u WHERE u.facebookID = ?1")
     User findByFacebookID(String facebookID);
+
+    // getNewUsersAdmin
+    @Query("SELECT u FROM User u WHERE u.isActive = true ORDER BY u.createdAt DESC LIMIT 6")
+    List<User> getNewUsersAdmin();
 }

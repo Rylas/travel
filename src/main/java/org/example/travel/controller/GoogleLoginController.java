@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -62,7 +63,7 @@ public class GoogleLoginController {
     }
 
     @GetMapping("/callbackGoogle")
-    public String callback(@RequestParam String code, HttpSession session) throws IOException {
+    public String callback(@RequestParam String code, HttpSession session, RedirectAttributes ra) throws IOException {
         if (code != null) {
             try {
                 GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
@@ -97,9 +98,15 @@ public class GoogleLoginController {
                     userService.saveUser(newUser);
                 }
 
+                if (user.getBan() != null) {
+                    ra.addFlashAttribute("errorMsg", "Your account has been banned");
+                    return "redirect:/login";
+                }
+
                 session.setAttribute("user", user);
             } catch (GeneralSecurityException e) {
-                System.out.println(e);
+                ra.addFlashAttribute("errorMsg", "Error when login with Google");
+                return "redirect:/login";
             }
         }
         return "redirect:/";

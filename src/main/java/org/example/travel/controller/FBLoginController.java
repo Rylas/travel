@@ -80,16 +80,18 @@ public class FBLoginController {
                 }
 
                 if (user.getBan() != null) {
-                    ra.addFlashAttribute("message", "Your account has been banned");
+                    ra.addFlashAttribute("errorMsg", "Your account has been banned");
                     return "redirect:/login";
                 }
 
                 session.setAttribute("user", user);
                 return "redirect:/";
             } else {
+                ra.addFlashAttribute("errorMsg", "Error when login with Facebook");
                 return "redirect:/login";
             }
         } catch (InterruptedException | ExecutionException e) {
+            ra.addFlashAttribute("errorMsg", "Error when login with Facebook");
             return "redirect:/login";
         } catch (ServletException e) {
             throw new RuntimeException(e);

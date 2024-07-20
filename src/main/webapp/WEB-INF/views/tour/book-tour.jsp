@@ -184,35 +184,35 @@
     $('#form-book').submit(function(e) {
         // Prevent the form from submitting via the browser.
         e.preventDefault();
+
         $.ajax({
             type: 'POST',
-            url: '/payment/pay',
-            data: {
-                amount: amount,
-        currency: 'VND',
-                bankCode: null,
-                language: 'vn',
-            },
-            success: function(response) {
-                let check = false;
-                if (response.code === "00") {
+            url: '/bookTour/${tour.tourID}',
+            data: $('#form-book').serialize(),
+            success: function(res) {
+                if (res.status === '1') {
+                    alert(res.message);
                     $.ajax({
                         type: 'POST',
-                        url: '/bookTour/${tour.tourID}',
-                        data: $('#form-book').serialize(),
-                        success: function(res) {
-                            if (res.status === '1') {
-                                alert(res.message);
+                        url: '/payment/pay',
+                        data: {
+                            amount: amount,
+                            currency: 'VND',
+                            bankCode: null,
+                            language: 'vn',
+                            bookingID: res.bookingID
+                        },
+                        success: function(response) {
+                            if (response.code === "00") {
                                 window.location.href = response.data;
-                                console.log("Success");
-                            } else {
-                                alert(res.message);
                             }
                         },
                         error: function(error) {
                             alert('Đặt tour thất bại. Vui lòng thử lại.');
                         }
                     });
+                } else {
+                    alert(res.message);
                 }
             },
             error: function(error) {

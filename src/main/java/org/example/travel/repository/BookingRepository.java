@@ -61,4 +61,40 @@ public interface BookingRepository extends JpaRepository<Booking, Long>{
     // findByUserIDAndStatus
     @Query("SELECT b FROM Booking b WHERE b.user.userID = :userID AND b.status = :status")
     List<Booking> findByUserIDAndStatus(Long userID, String status);
+
+    // getTotalBookingsAdmin
+    @Query("SELECT COUNT(b) FROM Booking b")
+    Long getTotalBookingsAdmin();
+
+    // getTotalRevenueAdmin
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b")
+    Long getTotalRevenueAdmin();
+
+    // getTotalRevenueThisYearAdmin
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE YEAR(b.createdAt) = YEAR(CURRENT_DATE)")
+    Long getTotalRevenueThisYearAdmin();
+
+    // getTotalRevenueThisMonthAdmin
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE MONTH(b.createdAt) = MONTH(CURRENT_DATE)")
+    Long getTotalRevenueThisMonthAdmin();
+
+    // getTotalRevenueTodayAdmin
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE DATE(b.createdAt) = CURRENT_DATE")
+    Long getTotalRevenueTodayAdmin();
+
+    // getListRevenueJanuaryToDecemberAdmin
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE MONTH(b.createdAt) = :month")
+    Long getListRevenueJanuaryToDecemberAdmin(int month);
+
+    // getBookingCountJanuaryToDecemberAdmin
+    @Query("SELECT COUNT(b) FROM Booking b WHERE MONTH(b.createdAt) = :month")
+    Long getBookingCountJanuaryToDecemberAdmin(int month);
+
+    // getListVisitorJanuaryToDecemberAdmin
+    @Query("SELECT SUM(t.numberViewed) FROM Tour t WHERE MONTH(t.createdAt) = :month")
+    Long getListVisitorJanuaryToDecemberAdmin(int month);
+
+    // getRecentBookingsAdmin
+    @Query("SELECT b FROM Booking b ORDER BY b.createdAt DESC LIMIT 7")
+    List<Booking> getRecentBookingsAdmin();
 }

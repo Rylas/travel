@@ -6,11 +6,29 @@
     <title>Register Enterprise</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+    <style>
+        .msg {
+            color: green;
+        }
+        span.msg {
+            display: block;
+            margin: 10px 0;
+        }
 
+        span.successMsg {
+            color: #2ecc71;
+        }
+
+        span.errorMsg {
+            color: #e74c3c;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
     <h2 class="text-center">Register New Enterprise</h2>
+    <span class="msg errorMsg">${errorMsg}</span>
+    <span class="msg successMsg">${successMsg}</span>
     <form action="/enterprise" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="nameEnterprise">Name</label>

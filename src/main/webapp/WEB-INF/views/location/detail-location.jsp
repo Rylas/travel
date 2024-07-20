@@ -78,10 +78,12 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="">
                 <h4>Thông tin về địa điểm: ${location.nameLocation}</h4>
+                <strong>Mô tả:</strong>
+                <p>${location.description}</p>
                 <ul class="list-unstyled details-list">
-                    <li><strong>Mô tả:</strong> ${location.description}</li>
+                    <li></li>
                     <li><strong>Lượt xem:</strong> ${location.numberViewed} </li>
                 </ul>
             </div>
@@ -93,7 +95,7 @@
                 <tr>
                     <th>#</th>
                     <th>Tên Tour</th>
-                    <th>Mô tả tour</th>
+<%--                    <th>Mô tả tour</th>--%>
                     <th>Ngày khởi hành</th>
                     <th>Ngày khởi hành dự kiến</th>
                     <th>Giá (Dành cho người lớn)</th>
@@ -104,7 +106,7 @@
                     <tr>
                         <td>${status.index + 1}</td>
                         <td><a class="list-tour" href="/details/tour/${tour.tourID}">${tour.nameTour}</a></td>
-                        <td>${tour.description}</td>
+<%--                        <td>${tour.description}</td>--%>
                         <td>${tour.departureDate}</td>
                         <td>${tour.departureDate}</td>
                         <td class="price">Giá chỉ từ: <fmt:formatNumber value="${tour.priceAdult}" type="number" groupingUsed="true" />đ</td>

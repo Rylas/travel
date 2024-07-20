@@ -1,6 +1,8 @@
 package org.example.travel.controller;
 
+import org.example.travel.entity.Booking;
 import org.example.travel.entity.Payment;
+import org.example.travel.service.BookingService;
 import org.example.travel.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,13 +10,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
+
+    @Autowired
+    private BookingService bookingService;
 
     @GetMapping("/admin/payment")
     public String payment(Model model) {
@@ -65,20 +72,18 @@ public class PaymentController {
             @RequestParam("vnp_TransactionStatus") String transactionStatus,
             @RequestParam("vnp_TxnRef") String txnRef,
             @RequestParam("vnp_SecureHash") String secureHash,
-            Model model
+            @RequestParam("bookingID") Long bookingID,
+            RedirectAttributes ra
     ) {
-        model.addAttribute("amount", amount);
-        model.addAttribute("bankCode", bankCode);
-        model.addAttribute("cardType", cardType);
-        model.addAttribute("orderInfo", orderInfo);
-        model.addAttribute("payDate", payDate);
-        model.addAttribute("responseCode", responseCode);
-        model.addAttribute("tmnCode", tmnCode);
-        model.addAttribute("transactionNo", transactionNo);
-        model.addAttribute("transactionStatus", transactionStatus);
-        model.addAttribute("txnRef", txnRef);
-        model.addAttribute("secureHash", secureHash);
-        return "payment/result";
+        if (Objects.equals(responseCode, "00")) {
+            Booking booking = bookingService.getBookingById(bookingID);
+            booking.setStatus("Pending");
+            bookingService.updateBooking(booking);
+            ra.addFlashAttribute("successMsg", "Payment success!");
+            return "redirect:/cash";
+        }
+        ra.addFlashAttribute("errorMsg", "Payment failed!");
+        return "redirect:/cash";
     }
 
 }

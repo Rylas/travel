@@ -5,6 +5,7 @@ import org.example.travel.entity.*;
 import org.example.travel.service.*;
 import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -71,7 +72,7 @@ public class TourController {
         model.addAttribute("schedules", schedules);
         model.addAttribute("relatedTours", relatedTours);
 //        return "tour/detail-tour";
-        return "element/detail";
+        return "tour/detail-tour";
     }
 
     @GetMapping("/admin/tour/add")
@@ -287,11 +288,18 @@ public class TourController {
     }
 
     @GetMapping("/search")
-    public String searchTours(@RequestParam("keyword") String keyword, Model model) {
-//        List<Tour> tours = tourService.searchTours(keyword);
-        List<Tour> tours = tourService.searchTourByEverything(keyword);
+    public String searchTours(@RequestParam("keyword") String keyword, @RequestParam("date") String date, @RequestParam("groupTour") String groupTour, Model model) {
+        List<Tour> tours = new ArrayList<>();
+        if(groupTour.equals("both")) {
+            tours = tourService.searchTourByKeywordDateGroup(keyword, Date.valueOf(date), true);
+            tours.addAll(tourService.searchTourByKeywordDateGroup(keyword, Date.valueOf(date), false));
+        } else {
+            tours = tourService.searchTourByKeywordDateGroup(keyword, Date.valueOf(date), Boolean.parseBoolean(groupTour));
+        }
+        List<Location> locations = locationService.searchLocations(keyword);
         model.addAttribute("tours", tours);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("locations", locations);
         return "user/search";
     }
 
@@ -302,19 +310,6 @@ public class TourController {
         return "element/destination";
     }
 
-    @GetMapping("/locations/more")
-    public ResponseEntity<Map<String, Object>> moreLocations(@RequestParam int offset) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            List<Location> locations = locationService.getLocations(offset, 6);
-            response.put("locations", locations);
-            response.put("status", "success");
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", e.getMessage());
-        }
-        return ResponseEntity.ok(response);
-    }
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void checkAndUpdateDepartureDates() {

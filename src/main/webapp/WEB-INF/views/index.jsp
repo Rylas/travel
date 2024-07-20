@@ -62,7 +62,7 @@
         <%-- List all hot tour        --%>
         <c:forEach var="tour" items="${hotTours}">
             <a href="/details/tour/${tour.tourID}" class="mySlides fade" style="width: 1500px; max-height: 750px;">
-                <img src="/uploads/tour/${tour.banner}" style="width:100%;height: calc(100/3 * 2%);">
+                <img src="/uploads/tour/${tour.banner}" style="width:100%; max-height: 30vw;">
                 <div class="text">${tour.nameTour}</div>
             </a>
         </c:forEach>
@@ -80,16 +80,23 @@
     </div>
 
     <div id="content">
-            <form action="/search" method="get" id="where-togo" style="min-width: 90%">
-                <h3>Where you want to go?</h3>
-                <input type="text" placeholder="Where to go? " name="keyword" style="padding-left: 10px;">
-                <div class="search-btn">
-                    <button class="btn" type="submit">
-                        Search
-                    </button>
-                </div>
-            </form>
-        <div id="popular">
+        <form action="/search" id="where-togo" style="min-width: 90%">
+            <h3>Hãy cho tôi biết nơi bạn muốn đi?</h3>
+            <input type="text" placeholder="Nơi bạn muốn đến?" style="padding-left: 10px" name="keyword">
+            <input type="date" placeholder="Date" name="date">
+            <select name="groupTour" id="groupTour">
+                <option value="both" aria-placeholder="Travel type">Travel Type</option>
+                <option value="true">Đi theo đoàn</option>
+                <option value="false">Đi cá nhân</option>
+            </select>
+            <div class="search-btn">
+                <button class="btn" type="submit">
+                    Tìm kiếm
+                </button>
+
+            </div>
+        </form>
+        <div id="popular" style="display: inline">
             <div class="popular-text">
                 <h3 class="title">Popular Destination</h3>
                 <span class="sub-title">
@@ -99,7 +106,7 @@
                     </span>
             </div>
 
-            <div class="popular-content">
+            <div class="popular-content" id="popular-location-container" >
                 <c:forEach var="location" items="${locations}" varStatus="status">
                     <c:if test="${status.index < 6}">
                         <div class="popular-item" style="width: 470px; height: 360px;">
@@ -132,19 +139,16 @@
                     </c:if>
                 </c:forEach>
 
-                <c:if test="${locations.size() > 6}">
-                    <div class="search-btn">
-                        <button class="btn" id="moreBtn">More Place</button>
-                    </div>
-                </c:if>
+
             </div>
-
-
-
-
-
+            <c:if test="${locations.size() > 6}">
+                <div class="search-btn" style="display: flex; justify-content: center;">
+                    <button class="btn" id="moreBtn">More Place</button>
+                </div>
+            </c:if>
         </div>
-        <div id="popular">
+
+        <div id="popular" style="display: inline">
             <div class="popular-text">
                 <h3 class="title">Hotest Tour</h3>
                 <span class="sub-title">
@@ -153,7 +157,7 @@
                         words.
                     </span>
             </div>
-            <div class="popular-content">
+            <div class="popular-content" id="popular-tour-container">
                 <c:forEach var="tour" items="${tours}" varStatus="status">
                     <c:if test="${status.index < 6}">
                     <div class="popular-item" style="width: 470px; height: 360px;">
@@ -186,14 +190,15 @@
                     </c:if>
                 </c:forEach>
 
-                <c:if test="${tours.size() > 6}">
-                    <div class="search-btn">
-                        <button class="btn">
-                            More Location
-                        </button>
-                    </div>
-                </c:if>
+
             </div>
+            <c:if test="${tours.size() > 6}">
+                <div class="search-btn" style="display: flex; justify-content: center;">
+                    <button class="btn" id="btn-more-tour">
+                        More Tour
+                    </button>
+                </div>
+            </c:if>
         </div>
         <div id="video">
             <div class="video-content">
@@ -232,58 +237,102 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    let offset = 0;
-    const limit = 6;
+    let page = 0;
+    const size = 6; // Giả sử mỗi lần load thêm 6 địa điểm
 
     $(document).ready(function() {
         $('#moreBtn').on('click', function() {
-            offset += limit;
+            page += 1; // Tăng số trang lên mỗi lần nhấn nút More
             $.ajax({
-                url: '/locations/more',
+                url: '/location/more?page=' + page + '&size=' + size,
                 method: 'GET',
-                data: {
-                    offset: offset,
-                    limit: limit
-                },
                 success: function(data) {
-                    if (data.length > 0) {
-                        data.forEach(function(location) {
-                            const locationHtml = `
-                                <div class="popular-item">
-                                    <img src="/uploads/location/${location.banner}" alt="">
-                                    <br>
-                                    <h3>${location.nameLocation}</h3>
-                                    <div class="detail">
-                                        <div class="detail-title">
-                                            <span>${location.nameLocation}</span>
-                                        </div>
-                                        <div class="detail-description">
-                                            <span>${location.description}</span>
-                                            <ul>
-                                                <li><a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
-                                                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                                                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                                                <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
-                                                <li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="book-now">
-                                            <a href="/details/location/${location.locationID}">
-                                                <button class="book">
-                                                    More Detail
-                                                </button>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>`;
-                            $('.popular-content').append(locationHtml);
+                    console.log(data);
+                    if (data.content.length > 0) {
+                        data.content.forEach(function(location) {
+                            const locationHtml = '<div class="popular-item" style="width: 470px; height: 360px;">' +
+                                '<img src="/uploads/location/' + location.banner + '" alt="">' +
+                                '<br><h3>' + location.nameLocation + '</h3>' +
+                                '<div class="detail">' +
+                                '<div class="detail-title">' +
+                                '<span>' + location.nameLocation + '</span>' +
+                                '</div>' +
+                                '<div class="detail-description">' +
+                                '<ul>' +
+                                '<li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>' +
+                                '</ul>' +
+                                '</div>' +
+                                '<div class="book-now">' +
+                                '<a href="/details/location/' + location.locationID + '">' +
+                                '<button class="book">More Detail</button>' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                            $('#popular-location-container').append(locationHtml);
                         });
                     } else {
-                        $('#moreBtn').hide();
+                        $('#moreBtn').hide(); // Ẩn nút More nếu không còn dữ liệu để load
                     }
                 },
-                error: function() {
+                error: function(err) {
+                    console.log('Failed to load more locations:', err);
                     alert('Failed to load more locations');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    let pageTour = 0;
+    const sizeTour = 6; // Giả sử mỗi lần load thêm 6 địa điểm
+
+    $(document).ready(function() {
+        $('#btn-more-tour').on('click', function() {
+            pageTour += 1; // Tăng số trang lên mỗi lần nhấn nút More
+            $.ajax({
+                url: '/tour/more?page=' + pageTour + '&size=' + sizeTour,
+                method: 'GET',
+                success: function(data) {
+                    console.log(data);
+                    if (data.content.length > 0) {
+                        data.content.forEach(function(tour) {
+                            const locationHtml = '<div class="popular-item" style="width: 470px; height: 360px;">' +
+                                '<img src="/uploads/tour/' + tour.banner + '" alt="">' +
+                                '<br><h3>' + tour.nameTour + '</h3>' +
+                                '<div class="detail">' +
+                                '<div class="detail-title">' +
+                                '<span>' + tour.nameTour + '</span>' +
+                                '</div>' +
+                                '<div class="detail-description">' +
+                                '<ul>' +
+                                '<li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>' +
+                                '<li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>' +
+                                '</ul>' +
+                                '</div>' +
+                                '<div class="book-now">' +
+                                '<a href="/details/tour/' + tour.tourID + '">' +
+                                '<button class="book">More Detail</button>' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+                            $('#popular-tour-container').append(locationHtml);
+                        });
+                    } else {
+                        $('#btn-more-tour').hide(); // Ẩn nút More nếu không còn dữ liệu để load
+                    }
+                },
+                error: function(err) {
+                    console.log('Failed to load more tour:', err);
+                    alert('Failed to load more tours');
                 }
             });
         });

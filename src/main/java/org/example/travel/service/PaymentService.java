@@ -65,7 +65,7 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
-    public String getRequest(String amount, String bankCode, String language, String currency, HttpServletRequest req) throws UnsupportedEncodingException {
+    public String getRequest(String amount, String bankCode, String language, String currency, long bookingID,HttpServletRequest req) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
@@ -94,7 +94,7 @@ public class PaymentService {
         } else {
             vnp_Params.put("vnp_Locale", "vn");
         }
-        vnp_Params.put("vnp_ReturnUrl", getReturnUrl());
+        vnp_Params.put("vnp_ReturnUrl", getReturnUrl() + "?bookingID=" + bookingID);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -127,6 +127,7 @@ public class PaymentService {
         String queryUrl = query.toString();
         String vnp_SecureHash = hmacSHA512(getHashSecret(), hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        System.out.println(getPayUrl() + "?" + queryUrl);
         return getPayUrl() + "?" + queryUrl;
     }
 

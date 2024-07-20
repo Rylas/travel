@@ -98,15 +98,16 @@ public class BookingController {
         }
         booking.setTotalPeople(totalPeople);
         // Lưu tour được book
-        tourService.incCustomer(Long.parseLong(tourID));
+        tourService.incCustomer(Long.parseLong(tourID), totalPeople);
         Voucher voucher = voucherService.getVoucherByVoucherCode(voucherCode);
         booking.setVoucherCode(voucher);
         Tour tour = tourService.getTourByTourID(Long.parseLong(tourID));
         booking.setTour(tour);
         int totalAmount = getTotalAmount(booking, tour, voucher);
         booking.setTotalPrice(totalAmount);
-        bookingService.addBooking(booking);
-        return ResponseEntity.ok(Map.of("status", "1", "message", "Đặt tour thành công!"));
+        booking.setStatus("Unpaid");
+        Booking newBooking = bookingService.addBooking(booking);
+        return ResponseEntity.ok(Map.of("status", "1", "message", "Đặt tour thành công, vui lòng thanh toán!", "bookingID", newBooking.getBookingID().toString()));
     }
 
     @GetMapping("/booking/edit")

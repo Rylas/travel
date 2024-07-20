@@ -1,5 +1,8 @@
 package org.example.travel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,10 +48,12 @@ public class Tour {
 
     @ManyToOne
     @JoinColumn(name = "discountID")
+    @JsonBackReference
     private Discount discount;
 
     @ManyToOne
     @JoinColumn(name = "enterpriseID")
+    @JsonBackReference
     private Enterprise enterprise;
 
     @ManyToMany
@@ -57,15 +62,19 @@ public class Tour {
             joinColumns = @JoinColumn(name = "tourID"),
             inverseJoinColumns = @JoinColumn(name = "locationID")
     )
+    @JsonBackReference
     private Set<Location> locations = new HashSet<>();
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<Booking> bookings = new HashSet<>();
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<Review> reviews = new HashSet<>();
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<Schedule> schedules = new HashSet<>();
 
     @PrePersist
