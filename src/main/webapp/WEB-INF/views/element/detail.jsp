@@ -114,6 +114,16 @@
 
                             <span> <fmt:formatDate value="${tour.departureDate}" pattern="dd/MM/yyyy"/></span>
                         </p>
+                        <p class="info-item">
+                            <span>Loại tour: </span>
+
+                            <span>
+                                <c:choose>
+                                    <c:when test="${tour.group}">Tổ chức theo đoàn (Gộp đoàn)</c:when>
+                                    <c:otherwise>Khách hàng tự chọn ngày</c:otherwise>
+                                </c:choose>
+                            </span>
+                        </p>
 <%--                        <p class="info-item">--%>
 <%--                            <span>Ngày khởi hành: </span>--%>
 <%--&lt;%&ndash;                            <option value="">18/06/2022</option>&ndash;%&gt;--%>

@@ -108,6 +108,14 @@
         </div>
 
         <div class="form-group">
+            <label for="isGroup">Trạng thái</label>
+            <select class="form-control" id="isGroup" name="group" required>
+                <option value="1">Tổ chức theo đoàn (Gộp đoàn)</option>
+                <option value="0">Khách hàng tự chọn ngày (Cá nhân)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="status">Trạng thái</label>
             <select class="form-control" id="status" name="status" required>
                 <option value="1">Khả dụng</option>

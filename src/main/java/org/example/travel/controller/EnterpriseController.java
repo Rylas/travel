@@ -1,12 +1,10 @@
 package org.example.travel.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.travel.entity.Booking;
 import org.example.travel.entity.Enterprise;
 import org.example.travel.entity.User;
-import org.example.travel.service.EnterpriseService;
-import org.example.travel.service.FileStorageService;
-import org.example.travel.service.StatisticsService;
-import org.example.travel.service.UserService;
+import org.example.travel.service.*;
 import org.example.travel.utils.CheckPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,6 +34,8 @@ public class EnterpriseController {
     private FileStorageService fileStorageService;
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private BookingService bookingService;
 
     @GetMapping("/enterprise")
     public String enterprise(HttpSession session, RedirectAttributes ra) {
@@ -180,5 +181,16 @@ public class EnterpriseController {
         Map<String, Object> statistics = statisticsService.getStatistics(enterprise.getEnterpriseID());
         session.setAttribute("statistics", statistics);
         return "enterprise/dashboard";
+    }
+
+    @GetMapping("/enterprise/grouptours")
+    public String enterpriseGroupTour(HttpSession session, RedirectAttributes ra, Model model){
+        if (!CheckPermission.checkEnterprise(session, ra)) {
+            return "redirect:/login";
+        }
+        User user = (User) session.getAttribute("user");
+        List<Booking> bookings = bookingService.getBookingsByEnterprise(user.getEnterprise().getEnterpriseID());
+        model.addAttribute("bookings", bookings);
+        return "enterprise/groupTourList";
     }
 }

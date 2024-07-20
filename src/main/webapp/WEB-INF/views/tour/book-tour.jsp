@@ -83,14 +83,28 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="departureDate">Ngày khởi hành *</label>
-                        <input type="date" class="form-control" id="departureDate" name="departureDate" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="expectedDate">Ngày dự kiến (Không bắt buộc)</label>
-                        <input type="date" class="form-control" id="expectedDate" name="expectedDate">
-                    </div>
+                    <c:choose>
+                        <c:when test="${tour.group == false}">
+                            <div class="form-group col-md-6">
+                                <label for="departureDate">Ngày khởi hành *</label>
+                                <input type="date" class="form-control" id="departureDate" name="departureDate" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="expectedDate">Ngày dự kiến (Không bắt buộc)</label>
+                                <input type="date" class="form-control" id="expectedDate" name="expectedDate">
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="form-group col-md-6">
+                                <label for="departureDate">Ngày khởi hành *</label>
+                                <input type="date" class="form-control" id="departureDate" name="departureDate" value="${tour.departureDate}" required readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="expectedDate">Ngày dự kiến *</label>
+                                <input type="date" class="form-control" id="expectedDate" name="expectedDate" value="${tour.expectedDate}" readonly>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="form-group">
                     <label for="note">Nội dung</label>

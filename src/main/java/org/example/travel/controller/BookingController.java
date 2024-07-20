@@ -46,14 +46,14 @@ public class BookingController {
 
 
     @GetMapping("/bookTour/{id}")
-    public String bookTour(@PathVariable("id") int id, Model model, HttpSession session, RedirectAttributes ra) {
+    public String bookTour(@PathVariable("id") long id, Model model, HttpSession session, RedirectAttributes ra) {
         if (session.getAttribute("user") == null) {
             ra.addFlashAttribute("errorMsg", "Bạn cần đăng nhập để sử dụng chức năng này!");
             return "redirect:/login";
         }
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
-        model.addAttribute("tour", tourService.getTourByTourID((long) id));
+        model.addAttribute("tour", tourService.getTourByTourID(id));
         model.addAttribute("payments", paymentService.getAllPayments());
         return "tour/book-tour";
     }
@@ -222,7 +222,11 @@ public class BookingController {
             groupTour.setEnterprise(booking.getTour().getEnterprise());
             groupTour.setStartDate(booking.getDepartureDate());
             groupTour.setEndDate(booking.getExpectedDate());
-            groupTour.setMaxPeople(tourService.getTourByTourID(booking.getTour().getTourID()).getMaxPeople());
+            if(booking.getTour().isGroup()){
+                groupTour.setMaxPeople(booking.getTour().getMaxPeople());
+            } else {
+                groupTour.setMaxPeople(booking.getTotalPeople());
+            }
             groupTour.setCurrentPeople(booking.getTotalPeople());
             groupTour.setStatus("Waiting");
             groupTourService.updateGroupTour(groupTour);
