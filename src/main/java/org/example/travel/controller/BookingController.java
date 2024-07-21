@@ -96,6 +96,9 @@ public class BookingController {
         if (totalPeople > tourService.getTourByTourID(Long.parseLong(tourID)).getMaxPeople()) {
             return ResponseEntity.ok(Map.of("status", "0", "message", "Số người vượt quá số lượng cho phép!"));
         }
+        if (totalPeople < tourService.getTourByTourID(Long.parseLong(tourID)).getMinPeople()) {
+            return ResponseEntity.ok(Map.of("status", "0", "message", "Số người không đủ!"));
+        }
         booking.setTotalPeople(totalPeople);
         // Lưu tour được book
         tourService.incCustomer(Long.parseLong(tourID), totalPeople);
@@ -210,10 +213,14 @@ public class BookingController {
 
     @GetMapping("/admin/booking/approve")
     public String approveBooking(@RequestParam("id") Long id){
-        String mailAddress = bookingService.getBookingById(id).getUser().getEmail();
-        String subject = "Thông báo xác nhận đơn đặt tour";
-        String message = "Đơn đặt tour của bạn đã được xác nhận! Thông tin tour: " + bookingService.getBookingById(id).getTour().getNameTour();
-        mailService.sendActivationEmail(mailAddress, subject, message, "Thông Báo Xác Nhận","Xem chi tiết", "http://localhost:8080/booking/detail/" + id);
+        try{
+            String mailAddress = bookingService.getBookingById(id).getUser().getEmail();
+            String subject = "Thông báo xác nhận đơn đặt tour";
+            String message = "Đơn đặt tour của bạn đã được xác nhận! Thông tin tour: " + bookingService.getBookingById(id).getTour().getNameTour();
+            mailService.sendActivationEmail(mailAddress, subject, message, "Thông Báo Xác Nhận","Xem chi tiết", "http://localhost:8080/booking/detail/" + id);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         Booking booking = bookingService.getBookingById(id);
         booking.setStatus("Approved");
         List<GroupTour> groupTours = groupTourService.getGroupTourByTourTourIDAndStatus(bookingService.getBookingById(id).getTour().getTourID(), "Waiting");
@@ -229,7 +236,11 @@ public class BookingController {
                 groupTour.setMaxPeople(booking.getTotalPeople());
             }
             groupTour.setCurrentPeople(booking.getTotalPeople());
-            groupTour.setStatus("Waiting");
+            if (booking.getTour().isGroup()){
+                groupTour.setStatus("Waiting");
+            } else {
+                groupTour.setStatus("In Process");
+            }
             groupTourService.updateGroupTour(groupTour);
             booking.setGroupTour(groupTour);
             bookingService.updateBooking(booking);
@@ -245,6 +256,19 @@ public class BookingController {
 
                     bookingService.updateBooking(booking);
                     groupTourService.updateGroupTour(groupTour);
+                    break;
+                } else {
+                    GroupTour newGroupTour = new GroupTour();
+                    newGroupTour.setTour(booking.getTour());
+                    newGroupTour.setEnterprise(booking.getTour().getEnterprise());
+                    newGroupTour.setStartDate(booking.getDepartureDate());
+                    newGroupTour.setEndDate(booking.getExpectedDate());
+                    newGroupTour.setMaxPeople(booking.getTotalPeople());
+                    newGroupTour.setCurrentPeople(booking.getTotalPeople());
+                    newGroupTour.setStatus("In Process");
+                    groupTourService.updateGroupTour(newGroupTour);
+                    booking.setGroupTour(newGroupTour);
+                    bookingService.updateBooking(booking);
                     break;
                 }
             }

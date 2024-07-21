@@ -21,6 +21,7 @@ public class StatisticsService {
     @Autowired
     private TourService tourService;
 
+    // Enterprise
     public Map<String, Object> getStatistics(long id) {
         Map<String, Object> statistics = new HashMap<>();
 
@@ -66,6 +67,7 @@ public class StatisticsService {
         return statistics;
     }
 
+    // Admin
     public Map<String, Object> getStatisticsAdmin() {
         Map<String, Object> statistics = new HashMap<>();
 

@@ -1,5 +1,6 @@
 package org.example.travel.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.travel.entity.Enterprise;
 import org.example.travel.entity.GroupTour;
 import org.example.travel.entity.User;
@@ -10,9 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -33,10 +34,9 @@ public class GroupTourController {
 //    }
 
     @GetMapping("/enterprise/grouptour/active/{groupTourID}")
-    public String activeGroupTour(Model model, HttpSession session) {
+    public String activeGroupTour(Model model, HttpSession session, @PathVariable Long groupTourID) {
         User user = (User) session.getAttribute("user");
         Enterprise enterprise = user.getEnterprise();
-        Long groupTourID = Long.parseLong(Objects.requireNonNull(model.getAttribute("groupTourID")).toString());
         GroupTour groupTour = groupTourService.findGroupTourById(groupTourID);
         if (groupTour.getEnterprise().getEnterpriseID().equals(enterprise.getEnterpriseID())) {
             groupTour.setStatus("Active");

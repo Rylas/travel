@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+<%@ include file="../material/navbar.jsp" %>
 <div class="container">
     <h1 class="mb-4">Edit Enterprise</h1>
     <form action="/admin/enterprise/edit" method="post" enctype="multipart/form-data">
@@ -60,6 +61,7 @@
         <button type="submit" class="btn btn-primary">Update Enterprise</button>
     </form>
 </div>
+<%@ include file="../material/footer.jsp"%>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
