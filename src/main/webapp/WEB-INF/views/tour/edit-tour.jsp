@@ -12,6 +12,7 @@
 
 </head>
 <body>
+<%@ include file="../material/navbar.jsp"%>
 <div class="container">
     <h1 class="mb-4">Cập nhập thông tin Tour</h1>
     <form action="/admin/editTour" method="post" enctype="multipart/form-data">
@@ -145,6 +146,8 @@
         <button type="submit" class="btn btn-primary">Cập nhập</button>
     </form>
 </div>
+<%@ include file="../material/footer.jsp"%>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>

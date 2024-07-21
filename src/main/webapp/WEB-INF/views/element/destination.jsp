@@ -39,7 +39,7 @@
         <form action="/search" id="where-togo" style="min-width: 90%">
             <h3>Hãy cho tôi biết nơi bạn muốn đi?</h3>
             <input type="text" placeholder="Nơi bạn muốn đến?" style="padding-left: 10px" name="keyword">
-            <input type="date" placeholder="Date" name="date">
+            <input type="date" placeholder="Date" name="date" required>
             <select name="groupTour" id="groupTour">
                 <option value="both" aria-placeholder="Travel type">Travel Type</option>
                 <option value="true">Đi theo đoàn</option>

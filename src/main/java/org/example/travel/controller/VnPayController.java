@@ -28,6 +28,7 @@ public class VnPayController {
                                                               @RequestParam("bookingID") String bookingID,
                                                               HttpServletRequest req) throws IOException {
 
+        // Chuyển đổi tiền USD về VND
         if (Objects.equals(currency, "USD")) {
             float amountFloat = Float.parseFloat(amount);
             int amountInt = (int) (amountFloat * 25455);
@@ -41,7 +42,6 @@ public class VnPayController {
         response.put("code", "00");
         response.put("message", "success");
         response.put("data", paymentUrl);
-
         return ResponseEntity.ok(response);
     }
 

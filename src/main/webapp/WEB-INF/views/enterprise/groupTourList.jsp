@@ -86,7 +86,11 @@
                         <c:when test="${booking.groupTour.status == null}">
                             <a href="/enterprise/booking" class="btn btn-info btn-sm">Duyệt</a>
                         </c:when>
+
                     </c:choose>
+                    <c:if test="${booking.groupTour.status == 'Waiting' || booking.groupTour.status == 'In Process'}">
+                        <a href="/enterprise/grouptour/active/${booking.groupTour.groupTourID}" class="btn btn-success btn-sm">Kích hoạt</a>
+                    </c:if>
                 </td>
             </tr>
             <%
